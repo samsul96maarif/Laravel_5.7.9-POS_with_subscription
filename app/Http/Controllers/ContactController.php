@@ -61,4 +61,37 @@ class ContactController extends Controller
       $contact->save();
       return redirect('/contact');
     }
+
+    // update
+    // 1. get data melalui id-nya
+        public function edit($id){
+          $contact = contact::find($id);
+          return view('user/contact/edit', ['contact' => $contact]);
+        }
+    // 2. store data update
+        public function update(Request $request, $id){
+
+          $this->validate($request, [
+            'name' => 'required',
+            'phone' => 'required|numeric',
+            'company_name' => 'required',
+            'email' => 'required|string|email|max:255|unique:users',
+          ]);
+
+          $contact = contact::find($id);
+          $contact->name = $request->name;
+          $contact->phone = $request->phone;
+          $contact->company_name = $request->company_name;
+          $contact->email = $request->email;
+          $contact->save();
+          return redirect('/contact');
+        }
+
+        // delete
+      public function delete($id)
+      {
+        $contact = contact::find($id);
+        $contact->delete();
+        return redirect('/contact');
+      }
 }

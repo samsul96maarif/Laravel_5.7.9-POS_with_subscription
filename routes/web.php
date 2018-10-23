@@ -76,4 +76,9 @@ Route::get('/contact', 'ContactController@index');
 Route::get('/contact/create', 'ContactController@create')->middleware('get.subscription');
 Route::post('/contact', 'ContactController@store');
 
+// edit contact
+Route::get('/contact/{id}/edit', 'ContactController@edit');
+Route::put('/contact/{id}', 'ContactController@update');
+// //delete
+Route::delete('/contact/{id}/delete', 'ContactController@delete');
 // end contact

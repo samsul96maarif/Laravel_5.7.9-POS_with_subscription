@@ -21,6 +21,18 @@
         <td>{{ $contact->phone }}</td>
         <td>{{ $contact->company_name }}</td>
         <td>{{ $contact->email }}</td>
+        <td>
+          <form class="" action="/contact/{{ $contact->id }}/edit" method="edit">
+            <input type="submit" name="submit" value="edit">
+          </form>
+        </td>
+        <td>
+          <form class="" action="/contact/{{ $contact->id }}/delete" method="post">
+            {{ method_field('DELETE') }}
+            <input type="submit" name="submit" value="delete">
+            {{ csrf_field() }}
+          </form>
+        </td>
         @php
           $i++;
         @endphp
