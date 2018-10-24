@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateStosubsTable extends Migration
+class CreateStoresTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,16 @@ class CreateStosubsTable extends Migration
      */
     public function up()
     {
-        Schema::create('stosubs', function (Blueprint $table) {
+        Schema::create('stores', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('store_id')->unsigned();
-            $table->foreign('store_id')->references('id')->on('stores')->onDelete('cascade');
+            $table->integer('user_id')->unsigned();
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->integer('subscription_id')->unsigned();
             $table->foreign('subscription_id')->references('id')->on('subscriptions')->onDelete('cascade');
+            $table->string('name');
+            $table->string('phone', 12);
+            $table->string('company_address');
+            $table->integer('zipcode');
             $table->timestamps();
         });
     }
@@ -30,6 +34,6 @@ class CreateStosubsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('stosubs');
+        Schema::dropIfExists('stores');
     }
 }

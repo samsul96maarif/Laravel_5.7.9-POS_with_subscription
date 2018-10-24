@@ -18,9 +18,9 @@ class CreateContactsTable extends Migration
             $table->integer('store_id')->unsigned();
             $table->foreign('store_id')->references('id')->on('stores')->onDelete('cascade');
             $table->string('name');
+            $table->string('phone', 12);
             $table->string('company_name');
             $table->string('email')->unique();
-            $table->string('phone', 12);
             $table->timestamps();
         });
     }

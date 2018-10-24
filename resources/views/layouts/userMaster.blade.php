@@ -11,6 +11,7 @@
         <a href="/subscription">subscription</a>
         <a href="/sales_order">sales order</a>
         <a href="/contact">contact</a>
+        <a href="/item">item</a>
         {{-- <li class="nav-item dropdown"> --}}
             {{-- <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                 {{ Auth::user()->name }} <span class="caret"></span>
