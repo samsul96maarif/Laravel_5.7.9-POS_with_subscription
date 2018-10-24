@@ -48,18 +48,20 @@ Route::prefix('admin')->group(function () {
 });
 // end admin page
 
-// subscription for user
+// user page
+// subscription
 // Route::get('/home', 'SubscriptionController@home')->name('home');
-
 Route::get('/subscription', 'SubscriptionController@index');
 
 Route::get('/subscription/{id}/pilih', 'SubscriptionController@show');
 
-Route::post('/subscription/beli', 'SubscriptionController@beli')->middleware('auth');
-// end subscription for user
+Route::post('/subscription/beli', 'SubscriptionController@beli');
+// end subscription
 
-// store for user
-Route::get('/home', 'StoreController@index')->middleware('auth', 'gate');
+
+// store
+// Route::get('/home', 'StoreController@index')->middleware('auth', 'gate');
+Route::get('/home', 'StoreController@index');
 // create store
 Route::get('/create', 'StoreController@create');
 Route::post('/store', 'StoreController@store');
@@ -67,15 +69,15 @@ Route::post('/store', 'StoreController@store');
 Route::put('/store/{id}', 'StoreController@update');
 // //delete
 Route::delete('/store/{id}/delete', 'StoreController@delete');
-// end store for user
+// end store
 
-// contact for user
+
+// contact
 Route::get('/contact', 'ContactController@index');
-
-// create store
-Route::get('/contact/create', 'ContactController@create')->middleware('auth', 'get.subscription');
+// create contact
+// Route::get('/contact/create', 'ContactController@create')->middleware('auth', 'get.subscription');
+Route::get('/contact/create', 'ContactController@create');
 Route::post('/contact', 'ContactController@store');
-
 // edit contact
 Route::get('/contact/{id}/edit', 'ContactController@edit');
 Route::put('/contact/{id}', 'ContactController@update');
@@ -83,10 +85,11 @@ Route::put('/contact/{id}', 'ContactController@update');
 Route::delete('/contact/{id}/delete', 'ContactController@delete');
 // end contact
 
+
 // items
 Route::get('/item', 'ItemController@index');
 // create item
-Route::get('/item/create', 'ItemController@create')->middleware('auth');
+Route::get('/item/create', 'ItemController@create');
 Route::post('/item', 'ItemController@store');
 // edit contact
 Route::get('/item/{id}/edit', 'ItemController@edit');
@@ -94,3 +97,4 @@ Route::put('/item/{id}', 'ItemController@update');
 // //delete
 Route::delete('/item/{id}/delete', 'ItemController@delete');
 // end item
+// end user page
