@@ -55,7 +55,7 @@ Route::get('/subscription', 'SubscriptionController@index');
 
 Route::get('/subscription/{id}/pilih', 'SubscriptionController@show');
 
-Route::post('/subscription/beli', 'SubscriptionController@beli');
+Route::post('/subscription/beli', 'SubscriptionController@beli')->middleware('auth');
 // end subscription for user
 
 // store for user
@@ -73,7 +73,7 @@ Route::delete('/store/{id}/delete', 'StoreController@delete');
 Route::get('/contact', 'ContactController@index');
 
 // create store
-Route::get('/contact/create', 'ContactController@create')->middleware('get.subscription');
+Route::get('/contact/create', 'ContactController@create')->middleware('auth', 'get.subscription');
 Route::post('/contact', 'ContactController@store');
 
 // edit contact
@@ -82,3 +82,15 @@ Route::put('/contact/{id}', 'ContactController@update');
 // //delete
 Route::delete('/contact/{id}/delete', 'ContactController@delete');
 // end contact
+
+// items
+Route::get('/item', 'ItemController@index');
+// create item
+Route::get('/item/create', 'ItemController@create')->middleware('auth');
+Route::post('/item', 'ItemController@store');
+// edit contact
+Route::get('/item/{id}/edit', 'ItemController@edit');
+Route::put('/item/{id}', 'ItemController@update');
+// //delete
+Route::delete('/item/{id}/delete', 'ItemController@delete');
+// end item
