@@ -5,8 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use App\Models\Subscription;
-use App\Models\Stosub;
-use App\Models\Usestore;
+use App\Models\Store;
 
 use Auth;
 
@@ -47,18 +46,12 @@ class SubscriptionController extends Controller
   public function beli(Request $request)
   {
     $subscription = subscription::find($request->id);
-
     $user_id = Auth::user()->id;
-
-    $usestore = usestore::where('user_id', $user_id)->first();
-
-    $stosub = new stosub;
-    $stosub->store_id = $usestore->store_id;
-    $stosub->subscription_id = $subscription->id;
-    // dd($stosub->subscription_id);
-    $stosub->save();
+    $store = store::where('user_id', $user_id)->first();
+    $store->subscription_id = $subscription->id;
+    // dd($store);
+    $store->save();
 
     return redirect('/home');
-    // return view('user/subscription/detail', ['subscription' => $subscription]);
   }
 }

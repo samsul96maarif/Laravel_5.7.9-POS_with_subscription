@@ -9,4 +9,11 @@ class Store extends Model
 {
   use SoftDeletes;
   protected $dates = ['deleted_at'];
+
+  // fungsi untuk mengecek apakakah user memiliki store
+  public function owner()
+  {
+    // mengecek bila kondisi role "1" berarti true berarti dia admin
+    return $this->user_id;
+  }
 }

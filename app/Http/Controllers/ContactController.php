@@ -5,8 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use App\Models\Contact;
-use App\Models\Constore;
-use App\Models\Usestore;
+use App\Models\Store;
 
 use Auth;
 
@@ -21,14 +20,9 @@ class ContactController extends Controller
     public function index()
     {
       $user_id = Auth::id();
-      // dd($user_id);
-
-      // user_stores
-      $user_store = usestore::where('user_id', $user_id)->first();
-      $store_id = $user_store->store_id;
+      $store = store::where('user_id', $user_id)->first();
       // dd($store_id);
-
-      $contacts = contact::all()->where('store_id', $store_id);
+      $contacts = contact::all()->where('store_id', $store->id);
       // dd($contacts);
 
       return view('user/contact/index', ['contacts' => $contacts]);
@@ -50,10 +44,10 @@ class ContactController extends Controller
 
       $user_id = Auth::id();
 
-      $user_store = usestore::where('user_id', $user_id)->first();
-      // dd($user_store->store_id);
+      $store = store::where('user_id', $user_id)->first();
+      // dd($store->id);
       $contact = new contact;
-      $contact->store_id = $user_store->store_id;
+      $contact->store_id = $store->id;
       $contact->name = $request->name;
       $contact->phone = $request->phone;
       $contact->company_name = $request->company_name;

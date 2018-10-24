@@ -4,7 +4,6 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Auth;
-use App\Models\Usestore;
 use App\Models\Store;
 
 class Gate
@@ -18,22 +17,19 @@ class Gate
      */
     public function handle($request, Closure $next)
     {
-      // $user_id = Auth::user()->id;
       $user_id = Auth::id();
-    // dd($user_id);
-    $usestore = usestore::where('user_id', $user_id)->first();
-    // dd($usestore);
+      // dd($user_id);
+      // mencari store yang milik user
+      $store = store::where('user_id', $user_id)->first();
+      // dd($store);
 
-      if ($usestore == null) {
-        // dd($tes);
+      if ($store == null) {
+        // dd($store);
         return redirect('/create');
         // return view('auth/login');
       }
 
-      $store_id = $usestore->store_id;
-      $store = store::where('id', $store_id)->first();
       // dd($store);
-      // return view('index', ['store' => $store]);
       return $next($request);
     }
 }

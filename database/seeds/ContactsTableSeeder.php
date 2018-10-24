@@ -14,10 +14,10 @@ class ContactsTableSeeder extends Seeder
     {
       $faker = Faker::create();
 
-      for ($i=0; $i < 13; $i++) {
+      for ($i=0; $i < 7; $i++) {
         DB::table('contacts')->insert([
             'name' => $faker->name,
-            'store_id' => 7,
+            'store_id' => 1,
             'email' => str_random(10).'@gmail.com',
             'company_name' => str_random(10),
             'phone' => $faker->randomNumber,

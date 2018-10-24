@@ -17,7 +17,7 @@ class CreateStoresTable extends Migration
             $table->increments('id');
             $table->integer('user_id')->unsigned();
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-            $table->integer('subscription_id')->unsigned();
+            $table->integer('subscription_id')->unsigned()->nullable($value = true);
             $table->foreign('subscription_id')->references('id')->on('subscriptions')->onDelete('cascade');
             $table->string('name');
             $table->string('phone', 12);

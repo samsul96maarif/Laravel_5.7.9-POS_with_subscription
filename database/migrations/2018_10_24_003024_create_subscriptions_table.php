@@ -17,7 +17,7 @@ class CreateSubscriptionsTable extends Migration
             $table->increments('id');
             $table->string('name');
             $table->integer('price');
-            $table->integer('num_invoieces');
+            $table->integer('num_invoices');
             $table->integer('num_users');
             $table->timestamps();
             $table->softDeletes();
