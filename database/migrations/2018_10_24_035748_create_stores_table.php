@@ -24,6 +24,7 @@ class CreateStoresTable extends Migration
             $table->string('company_address');
             $table->integer('zipcode');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

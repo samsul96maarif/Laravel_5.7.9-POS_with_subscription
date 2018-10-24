@@ -20,6 +20,7 @@ class CreateSubscriptionsTable extends Migration
             $table->integer('num_invoieces');
             $table->integer('num_users');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

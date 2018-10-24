@@ -19,6 +19,7 @@ class CreateSalesOrdersTable extends Migration
             $table->integer('total');
             $table->enum('status', ['void', 'fulfilled', 'awaiting_payment', 'awaiting_shipment']);
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 
