@@ -32,7 +32,7 @@ Route::prefix('admin')->group(function () {
     })->middleware('auth', 'admin');
 
     // subscription
-    Route::get('/subscription', "AdminSubscriptionController@index");
+    Route::get('/subscription', 'AdminSubscriptionController@index');
     //create 1. pindah ke form dl, 2.lakukan store di function lain
     Route::get('/subscription/create', 'AdminSubscriptionController@create');
     Route::post('/subscription', 'AdminSubscriptionController@store');
@@ -45,23 +45,36 @@ Route::prefix('admin')->group(function () {
     Route::delete('/subscription/{id}/delete', 'AdminSubscriptionController@delete');
     // end subscription
 
+    // store
+    Route::get('/store', 'AdminStoreController@index');
+    // detail owner
+    Route::put('/store/{id}', 'AdminStoreController@active');
+    Route::put('/store/{id}/extend', 'AdminStoreController@extend');
+    // end store
+
+    // user
+    Route::get('/user', 'AdminUserController@index');
+    Route::get('/user/{id}', 'AdminUserController@show');
+    // end user
+
+    // contact
+    Route::get('/contact', 'AdminContactController@index');
+    Route::get('/contact/{id}', 'AdminContactController@show');
+    // end contact
+
 });
 // end admin page
 
 // user page
 // subscription
-// Route::get('/home', 'SubscriptionController@home')->name('home');
 Route::get('/subscription', 'SubscriptionController@index');
-
 Route::get('/subscription/{id}/pilih', 'SubscriptionController@show');
-
 Route::post('/subscription/beli', 'SubscriptionController@beli');
 // end subscription
 
 
 // store
-// Route::get('/home', 'StoreController@index')->middleware('auth', 'gate');
-Route::get('/home', 'StoreController@index');
+Route::get('/home', 'StoreController@index')->middleware('gate');
 // create store
 Route::get('/create', 'StoreController@create');
 Route::post('/store', 'StoreController@store');
@@ -75,7 +88,6 @@ Route::delete('/store/{id}/delete', 'StoreController@delete');
 // contact
 Route::get('/contact', 'ContactController@index');
 // create contact
-// Route::get('/contact/create', 'ContactController@create')->middleware('auth', 'get.subscription');
 Route::get('/contact/create', 'ContactController@create');
 Route::post('/contact', 'ContactController@store');
 // edit contact
@@ -91,7 +103,7 @@ Route::get('/item', 'ItemController@index');
 // create item
 Route::get('/item/create', 'ItemController@create');
 Route::post('/item', 'ItemController@store');
-// edit contact
+// edit item
 Route::get('/item/{id}/edit', 'ItemController@edit');
 Route::put('/item/{id}', 'ItemController@update');
 // //delete
