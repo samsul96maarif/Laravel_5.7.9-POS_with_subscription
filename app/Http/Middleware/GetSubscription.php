@@ -5,10 +5,10 @@ namespace App\Http\Middleware;
 use Closure;
 
 use App\Models\Subscription;
-use App\Models\Contact;
 use App\Models\Store;
 
 use Auth;
+use Carbon\Carbon;
 
 class GetSubscription
 {
@@ -23,30 +23,25 @@ class GetSubscription
     {
         $user_id = Auth::id();
         // dd($user_id);
-
-        // user_stores
         $store = store::where('user_id', $user_id)->first();
+
         // dd($store->subscription_id);
         if ($store->subscription_id == null) {
           return redirect('/subscription');
         }
         else {
-
-            // mencari contacts melalui store id
-            $contacts = contact::all()->where('store_id', $store->id);
-            $i = 0;
-            // dd($contacts);
-            foreach ($contacts as $contact) {
-              $i++;
+          // dd($store->id);
+          // dd($store->status);
+            if ($store->status == false) {
+              throw new \Exception("masih menunggu konfirmasi pembayaran");
+            } else {
+              $now = carbon::now();
+              if ($store->expire_date > $now) {
+                // dd($store->expire_date);
+                return $next($request);
+              }
+              throw new \Exception("subscription expired");
             }
-            // dd($i);
-            $subscription_num_users = subscription::find($store->subscription_id)->num_users;
-            // dd($subscription_num_users);
-            if ($i < $subscription_num_users) {
-              return $next($request);
-            }
-            // bila mau ditampilkan pesan error
-            throw new \Exception("kuota tambah contact telah melebihi kapasitas");
         }
     }
 }
