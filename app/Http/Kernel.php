@@ -64,6 +64,6 @@ class Kernel extends HttpKernel
         'admin' => \App\Http\Middleware\Admin::class,
         'gate' => \App\Http\Middleware\Gate::class,
         'get.subscription' => \App\Http\Middleware\GetSubscription::class,
-        'get.contact' => \App\Http\Middleware\GetContact::class,
+        'max.contact' => \App\Http\Middleware\MaxContact::class,
     ];
 }
