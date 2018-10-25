@@ -39,14 +39,15 @@ class SubscriptionController extends Controller
 
   public function show($id)
   {
-    $subscription = subscription::find($id);
+    $subscription = subscription::findOrFail($id);
     return view('user/subscription/detail', ['subscription' => $subscription]);
   }
 
   public function beli(Request $request)
   {
     $subscription = subscription::find($request->id);
-    $user_id = Auth::user()->id;
+    $user_id = Auth::id();
+    // dd($user_id);
     $store = store::where('user_id', $user_id)->first();
     $store->subscription_id = $subscription->id;
     // dd($store);

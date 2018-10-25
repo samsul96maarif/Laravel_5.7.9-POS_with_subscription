@@ -23,7 +23,7 @@ class AdminSubscriptionController extends Controller
 
     public function show($id)
     {
-      $subscription = subscription::find($id);
+      $subscription = subscription::findOrFail($id);
       return view('admin/subscription/detail', ['subscription' => $subscription]);
     }
 
