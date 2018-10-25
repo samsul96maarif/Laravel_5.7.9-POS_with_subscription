@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Store extends Model
 {
   use SoftDeletes;
-  protected $dates = ['deleted_at'];
+  protected $dates = ['deleted_at', 'expire_date'];
 
   // fungsi untuk mengecek apakakah user memiliki store
   public function owner()
