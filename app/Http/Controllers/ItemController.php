@@ -14,7 +14,7 @@ class ItemController extends Controller
 
   public function __construct()
   {
-      $this->middleware(['auth', 'get.subscription']);
+      $this->middleware(['auth', 'gate', 'get.subscription']);
   }
 
   public function index()

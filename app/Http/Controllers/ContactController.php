@@ -14,7 +14,7 @@ class ContactController extends Controller
 
   public function __construct()
   {
-      $this->middleware(['auth', 'get.subscription', 'max.contact']);
+      $this->middleware(['auth', 'gate', 'get.subscription', 'max.contact']);
   }
 
     public function index()
