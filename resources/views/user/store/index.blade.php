@@ -32,7 +32,7 @@ ini wajib ya jangan sampe lupa --}}
   {{-- kolom untuk isi tabel "price" --}}
   {{-- old('nama variable') = untuk menyimpan nilai lama, jadi bila tidak valid hanya tabel yang tidak valid
   yang nilainya akan terhapus --}}
-  <input type="text" name="company_address" value="{{ $store->company_address }}" placeholder="Company Address"><br><br>
+  <textarea name="company_address" rows="8" cols="80" placeholder="Company Address">{{ $store->company_address }}</textarea><br><br>
   {{-- untuk mengeluarkan error pada value "name" --}}
   @if($errors->has('company_address'))
     <p>{{ $errors->first('company_address') }}</p>
