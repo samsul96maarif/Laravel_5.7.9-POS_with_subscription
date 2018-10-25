@@ -37,7 +37,7 @@ ini wajib ya jangan sampe lupa --}}
     <p>{{ $errors->first('company_name') }}</p>
   @endif
 
-  <input id="email" type="email" class="form-control{{ $errors->has('email') ? ' is-invalid' : '' }}" name="email" value="{{ old('email') }}" required placeholder="Email">
+  <input id="email" type="email" name="email" value="{{ old('email') }}" required placeholder="Email">
 
   @if ($errors->has('email'))
       <span class="invalid-feedback" role="alert">

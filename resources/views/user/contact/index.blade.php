@@ -11,6 +11,7 @@
     <th>Phone</th>
     <th>Company Name</th>
     <th>Email</th>
+    <th>Action</th>
     @php
       $i = 1;
     @endphp
@@ -25,8 +26,6 @@
           <form class="" action="/contact/{{ $contact->id }}/edit" method="edit">
             <input type="submit" name="submit" value="edit">
           </form>
-        </td>
-        <td>
           <form class="" action="/contact/{{ $contact->id }}/delete" method="post">
             {{ method_field('DELETE') }}
             <input type="submit" name="submit" value="delete">

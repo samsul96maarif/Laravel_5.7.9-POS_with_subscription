@@ -9,6 +9,7 @@
     <th>No</th>
     <th>Name</th>
     <th>Price</th>
+    <th>Action</th>
     @php
       $i = 1;
     @endphp
@@ -21,8 +22,6 @@
           <form class="" action="/item/{{ $item->id }}/edit" method="edit">
             <input type="submit" name="submit" value="edit">
           </form>
-        </td>
-        <td>
           <form class="" action="/item/{{ $item->id }}/delete" method="post">
             {{ method_field('DELETE') }}
             <input type="submit" name="submit" value="delete">

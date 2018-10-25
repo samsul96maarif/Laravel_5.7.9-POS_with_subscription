@@ -86,11 +86,13 @@
         <main class="py-4">
           <header>
             <nav>
-              <a href="/home">home</a>
-              <a href="/subscription">subscription</a>
-              <a href="/sales_order">sales order</a>
-              <a href="/contact">contact</a>
-              <a href="/item">item</a>
+              <a href="/admin">home</a>
+              <a href="/admin/user">user</a>
+              <a href="/admin/store">store</a>
+              <a href="/admin/subscription">subscription</a>
+              <a href="/admin/sales_order">sales order</a>
+              <a href="/admin/contact">contact</a>
+              <a href="/admin/item">item</a>
             </nav>
           </header>
           <br>
