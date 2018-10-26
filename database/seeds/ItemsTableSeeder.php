@@ -16,9 +16,11 @@ class ItemsTableSeeder extends Seeder
 
       for ($i=0; $i < 13; $i++) {
         DB::table('items')->insert([
-            'name' => $faker->name,
+            'name' => str_random(7),
+            'description' => 'blablabla',
             'store_id' => 2,
-            'price' => $faker->randomNumber,
+            'price' => $faker->randomNumber.'000',
+            'stock' => $faker->randomNumber,
         ]);
       }
     }

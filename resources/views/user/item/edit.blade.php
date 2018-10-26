@@ -21,13 +21,25 @@ ini wajib ya jangan sampe lupa --}}
     <p>{{ $errors->first('name') }}</p>
   @endif
 
+  <textarea name="description" rows="8" cols="80" placeholder="description">{{ $item->description }}</textarea>
+  <br><br>
+  @if($errors->has('description'))
+    <p>{{ $errors->first('description') }}</p>
+  @endif
+
   {{-- kolom untuk isi tabel "price" --}}
   {{-- old('nama variable') = untuk menyimpan nilai lama, jadi bila tidak valid hanya tabel yang tidak valid
   yang nilainya akan terhapus --}}
-  <input type="text" name="price" value="{{ $item->price }}" placeholder="price ex:1000"><br><br>
+  <input type="number" name="price" value="{{ $item->price }}" placeholder="price ex:1000" min="1"><br><br>
   {{-- untuk mengeluarkan error pada value "name" --}}
   @if($errors->has('price'))
     <p>{{ $errors->first('price') }}</p>
+  @endif
+
+  <input type="number" name="stock" value="{{ $item->stock }}" placeholder="stock ex:15" min="1"><br><br>
+  {{-- untuk mengeluarkan error pada value "name" --}}
+  @if($errors->has('stock'))
+    <p>{{ $errors->first('stock') }}</p>
   @endif
 
   <input type="submit" name="submit" value="update">

@@ -36,6 +36,8 @@ class ItemController extends Controller
   {
     $this->validate($request, [
       'name' => 'required',
+      'description' => 'required',
+      'stock' => 'required|integer',
       'price' => 'required|integer',
     ]);
 
@@ -46,7 +48,9 @@ class ItemController extends Controller
     $item = new item;
     $item->store_id = $store->id;
     $item->name = $request->name;
+    $item->description = $request->description;
     $item->price = $request->price;
+    $item->stock = $request->stock;
     $item->save();
     return redirect('/item');
   }
@@ -62,12 +66,16 @@ class ItemController extends Controller
 
         $this->validate($request, [
           'name' => 'required',
+          'description' => 'required',
+          'stock' => 'required|integer',
           'price' => 'required|integer',
         ]);
 
         $item = item::find($id);
         $item->name = $request->name;
+        $item->description = $request->description;
         $item->price = $request->price;
+        $item->stock = $request->stock;
         $item->save();
         return redirect('/item');
       }

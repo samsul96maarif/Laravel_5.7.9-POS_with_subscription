@@ -8,7 +8,9 @@
   <table>
     <th>No</th>
     <th>Name</th>
+    <th>Description</th>
     <th>Price</th>
+    <th>Stock</th>
     <th>Action</th>
     @php
       $i = 1;
@@ -17,7 +19,9 @@
     <tr>
         <td>{{ $i }}</td>
         <td>{{ $item->name }}</td>
+        <td>{{ $item->description }}</td>
         <td>{{ $item->price }}</td>
+        <td>{{ $item->stock }}</td>
         <td>
           <form class="" action="/item/{{ $item->id }}/edit" method="edit">
             <input type="submit" name="submit" value="edit">
