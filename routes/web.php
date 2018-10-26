@@ -109,4 +109,11 @@ Route::put('/item/{id}', 'ItemController@update');
 // //delete
 Route::delete('/item/{id}/delete', 'ItemController@delete');
 // end item
+
+// sales order
+Route::get('/sales_order', 'SalesOrderController@index');
+
+// end sales order
+
+
 // end user page
