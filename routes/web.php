@@ -112,7 +112,8 @@ Route::delete('/item/{id}/delete', 'ItemController@delete');
 
 // sales order
 Route::get('/sales_order', 'SalesOrderController@index');
-
+Route::get('/sales_order/create', 'SalesOrderController@create');
+Route::post('/sales_order', 'SalesOrderController@store');
 // end sales order
 
 
