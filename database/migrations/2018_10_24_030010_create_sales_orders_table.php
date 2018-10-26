@@ -17,7 +17,7 @@ class CreateSalesOrdersTable extends Migration
             $table->increments('id');
             $table->integer('store_id')->unsigned();
             $table->foreign('store_id')->references('id')->on('stores')->onDelete('cascade');
-            $table->string('order_number', 20);
+            $table->string('order_number', 20)->unique()->nullable();
             $table->integer('total');
             $table->timestamps();
             $table->softDeletes();
