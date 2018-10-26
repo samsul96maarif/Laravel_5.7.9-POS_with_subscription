@@ -15,9 +15,10 @@ class CreateSalesOrdersTable extends Migration
     {
         Schema::create('sales_orders', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('order');
+            $table->integer('store_id')->unsigned();
+            $table->foreign('store_id')->references('id')->on('stores')->onDelete('cascade');
+            $table->string('order_number', 20);
             $table->integer('total');
-            $table->enum('status', ['void', 'fulfilled', 'awaiting_payment', 'awaiting_shipment']);
             $table->timestamps();
             $table->softDeletes();
         });

@@ -17,8 +17,10 @@ class CreateItemsTable extends Migration
             $table->increments('id');
             $table->integer('store_id')->unsigned();
             $table->foreign('store_id')->references('id')->on('stores')->onDelete('cascade');
-            $table->string('name');
+            $table->string('name', 20);
+            $table->string('description');
             $table->integer('price');
+            $table->integer('stock');
             $table->timestamps();
             $table->softDeletes();
         });
