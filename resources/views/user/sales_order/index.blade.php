@@ -11,6 +11,7 @@
     <th>Order#</th>
     <th>Customer</th>
     <th>Total</th>
+    <th>Action</th>
     @php
       $i = 1;
     @endphp
@@ -18,31 +19,27 @@
     <tr>
         <td>{{ $i }}</td>
         <td>{{ $salesOrder->created_at }}</td>
-        <td>{{ $salesOrder->order_number }}</td>
+        <td> <a href="/sales_order/{{ $salesOrder->id }}">{{ $salesOrder->order_number }}</a></td>
         @foreach ($invoices as $invoice)
           @if ($invoice->sales_order_id == $salesOrder->id)
-            @foreach ($invoiceDetails as $invoiceDetail)
-              @if ($invoiceDetail->invoice_id == $invoice->id)
-                @foreach ($contacts as $contact)
-                  @if ($invoiceDetail->contact_id == $contact->id)
-                    <td>{{ $contact->name }}</td>
-                  @endif
-                @endforeach
+            @foreach ($contacts as $contact)
+              @if ($invoice->contact_id == $contact->id)
+                <td>{{ $contact->name }}</td>
               @endif
             @endforeach
           @endif
         @endforeach
         <td>{{ $salesOrder->total }}</td>
-        {{-- <td>
-          <form class="" action="/item/{{ $item->id }}/edit" method="edit">
+        <td>
+          <form class="" action="/sales_order/{{ $salesOrder->id }}/edit" method="edit">
             <input type="submit" name="submit" value="edit">
           </form>
-          <form class="" action="/item/{{ $item->id }}/delete" method="post">
+          <form class="" action="/sales_order/{{ $salesOrder->id }}/delete" method="post">
             {{ method_field('DELETE') }}
             <input type="submit" name="submit" value="delete">
             {{ csrf_field() }}
           </form>
-        </td> --}}
+        </td>
         @php
           $i++;
         @endphp
