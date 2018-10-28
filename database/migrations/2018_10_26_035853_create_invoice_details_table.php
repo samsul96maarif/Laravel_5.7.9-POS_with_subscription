@@ -19,8 +19,6 @@ class CreateInvoiceDetailsTable extends Migration
           $table->foreign('invoice_id')->references('id')->on('invoices')->onDelete('cascade');
           $table->integer('item_id')->unsigned();
           $table->foreign('item_id')->references('id')->on('items')->onDelete('cascade');
-          $table->integer('contact_id')->unsigned();
-          $table->foreign('contact_id')->references('id')->on('contacts')->onDelete('cascade');
           $table->integer('item_price');
           $table->integer('item_quantity');
           $table->integer('total');

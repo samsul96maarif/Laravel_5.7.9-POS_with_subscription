@@ -17,8 +17,10 @@ class CreateInvoicesTable extends Migration
           $table->increments('id');
           $table->integer('sales_order_id')->unsigned();
           $table->foreign('sales_order_id')->references('id')->on('sales_orders')->onDelete('cascade');
+          $table->integer('contact_id')->unsigned();
+          $table->foreign('contact_id')->references('id')->on('contacts')->onDelete('cascade');
           $table->string('number', 20)->unique()->nullable();
-          $table->integer('total');
+          $table->integer('total')->nullable();
           $table->timestamps();
           $table->softDeletes();
       });
