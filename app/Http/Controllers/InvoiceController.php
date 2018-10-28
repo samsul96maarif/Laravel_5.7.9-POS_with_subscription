@@ -17,7 +17,7 @@ class InvoiceController extends Controller
 {
     public function __construct()
     {
-        $this->middleware(['auth', 'gate', 'get.subscription']);
+        $this->middleware(['auth', 'gate', 'get.subscription', 'max.order', 'check.item']);
     }
     public function create($salesOrder_id, $invoice_id)
     {

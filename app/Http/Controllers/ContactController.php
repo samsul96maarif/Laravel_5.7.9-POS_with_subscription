@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 
 use App\Models\Contact;
 use App\Models\Store;
+use App\Models\Subscription;
+use App\Models\Invoice;
 
 use Auth;
 
@@ -43,8 +45,20 @@ class ContactController extends Controller
       ]);
 
       $user_id = Auth::id();
-
       $store = store::where('user_id', $user_id)->first();
+      $subscription = subscription::findOrFail($store->subscription_id);
+      $contacts = contact::all()->where('store_id', $store->id);
+
+      $i = 0;
+      foreach ($contacts as $key) {
+        $i++;
+      }
+
+      // dd($i);
+      if ($i >= $subscription->num_users) {
+        throw new \Exception("kuota sales order telah melebihi kapasitas, silahkan upgrade paket");
+      }
+
       // dd($store->id);
       $contact = new contact;
       $contact->store_id = $store->id;
@@ -85,7 +99,13 @@ class ContactController extends Controller
       public function delete($id)
       {
         $contact = contact::find($id);
-        $contact->delete();
-        return redirect('/contact');
+        $invoice = invoice::where('contact_id', $id)->first();
+        // dd($invoice);
+        if ($invoice == null) {
+          // dd($contact);
+          $contact->delete();
+          return redirect('/contact');
+        }
+        throw new \Exception("contact telah digunakan pada invoice, silahkan hapus invoice terlebih dahulu");
       }
 }

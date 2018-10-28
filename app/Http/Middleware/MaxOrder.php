@@ -2,15 +2,15 @@
 
 namespace App\Http\Middleware;
 
-use Closure;
-
 use App\Models\Subscription;
-use App\Models\Contact;
+use App\Models\SalesOrder;
 use App\Models\Store;
 
 use Auth;
 
-class MaxContact
+use Closure;
+
+class MaxOrder
 {
     /**
      * Handle an incoming request.
@@ -25,19 +25,19 @@ class MaxContact
       // dd($user_id);
       $store = store::where('user_id', $user_id)->first();
       // mencari contacts melalui store id
-      $contacts = contact::all()->where('store_id', $store->id);
+      $salesOrders = salesOrder::all()->where('store_id', $store->id);
       $i = 0;
       // dd($contacts);
-      foreach ($contacts as $contact) {
+      foreach ($salesOrders as $salesOrder) {
         $i++;
       }
       // dd($i);
-      $subscription_num_users = subscription::find($store->subscription_id)->num_users;
-      // dd($subscription_num_users);
-      if ($i <= $subscription_num_users) {
+      $subscription_num_invoices = subscription::find($store->subscription_id)->num_invoices;
+      // dd($subscription_num_invoices);
+      if ($i <= $subscription_num_invoices) {
         return $next($request);
       }
       // bila mau ditampilkan pesan error
-      throw new \Exception("kuota contact telah melebihi kapasitas, silahkan upgrade paket");
+      throw new \Exception("kuota sales order telah melebihi kapasitas, silahkan upgrade paket");
     }
 }

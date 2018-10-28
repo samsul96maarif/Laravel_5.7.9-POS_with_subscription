@@ -65,5 +65,8 @@ class Kernel extends HttpKernel
         'gate' => \App\Http\Middleware\Gate::class,
         'get.subscription' => \App\Http\Middleware\GetSubscription::class,
         'max.contact' => \App\Http\Middleware\MaxContact::class,
+        'max.order' => \App\Http\Middleware\MaxOrder::class,
+        'check.item' => \App\Http\Middleware\CheckItem::class,
+        'check.contact' => \App\Http\Middleware\CheckContact::class,
     ];
 }

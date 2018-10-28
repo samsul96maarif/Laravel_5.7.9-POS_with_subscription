@@ -8,11 +8,13 @@ use App\Models\Contact;
 use App\Models\Store;
 use App\Models\Invoice;
 use App\Models\InvoiceDetail;
+use App\Models\Subscription;
+
 class SalesOrderController extends Controller
 {
     public function __construct()
     {
-        $this->middleware(['auth', 'gate', 'get.subscription']);
+        $this->middleware(['auth', 'gate', 'get.subscription', 'max.order', 'check.item', 'check.contact']);
     }
     public function index()
     {
@@ -53,6 +55,21 @@ class SalesOrderController extends Controller
         'contact_id' => 'required',
       ]);
 
+      $user_id = Auth::id();
+      $store = store::where('user_id', $user_id)->first();
+      $subscription = subscription::findOrFail($store->subscription_id);
+      $salesOrders = salesOrder::all()->where('store_id', $store->id);
+
+      $i = 0;
+      foreach ($salesOrders as $key) {
+        $i++;
+      }
+
+      // dd($i);
+      if ($i >= $subscription->num_invoices) {
+        throw new \Exception("kuota sales order telah melebihi kapasitas, silahkan upgrade paket");
+      }
+
       $item = item::find($request->item_id);
 
       if ($request->quantity > $item->stock) {
@@ -60,32 +77,30 @@ class SalesOrderController extends Controller
         return redirect('/sales_order/create');
       }
 
-      $user_id = Auth::id();
-      $store = store::where('user_id', $user_id)->first();
       $price = $item->price;
       $total = $item->price*$request->quantity;
-      $salesOrders = new salesOrder;
+      $salesOrder = new salesOrder;
       $invoice = new invoice;
       $invoiceDetail = new invoiceDetail;
       // sales order
-      $salesOrders->store_id = $store->id;
+      $salesOrder->store_id = $store->id;
       // invoice detail
       $invoiceDetail->item_id = $request->item_id;
       $invoiceDetail->item_price = $price;
       $invoiceDetail->item_quantity = $request->quantity;
       $invoiceDetail->total = $total;
-      $salesOrders->save();
+      $salesOrder->save();
       // invoice
-      $invoice->sales_order_id = $salesOrders->id;
+      $invoice->sales_order_id = $salesOrder->id;
       $invoice->contact_id = $request->contact_id;
       $invoice->save();
       // invoice detail
       $invoiceDetail->invoice_id = $invoice->id;
       $invoiceDetail->save();
       // sales order
-      $salesOrders->total = $total;
-      $salesOrders->order_number = 'SO-'.$salesOrders->id;
-      $salesOrders->save();
+      $salesOrder->total = $total;
+      $salesOrder->order_number = 'SO-'.$salesOrder->id;
+      $salesOrder->save();
       // invoice
       $invoice->total = $total;
       $invoice->number = 'INV-'.$invoice->id;
