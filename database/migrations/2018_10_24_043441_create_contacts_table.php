@@ -20,7 +20,7 @@ class CreateContactsTable extends Migration
             $table->string('name');
             $table->string('phone', 12);
             $table->string('company_name');
-            $table->string('email')->unique();
+            $table->string('email');
             $table->timestamps();
             $table->softDeletes();
         });
