@@ -112,8 +112,25 @@ Route::delete('/item/{id}/delete', 'ItemController@delete');
 
 // sales order
 Route::get('/sales_order', 'SalesOrderController@index');
+// ngebuat sales order
 Route::get('/sales_order/create', 'SalesOrderController@create');
 Route::post('/sales_order', 'SalesOrderController@store');
+// lihat detail
+Route::get('/sales_order/{id}', 'SalesOrderController@show');
+// edit sales order
+Route::get('/sales_order/{id}/edit', 'SalesOrderController@edit');
+Route::put('/invoice/{id}', 'SalesOrderController@update');
+//delete
+Route::delete('sales_order/{id}/delete', 'SalesOrderController@delete');
+
+//tambah detail invoice
+Route::get('/sales_order/{salesOrder_id}/invoice/{invoice_id}/create', 'InvoiceController@create');
+Route::post('/sales_order/{id}/invoice', 'InvoiceController@store');
+//edit detail invoice
+Route::get('/sales_order/{salesOrder_id}/invoice/{invoice_id}/invoice_detail/{invoiceDetail_id}/edit', 'InvoiceController@edit');
+Route::put('/invoice/{invoice_id}/invoice_detail/{invoiceDetail_id}', 'InvoiceController@update');
+// delete
+Route::delete('/sales_order/{salesOrder_id}/invoice/{invoice_id}/invoice_detail/{invoiceDetail_id}/delete', 'InvoiceController@delete');
 // end sales order
 
 
