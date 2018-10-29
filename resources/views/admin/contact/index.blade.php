@@ -1,6 +1,6 @@
 @extends('layouts/adminMaster')
 
-@section('title', 'home')
+@section('title', 'Contacts')
 
 @section('content')
 

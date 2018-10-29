@@ -1,11 +1,11 @@
 @extends('layouts/userMaster')
 
-@section('title', 'home')
+@section('title', 'Edit Sales Order')
 
 @section('content')
-  <h1>hei i am samsul, this page for create item</h1>
+  <h1>Edit Sales Order</h1>
 
-  <form class="" action="/invoice/{{ $invoice->id }}" method="post" value="post">
+  <form class="" action="/sales_order/{{ $salesOrder->id }}" method="post" value="post">
     {{ method_field('PUT') }}
     <select class="" name="contact_id">
       @foreach ($contacts as $contact)

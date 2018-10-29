@@ -119,7 +119,7 @@ Route::post('/sales_order', 'SalesOrderController@store');
 Route::get('/sales_order/{id}', 'SalesOrderController@show');
 // edit sales order
 Route::get('/sales_order/{id}/edit', 'SalesOrderController@edit');
-Route::put('/invoice/{id}', 'SalesOrderController@update');
+Route::put('/sales_order/{id}', 'SalesOrderController@update');
 //delete
 Route::delete('sales_order/{id}/delete', 'SalesOrderController@delete');
 
@@ -132,6 +132,9 @@ Route::put('/invoice/{invoice_id}/invoice_detail/{invoiceDetail_id}', 'InvoiceCo
 // delete
 Route::delete('/sales_order/{salesOrder_id}/invoice/{invoice_id}/invoice_detail/{invoiceDetail_id}/delete', 'InvoiceController@delete');
 // end sales order
+
+// report
+Route::get('/report', 'ReportController@salesByCustomerMonth');
 
 
 // end user page

@@ -33,8 +33,14 @@ class SubscriptionController extends Controller
 
   public function index()
   {
+    $user_id = Auth::id();
+    $store = store::where('user_id', $user_id)->first();
     $subscriptions = subscription::all();
-    return view('user/subscription/index', ['subscriptions' => $subscriptions]);
+    return view('user/subscription/index',
+    [
+      'subscriptions' => $subscriptions,
+      'store' => $store
+    ]);
   }
 
   public function show($id)

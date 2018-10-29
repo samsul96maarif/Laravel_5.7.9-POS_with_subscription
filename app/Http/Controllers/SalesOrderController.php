@@ -84,6 +84,7 @@ class SalesOrderController extends Controller
       $invoiceDetail = new invoiceDetail;
       // sales order
       $salesOrder->store_id = $store->id;
+      $salesOrder->contact_id = $request->contact_id;
       // invoice detail
       $invoiceDetail->item_id = $request->item_id;
       $invoiceDetail->item_price = $price;
@@ -134,17 +135,23 @@ class SalesOrderController extends Controller
       $user_id = Auth::id();
       $store = store::where('user_id', $user_id)->first();
       $contacts = contact::all()->where('store_id', $store->id);
-      $invoice = invoice::where('sales_order_id', $id)->first();
+
+      $salesOrder = salesOrder::findOrFail($id);
+      // $invoice = invoice::where('sales_order_id', $id)->first();
       return view('user/sales_order/edit',
       [
         'contacts' => $contacts,
-        'invoice' => $invoice
+        'salesOrder' => $salesOrder
       ]);
     }
 
     public function update(Request $request, $id)
     {
-      $invoice = invoice::findOrFail($id);
+      $salesOrder = salesOrder::findOrFail($id);
+      $salesOrder->contact_id = $request->contact_id;
+      $salesOrder->save();
+
+      $invoice = invoice::where('sales_order_id', $salesOrder->id)->first();
       $invoice->contact_id = $request->contact_id;
       $invoice->save();
       return redirect('/sales_order');
