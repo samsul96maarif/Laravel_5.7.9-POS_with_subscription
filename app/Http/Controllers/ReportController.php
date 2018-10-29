@@ -112,8 +112,12 @@ class ReportController extends Controller
         return view('user/report/customer', [
           'salesOrders' => $salesOrders,
           'invoices' => $invoices,
+<<<<<<< HEAD
           'contacts' => $contacts,
           'users' => $users
+=======
+          'contacts' => $contacts
+>>>>>>> 9d83641c5a36d500ba7f9286e2d63c6c0ac16556
         ]);
 
     }
