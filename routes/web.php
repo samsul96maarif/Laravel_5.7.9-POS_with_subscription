@@ -138,3 +138,7 @@ Route::get('/report', 'ReportController@salesByCustomerMonth');
 
 
 // end user page
+
+// Auth::routes();
+//
+// Route::get('/home', 'HomeController@index')->name('home');
