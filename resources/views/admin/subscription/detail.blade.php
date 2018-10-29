@@ -1,9 +1,8 @@
 @extends('layouts/adminMaster')
 
-@section('title', 'home')
+@section('title', '{{ $subscription->name }}')
 
 @section('content')
-  <h1>hei i am samsul</h1>
 
   <table>
     <th>Name</th>
@@ -24,7 +23,6 @@
             {{ method_field('DELETE') }}
             <input type="submit" name="submit" value="delete">
             {{ csrf_field() }}
-            <!-- <input type="hidden" name="_methode" value="DELETE"> -->
           </form>
         </td>
     </tr>

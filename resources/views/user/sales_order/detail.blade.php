@@ -1,10 +1,8 @@
 @extends('layouts/userMaster')
 
-@section('title', 'home')
+@section('title', '{{ $salesOrder->order_number }}')
 
 @section('content')
-  <h1>hei i am samsul</h1>
-
   <h2>{{ $salesOrder->order_number }}</h2>
   <h3>{{ $invoice->number }}</h3>
 
@@ -30,7 +28,6 @@
                 {{ method_field('DELETE') }}
                 <input type="submit" name="submit" value="delete">
                 {{ csrf_field() }}
-                <!-- <input type="hidden" name="_methode" value="DELETE"> -->
               </form>
             </td>
           @endif

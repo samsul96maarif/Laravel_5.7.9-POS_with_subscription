@@ -133,5 +133,8 @@ Route::put('/invoice/{invoice_id}/invoice_detail/{invoiceDetail_id}', 'InvoiceCo
 Route::delete('/sales_order/{salesOrder_id}/invoice/{invoice_id}/invoice_detail/{invoiceDetail_id}/delete', 'InvoiceController@delete');
 // end sales order
 
+// report
+Route::get('/report', 'ReportController@salesByCustomerMonth');
+
 
 // end user page

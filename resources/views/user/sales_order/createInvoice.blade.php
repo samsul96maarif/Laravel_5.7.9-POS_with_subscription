@@ -1,9 +1,9 @@
 @extends('layouts/userMaster')
 
-@section('title', 'home')
+@section('title', 'Create Invoice')
 
 @section('content')
-  <h1>hei i am samsul, this page for create item</h1>
+  <h1>Create Invoice</h1>
 
   <form class="" action="/sales_order" method="post" value="post">
     <select class="" name="item_id">

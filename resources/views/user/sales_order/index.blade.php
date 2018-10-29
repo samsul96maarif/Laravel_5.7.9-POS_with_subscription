@@ -1,9 +1,9 @@
 @extends('layouts/userMaster')
 
-@section('title', 'home')
+@section('title', 'Sales Order')
 
 @section('content')
-  <h1>hei i am samsul</h1>
+  <h1>Sales Order</h1>
 
   <table>
     <th>No</th>

@@ -91,6 +91,7 @@
               <a href="/sales_order">sales order</a>
               <a href="/contact">contact</a>
               <a href="/item">item</a>
+              <a href="/report">report</a>
             </nav>
           </header>
           <br>

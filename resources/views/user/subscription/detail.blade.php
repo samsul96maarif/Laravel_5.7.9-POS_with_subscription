@@ -1,9 +1,9 @@
 @extends('layouts/userMaster')
 
-@section('title', 'home')
+@section('title', '{{ $subscription->name }}')
 
 @section('content')
-  <h1>hei i am samsul</h1>
+  <h1>{{ $subscription->name }}</h1>
 
   <table>
     <th>Name</th>

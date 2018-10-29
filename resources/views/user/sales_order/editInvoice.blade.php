@@ -1,9 +1,9 @@
 @extends('layouts/userMaster')
 
-@section('title', 'home')
+@section('title', 'Edit Invoice')
 
 @section('content')
-  <h1>hei i am samsul, this page for create item</h1>
+  <h1>Edit Invoice</h1>
 
   <form class="" action="/invoice/{{ $invoice->id }}/invoice_detail/{{ $invoiceDetail->id }}" method="post">
     {{ method_field('PUT') }}
