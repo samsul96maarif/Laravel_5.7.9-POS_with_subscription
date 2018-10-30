@@ -13,13 +13,21 @@
       $i = 1;
       $total = 0;
     @endphp
-  @foreach ($users as $user)
+  @foreach ($salesOrders as $salesOrder)
     <tr>
         <td>{{ $i }}</td>
-        <td>{{ $user->name }}</td>
-        <td>{{ $user->total }}</td>
+        @foreach ($invoices as $invoice)
+          @if ($invoice->sales_order_id == $salesOrder->id)
+            @foreach ($contacts as $contact)
+              @if ($invoice->contact_id == $contact->id)
+                <td>{{ $contact->name }}</td>
+              @endif
+            @endforeach
+          @endif
+        @endforeach
+        <td>{{ $salesOrder->total }}</td>
         @php
-          $total = $user->total + $total;
+          $total = $salesOrder->total + $total;
           $i++;
         @endphp
     </tr>
