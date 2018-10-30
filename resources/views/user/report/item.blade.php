@@ -3,23 +3,23 @@
 @section('title', 'Report')
 
 @section('content')
-  <h1>Report By Customer</h1>
+  <h1>Report By Item</h1>
 
   <table>
     <th>No</th>
-    <th>Customer</th>
+    <th>Item Name</th>
     <th>Amount</th>
     @php
       $i = 1;
       $total = 0;
     @endphp
-  @foreach ($customers as $customer)
+  @foreach ($items as $item)
     <tr>
         <td>{{ $i }}</td>
-        <td>{{ $customer->name }}</td>
-        <td>{{ $customer->total }}</td>
+        <td>{{ $item->name }}</td>
+        <td>{{ $item->total }}</td>
         @php
-          $total = $customer->total + $total;
+          $total = $item->total + $total;
           $i++;
         @endphp
     </tr>

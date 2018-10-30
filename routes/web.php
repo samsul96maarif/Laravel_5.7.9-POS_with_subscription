@@ -135,10 +135,6 @@ Route::delete('/sales_order/{salesOrder_id}/invoice/{invoice_id}/invoice_detail/
 
 // report
 Route::get('/report', 'ReportController@salesByCustomerMonth');
-
+Route::get('report/by_item', 'ReportController@salesByItemMonth');
 
 // end user page
-
-// Auth::routes();
-//
-// Route::get('/home', 'HomeController@index')->name('home');

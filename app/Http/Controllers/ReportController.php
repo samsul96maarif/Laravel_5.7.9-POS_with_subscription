@@ -85,20 +85,15 @@ class ReportController extends Controller
       // dd($now->dayOfWeek);
       $user_id = Auth::id();
       $store = store::where('user_id', $user_id)->first();
-      $contacts = contact::all();
-      $invoices = invoice::all();
-      $salesOrders = salesOrder::whereYear('created_at', '=', $year)
-              ->whereMonth('created_at', '=', $month)
-              ->where('store_id', $store->id)
-              ->get();
 
         // dd($salesOrders);
-      $users = DB::table('invoices')
-      ->join('contacts', 'contacts.id','=','invoices.contact_id')
-      ->select('contacts.name', DB::raw("SUM(invoices.total) as total"))
-      ->whereYear('invoices.created_at', '=', $year)
-      ->whereMonth('invoices.created_at', '=', $month)
-      ->groupBy('invoices.contact_id', 'contacts.name')
+      $customers = DB::table('sales_orders')
+      ->join('contacts', 'contacts.id','=','sales_orders.contact_id')
+      ->select('contacts.name', DB::raw("SUM(sales_orders.total) as total"))
+      ->where('sales_orders.store_id', $store->id)
+      ->whereYear('sales_orders.created_at', '=', $year)
+      ->whereMonth('sales_orders.created_at', '=', $month)
+      ->groupBy('sales_orders.contact_id', 'contacts.name')
       ->get();
 
       // $users = DB::table('invoices')
@@ -109,13 +104,31 @@ class ReportController extends Controller
 
         // dd($users);
 
-        return view('user/report/customer', [
-          'salesOrders' => $salesOrders,
-          'invoices' => $invoices,
-          'contacts' => $contacts,
-          'users' => $users,
-          'contacts' => $contacts
-        ]);
+        return view('user/report/customer', ['customers' => $customers]);
+
+    }
+
+    public function salesByItemMonth()
+    {
+      $now = Carbon::now();
+      $year = $now->year;
+      $month = $now->month;
+      // dd($year);
+      // dd($month);
+      // dd($now->dayOfWeek);
+      $user_id = Auth::id();
+      $store = store::where('user_id', $user_id)->first();
+        // dd($salesOrders);
+      $items = DB::table('invoice_details')
+      ->join('items', 'items.id','=','invoice_details.item_id')
+      ->select('items.name', DB::raw("SUM(invoice_details.total) as total"))
+      ->where('invoice_details.store_id', $store->id)
+      ->whereYear('invoice_details.created_at', '=', $year)
+      ->whereMonth('invoice_details.created_at', '=', $month)
+      ->groupBy('invoice_details.item_id', 'items.name')
+      ->get();
+      // dd($items);
+        return view('user/report/item', ['items' => $items]);
 
     }
 
