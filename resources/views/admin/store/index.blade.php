@@ -9,7 +9,7 @@
       <option value="active">Active</option>
       <option value="awaiting">Awaiting</option>
       <option value="not">Not Subscribe</option>
-      <option value="all">All Periode</option>
+      <option value="all">All</option>
     </select>
     <input type="submit" name="submit" value="cari">
     {{ csrf_field() }}
