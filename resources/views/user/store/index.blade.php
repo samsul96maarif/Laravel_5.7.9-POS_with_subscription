@@ -34,10 +34,10 @@
 
     <input type="submit" name="submit" value="save">
     {{ csrf_field() }}
-  </form><br>
+  {{-- </form><br>
   <form class="" action="/store/{{ $store->id }}/delete" method="post">
     {{ method_field('DELETE') }}
     <input type="submit" name="submit" value="delete">
     {{ csrf_field() }}
-  </form>
+  </form> --}}
 @endsection

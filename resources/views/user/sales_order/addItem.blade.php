@@ -10,7 +10,6 @@
     <th>Price</th>
     <th>Qty</th>
     <th>Total</th>
-    <th>Action</th>
       @foreach ($invoiceDetails as $invoiceDetail)
         @foreach ($items as $item)
           <tr>

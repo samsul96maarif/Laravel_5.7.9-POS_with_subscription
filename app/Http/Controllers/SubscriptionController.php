@@ -56,6 +56,8 @@ class SubscriptionController extends Controller
     // dd($user_id);
     $store = store::where('user_id', $user_id)->first();
     $store->subscription_id = $subscription->id;
+    $store->status = 0;
+    $store->expire_date = null;
     // dd($store);
     $store->save();
 
