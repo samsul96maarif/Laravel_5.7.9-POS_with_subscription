@@ -36,6 +36,9 @@ class StoreController extends Controller
 // 1. mengarahkan ke form
   public function create(){
     // $store = store::find(1);
+    if (Auth::user()->isAdmin()) {
+      return redirect('/admin');
+    }
     return view('user/store/create');
   }
   // 2.store data
