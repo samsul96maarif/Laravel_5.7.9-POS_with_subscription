@@ -134,7 +134,14 @@ Route::delete('/sales_order/{salesOrder_id}/invoice/{invoice_id}/invoice_detail/
 // end sales order
 
 // report
-Route::get('/report', 'ReportController@salesByCustomerMonth');
-Route::get('report/by_item', 'ReportController@salesByItemMonth');
+Route::get('/report', 'ReportController@salesByItemMonth');
+Route::post('/report/item', 'ReportController@Item');
+// Route::post('/report/item/custome', 'ReportController@ItemCustome');
+// Route::post('/report/item/custome', 'ReportController@Item');
 
+Route::get('/report/by_customer', 'ReportController@salesByCustomerMonth');
+Route::post('/report/customer', 'ReportController@Customer');
+// Route::post('/report/customer/custome', 'ReportController@CustomerCustome');
+// Route::post('/report/customer/custome', 'ReportController@Customer');
+// end report
 // end user page
