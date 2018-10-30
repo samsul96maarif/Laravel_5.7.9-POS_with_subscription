@@ -86,12 +86,14 @@ class SalesOrderController extends Controller
       $salesOrder->store_id = $store->id;
       $salesOrder->contact_id = $request->contact_id;
       // invoice detail
+      $invoiceDetail->store_id = $store->id;
       $invoiceDetail->item_id = $request->item_id;
       $invoiceDetail->item_price = $price;
       $invoiceDetail->item_quantity = $request->quantity;
       $invoiceDetail->total = $total;
       $salesOrder->save();
       // invoice
+      $invoice->store_id = $store->id;
       $invoice->sales_order_id = $salesOrder->id;
       $invoice->contact_id = $request->contact_id;
       $invoice->save();

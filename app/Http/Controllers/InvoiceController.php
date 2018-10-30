@@ -58,6 +58,7 @@ class InvoiceController extends Controller
 
       $invoiceDetail = new invoiceDetail;
       // invoice detail
+      $invoiceDetail->store_id = $store->id;
       $invoiceDetail->item_id = $request->item_id;
       $invoiceDetail->item_price = $price;
       $invoiceDetail->item_quantity = $request->quantity;
