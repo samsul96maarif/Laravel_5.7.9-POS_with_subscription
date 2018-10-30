@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use App\Models\Store;
+use App\Models\Subscription;
+use App\Models\User;
 
 use Carbon\Carbon;
 
@@ -19,7 +21,29 @@ class AdminStoreController extends Controller
     public function index()
     {
       $stores = store::all();
-      return view('admin/store/index', ['stores' => $stores]);
+      $subscriptions = subscription::all();
+      $users = user::all();
+
+      return view('admin/store/index',
+      [
+        'stores' => $stores,
+        'subscriptions' => $subscriptions,
+        'users' => $users
+      ]);
+    }
+
+    public function show($id)
+    {
+      $store = store::findOrFail($id);
+      $subscriptions = subscription::all();
+      $users = user::all();
+
+      return view('admin/store/detail',
+      [
+        'store' => $store,
+        'subscriptions' => $subscriptions,
+        'users' => $users
+      ]);
     }
 
     public function active(Request $request, $id)
@@ -50,6 +74,31 @@ class AdminStoreController extends Controller
       }
       $store->save();
       return redirect('/admin/store');
+    }
+
+    public function filter(Request $request)
+    {
+      if ($request->filter == 'active') {
+        $stores = Store::all()->where('status', 1);
+      } elseif ($request->filter == 'awaiting') {
+        $stores = Store::all()
+        ->where('status', 0)
+        ->where('subscription_id', '!=', null);
+      } elseif ($request->filter == 'not') {
+        $stores = Store::all()->where('subscription_id', null);
+      } else {
+        $stores = store::all();
+      }
+
+      $subscriptions = subscription::all();
+      $users = user::all();
+
+      return view('admin/store/index',
+      [
+        'stores' => $stores,
+        'subscriptions' => $subscriptions,
+        'users' => $users
+      ]);
     }
 
 }

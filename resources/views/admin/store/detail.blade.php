@@ -1,36 +1,12 @@
 @extends('layouts/adminMaster')
 
-@section('title', '{{ $subscription->name }}')
+@section('title', 'store '.$store->name)
 
 @section('content')
 
   <table>
-    <th>Name</th>
-    <th>Price</th>
-    <th>Number invoices</th>
-    <th>Number users</th>
-    <th>Action</th>
-    <tr>
-        <td>{{ $subscription->name }}</td>
-        <td>{{ $subscription->price }}</td>
-        <td>{{ $subscription->num_invoices }}</td>
-        <td>{{ $subscription->num_users }}</td>
-        <td>
-          <form class="" action="/admin/subscription/{{ $subscription->id }}/edit" method="get">
-            <input type="submit" name="submit" value="edit">
-          </form>
-          <form class="" action="/admin/subscription/{{ $subscription->id }}/delete" method="post">
-            {{ method_field('DELETE') }}
-            <input type="submit" name="submit" value="delete">
-            {{ csrf_field() }}
-          </form>
-        </td>
-    </tr>
-  </table>
-  <br>
-  <br>
-  <table>
     <th>Owner</th>
+    <th>Subscription</th>
     <th>Name</th>
     <th>Phone</th>
     <th>Company Address</th>
@@ -38,14 +14,21 @@
     <th>Status</th>
     <th>Expiry Date</th>
     <th>Action</th>
-    @foreach ($stores as $store)
       <tr>
         @foreach ($users as $user)
           @if ($store->user_id == $user->id)
             <td><a href="/admin/user/{{ $store->user_id }}">{{ $user->name }}</a></td>
           @endif
         @endforeach
-        <td><a href="/admin/store/{{ $store->id }}">{{ $store->name }}</a></td>
+        @foreach ($subscriptions as $subscription)
+          @if ($store->subscription_id == $subscription->id)
+            <td><a href="/admin/subscription/{{ $store->subscription_id }}">{{ $subscription->name }}</a></td>
+          @endif
+        @endforeach
+        @if ($store->subscription_id == null)
+          <td>Dont have yet</td>
+        @endif
+        <td>{{ $store->name }}</td>
         <td>{{ $store->phone }}</td>
         <td>{{ $store->company_address}}</td>
         <td>{{ $store->zipcode}}</td>
@@ -79,9 +62,12 @@
                 </form>
               @endif
           </td>
+        @else
+          <td>not subscribe</td>
+          <td></td>
+          <td></td>
         @endif
       </tr>
-    @endforeach
   </table>
 
 @endsection

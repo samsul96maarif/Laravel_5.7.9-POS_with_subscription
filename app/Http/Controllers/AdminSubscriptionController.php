@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use App\Models\Subscription;
+use App\Models\User;
+use App\Models\Store;
 
 class AdminSubscriptionController extends Controller
 {
@@ -24,7 +26,15 @@ class AdminSubscriptionController extends Controller
     public function show($id)
     {
       $subscription = subscription::findOrFail($id);
-      return view('admin/subscription/detail', ['subscription' => $subscription]);
+      $users = user::all();
+      $stores = store::all()->where('subscription_id', $id);
+
+      return view('admin/subscription/detail',
+      [
+        'subscription' => $subscription,
+        'users' => $users,
+        'stores' => $stores
+      ]);
     }
 
     // create

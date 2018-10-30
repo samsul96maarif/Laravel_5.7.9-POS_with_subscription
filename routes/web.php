@@ -47,8 +47,11 @@ Route::prefix('admin')->group(function () {
 
     // store
     Route::get('/store', 'AdminStoreController@index');
-    // detail owner
+    Route::get('/store/{id}', 'AdminStoreController@show');
+    Route::post('/store/filter', 'AdminStoreController@filter');
+    // meng aktifkan subscription store
     Route::put('/store/{id}', 'AdminStoreController@active');
+    // menambah masa aktif
     Route::put('/store/{id}/extend', 'AdminStoreController@extend');
     // end store
 

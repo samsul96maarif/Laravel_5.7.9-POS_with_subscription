@@ -18,15 +18,24 @@ class AdminUserController extends Controller
   public function index()
   {
     $users = user::all()->where('role', false);
+    $stores = store::all();
     // dd($users);
-    return view('admin/user/index', ['users' => $users]);
+    return view('admin/user/index',
+    [
+      'users' => $users,
+      'stores' => $stores
+    ]);
   }
 
   public function show($id)
   {
     $user = user::findOrFail($id);
     $store = store::where('user_id', $id)->first();
-    dd($store);
-    return view('admin/user/detail', ['user' => $user]);
+    // dd($store);
+    return view('admin/user/detail',
+    [
+      'user' => $user,
+      'store' => $store
+    ]);
   }
 }
