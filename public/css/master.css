@@ -122,3 +122,11 @@ body {
   color: white;
   background-color: #4f4f4f;
 }
+
+.card-deck .card {
+  min-width: 220px;
+  }
+
+.card-title .pricing-card-title{
+  font-size: 15px;
+}
