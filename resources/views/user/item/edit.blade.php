@@ -2,8 +2,9 @@
 
 @section('title', 'Edit Item')
 
+@section('headline', 'Edit '$item->name)
+
 @section('content')
-  <h1>Edit Item</h1>
 
   <form class="" action="/item/{{ $item->id }}" method="post">
     {{-- untuk mendeklarasikan bahwa ini menggunakn metode put di web.php nya Route::put --}}

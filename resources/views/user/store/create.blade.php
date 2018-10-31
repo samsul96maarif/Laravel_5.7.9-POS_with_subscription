@@ -2,8 +2,9 @@
 
 @section('title', 'Create Store')
 
+@section('headline', 'Company Profile')
+
 @section('content')
-  <h1>Create Store</h1>
 
   <form class="" action="/store" method="post" value="post">
 

@@ -2,8 +2,9 @@
 
 @section('title', 'Create Subscription')
 
+@section('headline', 'Create Subscription')
+
 @section('content')
-  <h1>Create Subscription</h1>
 
   <form class="" action="/admin/subscription" method="post" value="post">
 

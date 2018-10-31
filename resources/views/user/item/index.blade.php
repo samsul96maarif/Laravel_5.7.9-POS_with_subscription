@@ -2,8 +2,9 @@
 
 @section('title', 'Items')
 
+@section('headline', 'Items')
+
 @section('content')
-  <h1>Items</h1>
 
   <table>
     <th>No</th>

@@ -2,6 +2,8 @@
 
 @section('title', 'store '.$store->name)
 
+@section('headline', $store->name.' Detail')
+
 @section('content')
 
   <table>

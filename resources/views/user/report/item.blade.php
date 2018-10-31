@@ -2,8 +2,9 @@
 
 @section('title', 'Report')
 
+@section('headline', 'Report By Items')
+
 @section('content')
-  <h1>Report By Items</h1>
   <a href="/report/by_customer">Report by Customer</a>
   <br>
   <br>

@@ -1,9 +1,10 @@
 @extends('layouts/userMaster')
 
-@section('title', '{{ $salesOrder->order_number }}')
+@section('title', $salesOrder->order_number)
+
+@section('headline', $salesOrder->order_number)
 
 @section('content')
-  <h2>{{ $salesOrder->order_number }}</h2>
   <h3>{{ $invoice->number }}</h3>
 
   <table>

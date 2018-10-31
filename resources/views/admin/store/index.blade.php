@@ -2,6 +2,8 @@
 
 @section('title', 'Stores')
 
+@section('headline', 'Store')
+
 @section('content')
 
   <form class="" action="/admin/store/filter" method="post">

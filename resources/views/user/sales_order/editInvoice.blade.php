@@ -2,8 +2,8 @@
 
 @section('title', 'Edit Invoice')
 
+@section('headline', 'Edit '.$invoice->number)
 @section('content')
-  <h1>Edit Invoice</h1>
 
   <form class="" action="/invoice/{{ $invoice->id }}/invoice_detail/{{ $invoiceDetail->id }}" method="post">
     {{ method_field('PUT') }}

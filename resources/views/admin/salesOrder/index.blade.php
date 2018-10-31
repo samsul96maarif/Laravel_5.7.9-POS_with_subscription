@@ -2,6 +2,8 @@
 
 @section('title', 'Sales Order')
 
+@section('headline', 'Sales Order')
+
 @section('content')
   <h1>Sales Order</h1>
 

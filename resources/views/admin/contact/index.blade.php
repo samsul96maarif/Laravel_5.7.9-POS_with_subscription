@@ -2,6 +2,8 @@
 
 @section('title', 'Contacts')
 
+@section('headline', 'Contact Customer')
+
 @section('content')
 
   <table>

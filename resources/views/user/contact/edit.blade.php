@@ -2,8 +2,9 @@
 
 @section('title', 'Edit Contact')
 
+@section('headline', 'Edit ',$contact->name)
+
 @section('content')
-  <h1>Edit Contact</h1>
 
   <form class="" action="/contact/{{ $contact->id }}" method="post">
     {{-- untuk mendeklarasikan bahwa ini menggunakn metode put di web.php nya Route::put --}}

@@ -2,8 +2,9 @@
 
 @section('title', 'Create Item')
 
+@section('headline', 'Create Item')
+
 @section('content')
-  <h1>create Item</h1>
 
   <form class="" action="/item" method="post" value="post">
 

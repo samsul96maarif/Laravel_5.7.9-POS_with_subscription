@@ -2,8 +2,9 @@
 
 @section('title', 'Report')
 
+@section('headline', 'Report By Items')
+
 @section('content')
-  <h1>Report By Items</h1>
 
   <select class="click_menu" name="report">
     <option value="1">Report by Items</option>

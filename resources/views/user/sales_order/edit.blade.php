@@ -2,8 +2,9 @@
 
 @section('title', 'Edit Sales Order')
 
+@section('headline', 'Edit '.$salesOrder->order_number)
+
 @section('content')
-  <h1>Edit Sales Order</h1>
 
   <form class="" action="/sales_order/{{ $salesOrder->id }}" method="post" value="post">
     {{ method_field('PUT') }}

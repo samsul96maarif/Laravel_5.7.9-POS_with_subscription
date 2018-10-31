@@ -2,8 +2,9 @@
 
 @section('title', 'Edit Subscription')
 
+@section('headline', 'Edit Subscription '.$subscription->name)
+
 @section('content')
-  <h1>Edit Subscription {{ $subscription->name }}</h1>
 
   <form class="" action="/admin/subscription/{{ $subscription->id }}" method="post">
     {{-- untuk mendeklarasikan bahwa ini menggunakn metode put di web.php nya Route::put --}}

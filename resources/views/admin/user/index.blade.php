@@ -2,6 +2,8 @@
 
 @section('title', 'Users')
 
+@section('headline', 'Customers')
+
 @section('content')
 @php
   $i=1;

@@ -2,8 +2,9 @@
 
 @section('title', 'Subscription')
 
+@section('headline', 'Subscriptions')
+
 @section('content')
-  <h1>Subscription</h1>
 
   <table>
     <th>Name</th>

@@ -2,6 +2,8 @@
 
 @section('title', '{{ $contact->name }}')
 
+@section('headline', 'User Detail')
+
 @section('content')
 
   <table>
