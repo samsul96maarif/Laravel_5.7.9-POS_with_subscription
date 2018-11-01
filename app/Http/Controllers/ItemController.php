@@ -8,6 +8,7 @@ use Auth;
 use App\Models\User;
 use App\Models\Store;
 use App\Models\Item;
+use App\Models\ItemMedias;
 
 class ItemController extends Controller
 {
@@ -41,6 +42,7 @@ class ItemController extends Controller
       'price' => 'required|integer',
     ]);
 
+
     $user_id = Auth::id();
 
     $store = store::where('user_id', $user_id)->first();
@@ -52,6 +54,21 @@ class ItemController extends Controller
     $item->price = $request->price;
     $item->stock = $request->stock;
     $item->save();
+    if ($request->file('image') == "") {
+      // code...
+    } else {
+      // menyimpan nilai image
+      $file = $request->file('image');
+      // mengambil nama file
+      $fileName = $file->getClientOriginalName();
+      // menyimpan file image kedalam folder "img"
+      $request->file('image')->move("img/",$fileName);
+      // menyimpan ke dalam database nama file dari image
+      $itemMedia = new itemMedias;
+      $itemMedia->item_id = $item->id;
+      $itemMedia->image = $fileName;
+      $itemMedia->save();
+    }
     return redirect('/item');
   }
 
@@ -59,7 +76,12 @@ class ItemController extends Controller
   // 1. get data melalui id-nya
       public function edit($id){
         $item = item::find($id);
-        return view('user/item/edit', ['item' => $item]);
+        $itemMedias = itemMedias::where('item_id', $id)->get();
+        return view('user/item/edit',
+        [
+          'item' => $item,
+          'itemMedias' => $itemMedias
+        ]);
       }
   // 2. store data update
       public function update(Request $request, $id){
@@ -77,6 +99,30 @@ class ItemController extends Controller
         $item->price = $request->price;
         $item->stock = $request->stock;
         $item->save();
+        if ($request->file('image') == "") {
+          // code...
+        } else {
+          // menyimpan nilai image
+          $file = $request->file('image');
+          // mengambil nama file
+          $fileName = $file->getClientOriginalName();
+          // menyimpan file image kedalam folder "img"
+          $request->file('image')->move("img/",$fileName);
+          // menyimpan ke dalam database nama file dari image
+          $itemMedia = itemMedias::where('item_id', $id)->first();
+          // dd($itemMedia);
+
+          if ($itemMedia == null) {
+            $itemMedia = new itemMedias;
+            $itemMedia->item_id = $id;
+            $itemMedia->image = $fileName;
+            $itemMedia->save();
+          } else {
+            $itemMedia->image = $fileName;
+            $itemMedia->save();
+          }
+
+        }
         return redirect('/item');
       }
 
