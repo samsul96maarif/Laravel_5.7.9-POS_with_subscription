@@ -29,14 +29,24 @@
         <td>{{ $item->price }}</td>
         <td>{{ $item->stock }}</td>
         <td>
-          <form class="" action="/item/{{ $item->id }}/edit" method="get">
-            <input type="submit" name="submit" value="edit">
-          </form>
-          <form class="" action="/item/{{ $item->id }}/delete" method="post">
-            {{ method_field('DELETE') }}
-            <input type="submit" name="submit" value="delete">
-            {{ csrf_field() }}
-          </form>
+          <div class="row">
+            <div class="col">
+              <form class="" action="/item/{{ $item->id }}/edit" method="get">
+                <div class="col text-right">
+                  <input class="btn btn-outline-primary" type="submit" name="submit" value="edit">
+                </div>
+              </form>
+            </div>
+            <div class="col">
+              <form class="" action="/item/{{ $item->id }}/delete" method="post">
+                {{ method_field('DELETE') }}
+                <div class="col text-left">
+                  <input class="btn btn-outline-danger" type="submit" name="submit" value="delete">
+                </div>
+                {{ csrf_field() }}
+              </form>
+            </div>
+          </div>
         </td>
         @php
           $i++;
@@ -47,7 +57,7 @@
 </table>
 
   <form class="" action="/item/create" method="get">
-    <input type="submit" name="submit" value="tambah item">
+    <input class="btn btn-primary" type="submit" name="submit" value="add item">
   </form>
 
 @endsection

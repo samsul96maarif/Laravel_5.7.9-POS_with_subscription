@@ -130,7 +130,7 @@
                   <li>store {{ $subscription->num_users }} contact</li>
                 </ul>
                 <form  action="/subscription/{{ $subscription->id }}/pilih" method="get">
-                  <input class="btn btn-lg btn-block btn-outline-primary" type="submit" name="submit" value="beli">
+                  <input class="btn btn-lg btn-block btn-outline-primary" type="submit" name="submit" value="buy">
                 </form>
               </div>
             </div>

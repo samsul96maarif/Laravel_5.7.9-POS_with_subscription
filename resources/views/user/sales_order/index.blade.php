@@ -37,14 +37,24 @@
         @endforeach
         <td>Rp.{{ $salesOrder->total }}</td>
         <td>
-          <form class="" action="/sales_order/{{ $salesOrder->id }}/edit" method="edit">
-            <input type="submit" name="submit" value="edit">
-          </form>
-          <form class="" action="/sales_order/{{ $salesOrder->id }}/delete" method="post">
-            {{ method_field('DELETE') }}
-            <input type="submit" name="submit" value="delete">
-            {{ csrf_field() }}
-          </form>
+          <div class="row">
+            <div class="col">
+              <form class="" action="/sales_order/{{ $salesOrder->id }}" method="get">
+                <div class="col text-right">
+                  <input type="submit" name="submit" value="edit" class="btn btn-outline-primary">
+                </div>
+              </form>
+            </div>
+            <div class="col">
+              <form class="" action="/sales_order/{{ $salesOrder->id }}/delete" method="post">
+                {{ method_field('DELETE') }}
+                <div class="col-md-12 text-left">
+                  <input type="submit" name="submit" value="delete" class="btn btn-outline-danger">
+                </div>
+                {{ csrf_field() }}
+              </form>
+            </div>
+          </div>
         </td>
         @php
           $i++;
@@ -56,7 +66,7 @@
 
   </table>
   <form class="" action="/sales_order/create" method="get">
-    <input type="submit" name="submit" value="tambah sales order">
+    <input type="submit" name="submit" value="add sales order" class="btn btn-primary">
   </form>
 
 @endsection

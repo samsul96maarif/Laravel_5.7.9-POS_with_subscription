@@ -6,7 +6,6 @@
 
 @section('content')
 
-  <div class="container">
     <div class="card-deck mb-3 text-center">
       @foreach ($subscriptions as $subscription)
         <div class="card mb-4 shadow-sm">
@@ -28,13 +27,12 @@
               @endif
             @else
             <form  action="/subscription/{{ $subscription->id }}/pilih" method="get">
-              <input class="btn btn-lg btn-block btn-outline-primary" type="submit" name="submit" value="beli">
+              <input class="btn btn-lg btn-block btn-outline-primary" type="submit" name="submit" value="buy">
             </form>
             @endif
           </div>
         </div>
       @endforeach
     </div>
-  </div>
 
 @endsection

@@ -5,8 +5,35 @@
 @section('headline', 'Report By customers')
 
 @section('content')
-  <a href="/report">Report by Item</a>
-  <br>
+
+  <div class="row">
+    <div class="col">
+      <a href="/report">Report by Item</a>
+    </div>
+    <div class="col-md-4">
+      <form class="" action="/report/customer" method="post">
+        <div class="card">
+          <div class="card-body">
+            <div class="row">
+              <div class="col">
+                <select class="form-control" class="" name="by">
+                  <option value="week">This Week</option>
+                  <option value="month">This Month</option>
+                  <option value="year">This Year</option>
+                  <option value="all">All Periode</option>
+                </select>
+              </div>
+              <div class="col">
+                <input class="btn btn-outline-primary" type="submit" name="submit" value="search">
+              </div>
+            </div>
+          </div>
+        </div>
+        {{ csrf_field() }}
+      </form>
+    </div>
+  </div>
+
   <br>
 
   <table class="table">
@@ -23,56 +50,64 @@
       $i = 1;
       $total = 0;
     @endphp
-  @foreach ($customers as $customer)
+    @foreach ($customers as $customer)
+      <tr>
+          <th scope="row">{{ $i }}</th>
+          <td>{{ $customer->name }}</td>
+          <td>Rp.{{ $customer->total }}</td>
+          @php
+            $total = $customer->total + $total;
+            $i++;
+            $j++;
+          @endphp
+      </tr>
+    @endforeach
+    @if ($j == 0)
+      <tr>
+        <td></td>
+        <td></td>
+        <td></td>
+      </tr>
+    @endif
     <tr>
-        <th scope="row">{{ $i }}</th>
-        <td>{{ $customer->name }}</td>
-        <td>Rp.{{ $customer->total }}</td>
-        @php
-          $total = $customer->total + $total;
-          $i++;
-          $j++;
-        @endphp
+      <th>Total</th>
+      <td></td>
+      <td>Rp.{{ $total }}</td>
     </tr>
-  @endforeach
-  @if ($j == 0)
-    <tr>
-      <td></td>
-      <td></td>
-      <td></td>
-    </tr>
-  @endif
-  <tr>
-    <th>Total</th>
-    <td></td>
-    <td>Rp.{{ $total }}</td>
-  </tr>
-</tbody>
+  </tbody>
   </table>
 
-  <br>
-  <br>
-  <form class="" action="/report/customer" method="post">
-    <select class="" name="by">
-      <option value="week">This Week</option>
-      <option value="month">This Month</option>
-      <option value="year">This Year</option>
-      <option value="all">All Periode</option>
-    </select>
-    <input type="submit" name="submit" value="cari">
-    {{ csrf_field() }}
-  </form>
-  <br>
-  <br>
-  <form class="" action="/report/customer" method="post">
-    <label for="">Start Date</label>
-    <input type="date" name="start_date" value="">
-    <br>
-    <label for="">End Date</label>
-    <input type="date" name="end_date" value="">
-    <br>
-    <input type="submit" name="submit" value="cari">
-    {{ csrf_field() }}
-  </form>
+  <div class="col-md-4">
+    <form class="" action="/report/customer" method="post">
+      <div class="card">
+        <div class="card-header">
+          Custome Search
+        </div>
+        <div class="card-body">
+          <div class="row">
+            <div class="col">
+
+              <label for="">Start Date</label>
+            </div>
+            <div class="col">
+              <input type="date" name="start_date" value="">
+            </div>
+          </div>
+          <br>
+          <div class="row">
+            <div class="col">
+              <label for="">End Date</label>
+            </div>
+            <div class="col">
+              <input type="date" name="end_date" value="">
+            </div>
+          </div>
+          <br>
+          <input class="btn btn-outline-primary" type="submit" name="submit" value="search">
+        </div>
+      </div>
+      {{ csrf_field() }}
+    </form>
+  </div>
 
 @endsection

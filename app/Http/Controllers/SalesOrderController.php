@@ -120,12 +120,14 @@ class SalesOrderController extends Controller
       $store = store::where('user_id', $user_id)->first();
       $salesOrder = salesOrder::findOrFail($id);
       $items = item::all()->where('store_id', $store->id);
+      $contacts = contact::all()->where('store_id', $store->id);
       // dd($salesOrder);
       $invoice = invoice::where('sales_order_id', $salesOrder->id)->first();
       $invoiceDetails = invoiceDetail::all()->where('invoice_id', $invoice->id);
       return view('user/sales_order/detail',
       [
         'items' => $items,
+        'contacts' =>$contacts,
         'salesOrder' => $salesOrder,
         'invoice' => $invoice,
         'invoiceDetails' => $invoiceDetails
@@ -152,7 +154,7 @@ class SalesOrderController extends Controller
       $salesOrder = salesOrder::findOrFail($id);
       $salesOrder->contact_id = $request->contact_id;
       $salesOrder->save();
-
+      // dd($salesOrder);
       $invoice = invoice::where('sales_order_id', $salesOrder->id)->first();
       $invoice->contact_id = $request->contact_id;
       $invoice->save();

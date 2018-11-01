@@ -125,6 +125,7 @@ body {
 
 .card-deck .card {
   min-width: 220px;
+  max-width: 440px;
   }
 
 .card-title .pricing-card-title{
@@ -134,4 +135,18 @@ body {
 table, th, td {
   border: none;
   text-align: center;
+}
+
+.img-thumbnail{
+  /* max-width: 240px; */
+  max-height: 100px;
+}
+
+p.logo {
+  color:rgb(113, 128, 152);
+  /* z-index: 100; */
+}
+
+.form-control {
+  color: rgb(33, 37, 41);
 }

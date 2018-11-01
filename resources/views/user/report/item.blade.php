@@ -5,8 +5,35 @@
 @section('headline', 'Report By Items')
 
 @section('content')
-  <a href="/report/by_customer">Report by Customer</a>
-  <br>
+
+  <div class="row">
+    <div class="col">
+      <a href="/report/by_customer">Report by Customer</a>
+    </div>
+    <div class="col-md-4">
+      <form class="" action="/report/item" method="post">
+        <div class="card">
+          <div class="card-body">
+            <div class="row">
+              <div class="col">
+                <select class="form-control" class="" name="by">
+                  <option value="week">This Week</option>
+                  <option value="month">This Month</option>
+                  <option value="year">This Year</option>
+                  <option value="all">All Periode</option>
+                </select>
+              </div>
+              <div class="col">
+                <input class="btn btn-outline-primary" type="submit" name="submit" value="search">
+              </div>
+            </div>
+          </div>
+        </div>
+        {{ csrf_field() }}
+      </form>
+    </div>
+  </div>
+
   <br>
 
   <table class="table">
@@ -50,29 +77,37 @@
 </tbody>
 </table>
 
-<br>
-<br>
-<form class="" action="/report/item" method="post">
-  <select class="" name="by">
-    <option value="week">This Week</option>
-    <option value="month">This Month</option>
-    <option value="year">This Year</option>
-    <option value="all">All Periode</option>
-  </select>
-  <input type="submit" name="submit" value="cari">
-  {{ csrf_field() }}
-</form>
-<br>
-<br>
-<form class="" action="/report/item" method="post">
-  <label for="">Start Date</label>
-  <input type="date" name="start_date" value="{{ $now }}">
-  <br>
-  <label for="">End Date</label>
-  <input type="date" name="end_date" value="{{ $now }}">
-  <br>
-  <input type="submit" name="submit" value="cari">
-  {{ csrf_field() }}
-</form>
+<div class="col-md-4">
+  <form class="" action="/report/item" method="post">
+    <div class="card">
+      <div class="card-header">
+        Custome Search
+      </div>
+      <div class="card-body">
+        <div class="row">
+          <div class="col">
+
+            <label for="">Start Date</label>
+          </div>
+          <div class="col">
+            <input type="date" name="start_date" value="{{ $now }}">
+          </div>
+        </div>
+        <br>
+        <div class="row">
+          <div class="col">
+            <label for="">End Date</label>
+          </div>
+          <div class="col">
+            <input type="date" name="end_date" value="{{ $now }}">
+          </div>
+        </div>
+        <br>
+        <input class="btn btn-outline-primary" type="submit" name="submit" value="search">
+      </div>
+    </div>
+    {{ csrf_field() }}
+  </form>
+</div>
 
 @endsection
