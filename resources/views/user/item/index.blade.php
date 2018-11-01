@@ -6,19 +6,24 @@
 
 @section('content')
 
-  <table>
-    <th>No</th>
-    <th>Name</th>
-    <th>Description</th>
-    <th>Price</th>
-    <th>Stock</th>
-    <th>Action</th>
+  <table class="table">
+  <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">Name</th>
+      <th scope="col">Description</th>
+      <th scope="col">Price</th>
+      <th scope="col">Stock</th>
+      <th scope="col">Action</th>
+    </tr>
+  </thead>
+  <tbody>
     @php
       $i = 1;
     @endphp
   @foreach ($items as $item)
     <tr>
-        <td>{{ $i }}</td>
+        <th scope="row">{{ $i }}</th>
         <td>{{ $item->name }}</td>
         <td>{{ $item->description }}</td>
         <td>{{ $item->price }}</td>
@@ -38,7 +43,9 @@
         @endphp
     </tr>
   @endforeach
-  </table>
+</tbody>
+</table>
+
   <form class="" action="/item/create" method="get">
     <input type="submit" name="submit" value="tambah item">
   </form>

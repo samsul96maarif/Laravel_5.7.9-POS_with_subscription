@@ -6,19 +6,24 @@
 
 @section('content')
 
-  <table>
-    <th>No</th>
-    <th>Date</th>
-    <th>Order#</th>
-    <th>Customer</th>
-    <th>Total</th>
-    <th>Action</th>
+  <table class="table">
+  <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th>Date</th>
+      <th>Order#</th>
+      <th>Customer</th>
+      <th>Total</th>
+      <th>Action</th>
+    </tr>
+  </thead>
+  <tbody>
     @php
       $i = 1;
     @endphp
   @foreach ($salesOrders as $salesOrder)
     <tr>
-        <td>{{ $i }}</td>
+        <th scope="row">{{ $i }}</th>
         <td>{{ $salesOrder->created_at }}</td>
         <td> <a href="/sales_order/{{ $salesOrder->id }}">{{ $salesOrder->order_number }}</a></td>
         @foreach ($invoices as $invoice)
@@ -46,6 +51,9 @@
         @endphp
     </tr>
   @endforeach
+</tbody>
+</table>
+
   </table>
   <form class="" action="/sales_order/create" method="get">
     <input type="submit" name="submit" value="tambah sales order">

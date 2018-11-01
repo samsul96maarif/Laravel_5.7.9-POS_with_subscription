@@ -130,3 +130,8 @@ body {
 .card-title .pricing-card-title{
   font-size: 15px;
 }
+
+table, th, td {
+  border: none;
+  text-align: center;
+}

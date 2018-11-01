@@ -6,19 +6,24 @@
 
 @section('content')
 
-  <table>
-    <th>No</th>
-    <th>Name</th>
-    <th>Phone</th>
-    <th>Company Name</th>
-    <th>Email</th>
-    <th>Action</th>
+  <table class="table">
+  <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">Name</th>
+      <th scope="col">Phone</th>
+      <th scope="col">Company Name</th>
+      <th scope="col">Email</th>
+      <th scope="col">Action</th>
+    </tr>
+  </thead>
+  <tbody>
     @php
       $i = 1;
     @endphp
-  @foreach ($contacts as $contact)
-    <tr>
-        <td>{{ $i }}</td>
+    @foreach ($contacts as $contact)
+      <tr>
+        <th scope="row">{{ $i }}</th>
         <td>{{ $contact->name }}</td>
         <td>{{ $contact->phone }}</td>
         <td>{{ $contact->company_name }}</td>
@@ -36,9 +41,11 @@
         @php
           $i++;
         @endphp
-    </tr>
-  @endforeach
-  </table>
+      </tr>
+    @endforeach
+  </tbody>
+</table>
+
   <form class="" action="/contact/create" method="get">
     <input type="submit" name="submit" value="tambah contact">
   </form>
