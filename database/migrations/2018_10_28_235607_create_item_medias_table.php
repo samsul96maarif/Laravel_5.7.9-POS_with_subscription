@@ -18,7 +18,7 @@ class CreateItemMediasTable extends Migration
           $table->integer('item_id')->unsigned();
           $table->foreign('item_id')->references('id')->on('items')->onDelete('cascade');
           $table->string('image');
-          $table->boolean('is_main')->defalut(1);
+          $table->boolean('is_main')->default('1');
           $table->timestamps();
           $table->softDeletes();
         });
