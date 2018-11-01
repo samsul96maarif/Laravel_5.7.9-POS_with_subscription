@@ -2,7 +2,7 @@
 
 @section('title', 'Edit Item')
 
-@section('headline', 'Edit '$item->name)
+@section('headline', 'Edit '.$item->name)
 
 @section('content')
 

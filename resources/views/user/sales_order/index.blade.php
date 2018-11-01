@@ -35,7 +35,7 @@
             @endforeach
           @endif
         @endforeach
-        <td>{{ $salesOrder->total }}</td>
+        <td>Rp.{{ $salesOrder->total }}</td>
         <td>
           <form class="" action="/sales_order/{{ $salesOrder->id }}/edit" method="edit">
             <input type="submit" name="submit" value="edit">

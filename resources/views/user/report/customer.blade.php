@@ -8,10 +8,16 @@
   <a href="/report">Report by Item</a>
   <br>
   <br>
-  <table>
-    <th>No</th>
-    <th>Customer</th>
-    <th>Amount</th>
+
+  <table class="table">
+  <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th>Customer</th>
+      <th>Amount</th>
+    </tr>
+  </thead>
+  <tbody>
     @php
       $j = 0;
       $i = 1;
@@ -19,9 +25,9 @@
     @endphp
   @foreach ($customers as $customer)
     <tr>
-        <td>{{ $i }}</td>
+        <th scope="row">{{ $i }}</th>
         <td>{{ $customer->name }}</td>
-        <td>{{ $customer->total }}</td>
+        <td>Rp.{{ $customer->total }}</td>
         @php
           $total = $customer->total + $total;
           $i++;
@@ -37,10 +43,13 @@
     </tr>
   @endif
   <tr>
-    <td>Total</td>
-    <td>{{ $total }}</td>
+    <th>Total</th>
+    <td></td>
+    <td>Rp.{{ $total }}</td>
   </tr>
+</tbody>
   </table>
+
   <br>
   <br>
   <form class="" action="/report/customer" method="post">

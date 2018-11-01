@@ -5,7 +5,7 @@
 @section('headline', 'Company Profile')
 
 @section('content')
-  
+
     <form class="" action="/store/{{ $store->id }}" method="post" value="post">
       {{ method_field('PUT') }}
 
@@ -33,7 +33,7 @@
         <p>{{ $errors->first('zipcode') }}</p>
       @endif
 
-      <input type="submit" name="submit" value="save">
+      <input type="submit" name="submit" value="update">
       {{ csrf_field() }}
       {{-- </form><br>
       <form class="" action="/store/{{ $store->id }}/delete" method="post">

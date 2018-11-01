@@ -29,7 +29,7 @@
         <td>{{ $item->price }}</td>
         <td>{{ $item->stock }}</td>
         <td>
-          <form class="" action="/item/{{ $item->id }}/edit" method="edit">
+          <form class="" action="/item/{{ $item->id }}/edit" method="get">
             <input type="submit" name="submit" value="edit">
           </form>
           <form class="" action="/item/{{ $item->id }}/delete" method="post">
