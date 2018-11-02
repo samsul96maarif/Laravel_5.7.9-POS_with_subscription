@@ -1,22 +1,9 @@
-@extends('layouts.app')
+@extends('layouts.adminMaster')
 
 @section('content')
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-8">
-          <main class="py-4">
-            <header>
-              <nav>
-                <a href="/admin">home</a>
-                <a href="/admin/user">user</a>
-                <a href="/admin/store">store</a>
-                <a href="/admin/subscription">subscription</a>
-                <a href="/admin/sales_order">sales order</a>
-                <a href="/admin/contact">contact</a>
-                <a href="/admin/item">item</a>
-              </nav>
-            </header>
-          </main>
             <div class="card">
                 <div class="card-header">Dashboard</div>
                 <div class="card-body">

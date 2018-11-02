@@ -38,19 +38,15 @@
         <td>Rp.{{ $salesOrder->total }}</td>
         <td>
           <div class="row">
-            <div class="col">
+            <div class="col text-right btn-kiri">
               <form class="" action="/sales_order/{{ $salesOrder->id }}" method="get">
-                <div class="col text-right">
-                  <input type="submit" name="submit" value="edit" class="btn btn-outline-primary">
-                </div>
+                <input type="submit" name="submit" value="edit" class="btn btn-outline-primary">
               </form>
             </div>
-            <div class="col">
+            <div class="col text-left btn-kanan">
               <form class="" action="/sales_order/{{ $salesOrder->id }}/delete" method="post">
                 {{ method_field('DELETE') }}
-                <div class="col-md-12 text-left">
-                  <input type="submit" name="submit" value="delete" class="btn btn-outline-danger">
-                </div>
+                <input type="submit" name="submit" value="delete" class="btn btn-outline-danger">
                 {{ csrf_field() }}
               </form>
             </div>

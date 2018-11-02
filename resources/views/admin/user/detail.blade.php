@@ -4,21 +4,50 @@
 
 @section('content')
 
-  <table>
-    <th>Name</th>
-    <th>Username</th>
-    <th>Email</th>
-    <th>Store</th>
-      <tr>
-        <td>{{ $user->name }}</td>
-        <td>{{ $user->username }}</td>
-        <td>{{ $user->email }}</td>
-        @if ($store == null)
-          <td>dont have yet</td>
-        @else
-          <td><a href="/admin/store/{{ $store->id }}">{{ $store->name }}</a></td>
-        @endif
-      </tr>
-  </table>
+  <div class="row justify-content-center">
+    <div class="col-md-5">
+      <div class="card">
+        <div class="card-header text-center">
+          <h4 class="my-0 font-weight-normal">Username : {{ $user->username }}</h4>
+        </div>
+        <div class="card-body">
+          <div class="row">
+            <div class="col-md-2">
+              <label for="" class="col-form-label">Name</label>
+              {{-- <p>Name</p> --}}
+            </div>
+            <div class="col">
+              <span class="form-control text-center">{{ $user->name}}</span>
+            </div>
+          </div>
+          <br>
+          <div class="row">
+            <div class="col-md-2">
+              <label for="" class="col-form-label">Email</label>
+              {{-- <p>Email</p> --}}
+            </div>
+            <div class="col">
+              <span class="form-control text-center">{{ $user->email }}</span>
+            </div>
+          </div>
+          <br>
+          <div class="row">
+            <div class="col-md-2">
+              <label for="" class="col-form-label">Store</label>
+            </div>
+            <div class="col">
+              @if ($store == null)
+                <p class="form-control text-center">dont have yet</p>
+              @else
+                {{-- <div class="form-control text-center"> --}}
+                  <a class="col btn btn-outline-link" href="/admin/store/{{ $store->id }}">{{ $store->name }}</a>
+                {{-- </div> --}}
+              @endif
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 
 @endsection

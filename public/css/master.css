@@ -150,3 +150,15 @@ p.logo {
 .form-control {
   color: rgb(33, 37, 41);
 }
+
+div.btn-kanan {
+  padding-left: 5px;
+}
+
+div.btn-kiri {
+  padding-right: 5px;
+}
+
+div.btn-atas {
+  margin-bottom: 5px;
+}

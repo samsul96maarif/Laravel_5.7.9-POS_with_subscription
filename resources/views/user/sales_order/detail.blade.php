@@ -65,13 +65,13 @@
               <td>Rp.{{ $invoiceDetail->total }}</td>
               <td>
                 <div class="row">
-                  <div class="col">
-                    <form class="col text-right" action="/sales_order/{{ $salesOrder->id }}/invoice/{{ $invoice->id }}/invoice_detail/{{ $invoiceDetail->id }}/edit" method="get">
+                  <div class="col text-right btn-kiri">
+                    <form class="" action="/sales_order/{{ $salesOrder->id }}/invoice/{{ $invoice->id }}/invoice_detail/{{ $invoiceDetail->id }}/edit" method="get">
                       <input class="btn btn-outline-primary" type="submit" name="submit" value="edit">
                     </form>
                   </div>
-                  <div class="col">
-                    <form class="col text-left" action="/sales_order/{{ $salesOrder->id }}/invoice/{{ $invoice->id }}/invoice_detail/{{ $invoiceDetail->id }}/delete" method="post">
+                  <div class="col text-left btn-kanan">
+                    <form class="" action="/sales_order/{{ $salesOrder->id }}/invoice/{{ $invoice->id }}/invoice_detail/{{ $invoiceDetail->id }}/delete" method="post">
                       {{ method_field('DELETE') }}
                       <input class="btn btn-outline-danger" type="submit" name="submit" value="delete">
                       {{ csrf_field() }}

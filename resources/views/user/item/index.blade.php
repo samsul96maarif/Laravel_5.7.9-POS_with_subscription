@@ -30,19 +30,15 @@
         <td>{{ $item->stock }}</td>
         <td>
           <div class="row">
-            <div class="col">
+            <div class="col text-right btn-kiri">
               <form class="" action="/item/{{ $item->id }}/edit" method="get">
-                <div class="col text-right">
-                  <input class="btn btn-outline-primary" type="submit" name="submit" value="edit">
-                </div>
+                <input class="btn btn-outline-primary" type="submit" name="submit" value="edit">
               </form>
             </div>
-            <div class="col">
+            <div class="col text-left btn-kanan">
               <form class="" action="/item/{{ $item->id }}/delete" method="post">
                 {{ method_field('DELETE') }}
-                <div class="col text-left">
                   <input class="btn btn-outline-danger" type="submit" name="submit" value="delete">
-                </div>
                 {{ csrf_field() }}
               </form>
             </div>

@@ -31,10 +31,16 @@ class AdminUserController extends Controller
   {
     $user = user::findOrFail($id);
     $store = store::where('user_id', $id)->first();
+    // $subscription = subscription::findOrFail($store->subscription_id);
+    // $contacts = contact::all()->where('store_id', $store->id);
+    // $salesOrders = salesOrder::all()->where('store_id', $store->id);
     // dd($store);
     return view('admin/user/detail',
     [
       'user' => $user,
+      // 'Subscription' => $subscription,
+      // 'contacts' => $contacts,
+      // 'salesOrders'=> $salesOrders,
       'store' => $store
     ]);
   }

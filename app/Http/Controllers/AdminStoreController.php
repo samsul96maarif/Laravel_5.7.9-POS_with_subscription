@@ -7,6 +7,9 @@ use Illuminate\Http\Request;
 use App\Models\Store;
 use App\Models\Subscription;
 use App\Models\User;
+use App\Models\SalesOrder;
+use App\Models\Contact;
+use App\Models\Item;
 
 use Carbon\Carbon;
 
@@ -35,14 +38,25 @@ class AdminStoreController extends Controller
     public function show($id)
     {
       $store = store::findOrFail($id);
-      $subscriptions = subscription::all();
-      $users = user::all();
+      $subscription = subscription::where('id', $store->subscription_id)->first();
+      $user = user::where('id', $store->user_id)->first();
+      // $users = user::all();
+      $contacts = contact::all()->where('store_id', $id);
+      $salesOrders = salesOrder::all()->where('store_id', $id);
+      $items = item::all()->where('store_id', $id);
+      $numSalesOrders = count($salesOrders);
+      $numContacts = count($contacts);
+      $numItems = count($items);
+      // dd($user);
 
       return view('admin/store/detail',
       [
         'store' => $store,
-        'subscriptions' => $subscriptions,
-        'users' => $users
+        'subscription' => $subscription,
+        'user' => $user,
+        'numSalesOrders' => $numSalesOrders,
+        'numContacts' => $numContacts,
+        'numItems' => $numItems
       ]);
     }
 
