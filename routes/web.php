@@ -65,6 +65,11 @@ Route::prefix('admin')->group(function () {
     Route::get('/contact/{id}', 'AdminContactController@show');
     // end contact
 
+    // salesOrder
+    Route::get('/sales_order', 'AdminSalesController@index');
+    
+    // end sales order
+
 });
 // end admin page
 

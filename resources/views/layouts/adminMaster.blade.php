@@ -126,24 +126,27 @@
                       Subscription <span class="sr-only">(current)</span>
                     </a>
                   </li>
+                  {{-- bagian sales order yang dimiliki store masih dirasa ini privasi customer
                   <li class="nav-item">
                     <a class="nav-link active" href="/admin/sales_order">
                       <span data-feather="home"></span>
                       Sales Order <span class="sr-only">(current)</span>
                     </a>
-                  </li>
+                  </li> --}}
+                  {{-- contact yang dimiliki store masih dirasa ini privasi customer
                   <li class="nav-item">
                     <a class="nav-link active" href="/admin/contact">
                       <span data-feather="home"></span>
                       Contact <span class="sr-only">(current)</span>
                     </a>
-                  </li>
+                  </li> --}}
+                  {{-- barang yang dijual customer dirasa ini privasi customer
                   <li class="nav-item">
                     <a class="nav-link active" href="/admin/item">
                       <span data-feather="home"></span>
                       Item <span class="sr-only">(current)</span>
                     </a>
-                  </li>
+                  </li> --}}
                 </ul>
 
               </div>
