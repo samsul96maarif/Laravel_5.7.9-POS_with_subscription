@@ -49,7 +49,7 @@ class StoreController extends Controller
       'name' => 'required',
       'phone' => 'required|numeric',
       'company_address' => 'required',
-      'zipcode' => 'required|integer',
+      'zipcode' => 'required|numeric',
     ]);
 
     $user_id = Auth::id();
@@ -84,9 +84,9 @@ class StoreController extends Controller
             'name' => 'required',
             'phone' => 'required|numeric',
             'company_address' => 'required',
-            'zipcode' => 'required|integer',
+            'zipcode' => 'required|numeric',
           ]);
-          
+
           $store = store::find($id);
 
           if ($request->file('logo') == "") {

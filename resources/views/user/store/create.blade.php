@@ -18,43 +18,47 @@
       </div>
       <div class="row">
         <div class="col">
-          <input type="file" name="logo" value="{{ old('logo') }}"><br>
+          <input type="file" name="logo" value="{{ old('logo') }}">
         </div>
       </div>
       <br>
       <div class="row">
         <div class="col-md-6">
-          <input type="text" name="name" value="{{ old('name') }}" placeholder="Store Name" class="form-control"><br><br>
+          <input type="text" name="name" value="{{ old('name') }}" placeholder="Store Name" class="form-control">
           {{-- untuk mengeluarkan error pada value "name" --}}
           @if($errors->has('name'))
             <p>{{ $errors->first('name') }}</p>
           @endif
         </div>
       </div>
+      <br>
       <div class="row">
         <div class="col-md-6">
-          <input class="form-control" type="text" name="phone" value="{{ old('phone') }}" placeholder="Phone"><br><br>
+          <input class="form-control" type="tel" name="phone" value="{{ old('phone') }}" placeholder="Phone">
           @if($errors->has('phone'))
             <p>{{ $errors->first('phone') }}</p>
           @endif
         </div>
       </div>
+      <br>
       <div class="row">
         <div class="col-md-6">
-          <textarea class="form-control" name="company_address" rows="8" cols="80" placeholder="Company Address">{{ old('company_address') }}</textarea><br><br>
+          <textarea class="form-control" name="company_address" rows="8" cols="80" placeholder="Company Address">{{ old('company_address') }}</textarea>
           @if($errors->has('company_address'))
             <p>{{ $errors->first('company_address') }}</p>
           @endif
         </div>
       </div>
+      <br>
       <div class="row">
         <div class="col-md-6">
-          <input type="text" name="zipcode" value="{{ old('zipcode') }}" placeholder="zipcode"><br><br>
+          <input type="number" name="zipcode" value="{{ old('zipcode') }}" placeholder="zipcode">
           @if($errors->has('zipcode'))
             <p>{{ $errors->first('zipcode') }}</p>
           @endif
         </div>
       </div>
+      <br>
       <div class="row">
         <div class="col">
           <input class="btn btn-primary" type="submit" name="submit" value="save">

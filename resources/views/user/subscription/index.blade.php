@@ -6,7 +6,7 @@
 
 @section('content')
 
-    <div class="card-deck mb-3 text-center">
+    <div class="card-deck mb-3 text-center justify-content-center">
       @foreach ($subscriptions as $subscription)
         <div class="card mb-4 shadow-sm">
           <div class="card-header">

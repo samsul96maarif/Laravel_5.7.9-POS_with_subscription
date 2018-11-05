@@ -31,7 +31,7 @@ class ReportController extends Controller
       // dd($now->dayOfWeek);
       $user_id = Auth::id();
       $store = store::where('user_id', $user_id)->first();
-
+      $by = 'This Month '.$now->englishMonth;
         // dd($salesOrders);
       $customers = DB::table('sales_orders')
       ->join('contacts', 'contacts.id','=','sales_orders.contact_id')
@@ -50,7 +50,11 @@ class ReportController extends Controller
 
         // dd($users);
 
-        return view('user/report/customer', ['customers' => $customers]);
+        return view('user/report/customer',
+        [
+          'customers' => $customers,
+          'by' => $by
+        ]);
 
     }
 
@@ -60,6 +64,7 @@ class ReportController extends Controller
       $year = $now->year;
       $month = $now->month;
       $sekarang = $now->format('m/d/Y');
+      $by = 'This Month '.$now->englishMonth;
       // dd($sekarang);
       // dd($year);
       // dd($month);
@@ -79,6 +84,7 @@ class ReportController extends Controller
         return view('user/report/item',
         [
           'items' => $items,
+          'by' => $by,
           'now' => $sekarang
         ]);
 
@@ -140,6 +146,8 @@ class ReportController extends Controller
       $store = store::where('user_id', $user_id)->first();
 
       if ($request->by == 'year') {
+        $by = 'This Year '.$year;
+        // dd($by);
         $items = DB::table('invoice_details')
                 ->join('items', 'items.id','=','invoice_details.item_id')
                 ->select('items.name', DB::raw("SUM(invoice_details.total) as total"))
@@ -148,6 +156,8 @@ class ReportController extends Controller
                 ->groupBy('invoice_details.item_id', 'items.name')
                 ->get();
       } elseif ($request->by == 'month') {
+        $by = 'This Month '.$now->englishMonth;
+        // dd($by);
         $items = DB::table('invoice_details')
                 ->join('items', 'items.id','=','invoice_details.item_id')
                 ->select('items.name', DB::raw("SUM(invoice_details.total) as total"))
@@ -157,6 +167,9 @@ class ReportController extends Controller
                 ->groupBy('invoice_details.item_id', 'items.name')
                 ->get();
       } elseif ($request->by == 'week') {
+        // $by = 'This Week From '.$startDate->toFormattedDateString().' To '.$endDate->toFormattedDateString();
+        $by = 'This Week';
+        // dd($by);
         $items = DB::table('invoice_details')
                 ->join('items', 'items.id','=','invoice_details.item_id')
                 ->select('items.name', DB::raw("SUM(invoice_details.total) as total"))
@@ -165,6 +178,7 @@ class ReportController extends Controller
                 ->groupBy('invoice_details.item_id', 'items.name')
                 ->get();
       } elseif ($request->by == 'all') {
+        $by = 'All';
         $items = DB::table('invoice_details')
                 ->join('items', 'items.id','=','invoice_details.item_id')
                 ->select('items.name', DB::raw("SUM(invoice_details.total) as total"))
@@ -172,6 +186,9 @@ class ReportController extends Controller
                 ->groupBy('invoice_details.item_id', 'items.name')
                 ->get();
       } else {
+        // dd($request->start_date->format('d-m-Y'));
+        $by = 'From '.$request->start_date.' To '.$request->end_date;
+        // dd($by);
         $items = DB::table('invoice_details')
                 ->join('items', 'items.id','=','invoice_details.item_id')
                 ->select('items.name', DB::raw("SUM(invoice_details.total) as total"))
@@ -181,9 +198,17 @@ class ReportController extends Controller
                 ->get();
       }
 
+      // $by = $request->by;
+      // if ($request->by == 'week') {
+      //   $filter = 'awaiting paymnet';
+      // } elseif ($request->filter == 'not') {
+      //   $filter = 'not subscribe';
+      // }
+
         return view('user/report/item',
         [
           'items' => $items,
+          'by' => $by,
           'now' => $sekarang
         ]);
     }
@@ -244,6 +269,7 @@ class ReportController extends Controller
       $store = store::where('user_id', $user_id)->first();
 
       if ($request->by == 'year') {
+        $by = 'This Year '.$year;
         $customers = DB::table('sales_orders')
                 ->join('contacts', 'contacts.id','=','sales_orders.contact_id')
                 ->select('contacts.name', DB::raw("SUM(sales_orders.total) as total"))
@@ -252,6 +278,7 @@ class ReportController extends Controller
                 ->groupBy('sales_orders.contact_id', 'contacts.name')
                 ->get();
       } elseif ($request->by == 'month') {
+        $by = 'This Month '.$now->englishMonth;
         $customers = DB::table('sales_orders')
                 ->join('contacts', 'contacts.id','=','sales_orders.contact_id')
                 ->select('contacts.name', DB::raw("SUM(sales_orders.total) as total"))
@@ -261,6 +288,7 @@ class ReportController extends Controller
                 ->groupBy('sales_orders.contact_id', 'contacts.name')
                 ->get();
       } elseif ($request->by == 'week') {
+        $by = 'This Week';
         $customers = DB::table('sales_orders')
                 ->join('contacts', 'contacts.id','=','sales_orders.contact_id')
                 ->select('contacts.name', DB::raw("SUM(sales_orders.total) as total"))
@@ -269,6 +297,7 @@ class ReportController extends Controller
                 ->groupBy('sales_orders.contact_id', 'contacts.name')
                 ->get();
       } elseif ($request->by == 'all') {
+        $by = 'This All';
         $customers = DB::table('sales_orders')
                 ->join('contacts', 'contacts.id','=','sales_orders.contact_id')
                 ->select('contacts.name', DB::raw("SUM(sales_orders.total) as total"))
@@ -276,6 +305,7 @@ class ReportController extends Controller
                 ->groupBy('sales_orders.contact_id', 'contacts.name')
                 ->get();
       } else {
+        $by = 'From '.$request->start_date.' To '.$request->end_date;
         $customers = DB::table('sales_orders')
                 ->join('contacts', 'contacts.id','=','sales_orders.contact_id')
                 ->select('contacts.name', DB::raw("SUM(sales_orders.total) as total"))
@@ -288,6 +318,7 @@ class ReportController extends Controller
         return view('user/report/customer',
         [
           'customers' => $customers,
+          'by' => $by,
           'now' => $sekarang
         ]);
     }

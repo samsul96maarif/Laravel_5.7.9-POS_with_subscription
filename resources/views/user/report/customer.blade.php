@@ -2,13 +2,13 @@
 
 @section('title', 'Report')
 
-@section('headline', 'Report By customers')
+@section('headline', 'Report By customers '.$by)
 
 @section('content')
 
   <div class="row">
     <div class="col">
-      <a href="/report">Report by Item</a>
+      <a class="btn" href="/report">Report by Item</a>
     </div>
     <div class="col-md-4">
       <form class="" action="/report/customer" method="post">
@@ -24,7 +24,7 @@
                 </select>
               </div>
               <div class="col">
-                <input class="btn btn-outline-primary" type="submit" name="submit" value="search">
+                <input class="btn btn-primary" type="submit" name="submit" value="search">
               </div>
             </div>
           </div>
@@ -103,7 +103,7 @@
             </div>
           </div>
           <br>
-          <input class="btn btn-outline-primary" type="submit" name="submit" value="search">
+          <input class="btn btn-primary" type="submit" name="submit" value="search">
         </div>
       </div>
       {{ csrf_field() }}
