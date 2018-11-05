@@ -75,6 +75,7 @@
                     </a>
 
               <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                <a class="dropdown-item" href="/password">change password</a>
                 <a class="dropdown-item" href="{{ route('logout') }}"
                   onclick="event.preventDefault();
                   document.getElementById('logout-form').submit();">
@@ -97,6 +98,12 @@
             <nav class="col-md-2 d-none d-md-block bg-light sidebar">
               <div class="sidebar-sticky">
                 <ul class="nav flex-column">
+                  <li class="nav-item nav-pills">
+                    <a class="nav-link" href="/profile">
+                      <span data-feather="home"></span>
+                      Profile <span class="sr-only">(current)</span>
+                    </a>
+                  </li>
                   <li class="nav-item nav-pills">
                     <a class="nav-link" href="/home">
                       <span data-feather="home"></span>

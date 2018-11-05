@@ -26,10 +26,12 @@ class AdminStoreController extends Controller
       $stores = store::all();
       $subscriptions = subscription::all();
       $users = user::all();
+      $filter = 'all';
 
       return view('admin/store/index',
       [
         'stores' => $stores,
+        'filter' => $filter,
         'subscriptions' => $subscriptions,
         'users' => $users
       ]);
@@ -104,12 +106,19 @@ class AdminStoreController extends Controller
         $stores = store::all();
       }
 
+      $filter = $request->filter;
+      if ($request->filter == 'awaiting') {
+        $filter = 'awaiting paymnet';
+      } elseif ($request->filter == 'not') {
+        $filter = 'not subscribe';
+      }
       $subscriptions = subscription::all();
       $users = user::all();
 
       return view('admin/store/index',
       [
         'stores' => $stores,
+        'filter' => $filter,
         'subscriptions' => $subscriptions,
         'users' => $users
       ]);

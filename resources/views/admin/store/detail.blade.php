@@ -68,7 +68,7 @@
           @if ($store->subscription_id == null)
             <div class="row">
               <div class="col-md-4">
-                <label for="" class="col-form-label">Invoice quota / Invoices</label>
+                <label for="" class="col-form-label">Invoices quota / Invoices</label>
               </div>
               <div class="col">
                 <span class="form-control text-center">{{ $numSalesOrders }}</span>
@@ -76,7 +76,7 @@
             </div>
             <div class="row">
               <div class="col-md-4">
-                <label for="" class="col-form-label">Contact quota / Contacts</label>
+                <label for="" class="col-form-label">Contacts quota / Contacts</label>
               </div>
               <div class="col">
                 <span class="form-control text-center">{{ $numContacts }}</span>
@@ -94,7 +94,7 @@
           @else
             <div class="row">
               <div class="col-md-4">
-                <label for="" class="col-form-label">Invoice quota / Invoices</label>
+                <label for="" class="col-form-label">Invoices quota / Invoices</label>
               </div>
               <div class="col">
                 <span class="form-control text-center">{{ $subscription->num_invoices }} / {{ $numSalesOrders }}</span>
@@ -102,7 +102,7 @@
             </div>
             <div class="row">
               <div class="col-md-4">
-                <label for="" class="col-form-label">Contact quota / Contacts</label>
+                <label for="" class="col-form-label">Contacts quota / Contacts</label>
               </div>
               <div class="col">
                 <span class="form-control text-center">{{ $subscription->num_users}} / {{ $numContacts }}</span>

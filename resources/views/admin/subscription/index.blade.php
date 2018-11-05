@@ -11,8 +11,8 @@
       <th>#</th>
       <th>Name</th>
       <th>Price</th>
-      <th>Number invoices</th>
-      <th>Number users</th>
+      <th>Invoices quota</th>
+      <th>Contacts quota</th>
       <th>Action</th>
     </thead>
     <tbody>

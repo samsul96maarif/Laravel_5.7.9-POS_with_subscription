@@ -8,8 +8,8 @@
     <thead>
       <th>Name</th>
       <th>Price</th>
-      <th>Number invoices</th>
-      <th>Number users</th>
+      <th>Invoices quota</th>
+      <th>Contacts quota</th>
       <th>Action</th>
     </thead>
     <tbody>
@@ -37,7 +37,40 @@
       </tr>
     </tbody>
   </table>
+
+  <div class="row">
+
+    <div class="col-md-4">
+      <div class="card md">
+        <div class="card-body">
+          <form class="" action="/admin/subscription/{{ $subscription->id }}" method="post">
+            <div class="row">
+              <div class="col">
+                <select class="form-control" name="filter">
+                  <option value="active">Active</option>
+                  <option value="awaiting">Awaiting Payment</option>
+                  <option value="all">All</option>
+                </select>
+              </div>
+              <div class="col-md-3">
+                <input class="btn btn-outline-primary" type="submit" name="submit" value="cari">
+              </div>
+            </div>
+            {{ csrf_field() }}
+          </form>
+        </div>
+      </div>
+    </div>
+    <div class="col">
+      <div class="card">
+        <div class="card-header text-center">
+          <h4 class="my-0 font-weight-normal">{{ $filter }} store</h4>
+        </div>
+      </div>
+    </div>
+  </div>
   <br>
+
   <table class="table">
     <thead>
       <th>#</th>
@@ -75,12 +108,16 @@
             <td>{{ $store->expire_date }}</td>
             <td>
               @if ($store->status == 0)
-                <form class="" action="/admin/store/{{ $store->id }}" method="post">
-                  {{ method_field('PUT') }}
-                  <input type="text" name="status" value="1" hidden>
-                  <input type="submit" name="submit" value="activate">
-                  {{ csrf_field() }}
-                </form>
+              <div class="row">
+                <div class="col">
+                  <form class="" action="/admin/store/{{ $store->id }}" method="post">
+                    {{ method_field('PUT') }}
+                    <input type="text" name="status" value="1" hidden>
+                    <input class="btn btn-primary" type="submit" name="submit" value="activate">
+                    {{ csrf_field() }}
+                  </form>
+                </div>
+              </div>
               @else
                 <div class="row btn-atas">
                   <div class="col">

@@ -28,12 +28,49 @@ class AdminSubscriptionController extends Controller
       $subscription = subscription::findOrFail($id);
       $users = user::all();
       $stores = store::all()->where('subscription_id', $id);
+      $filter = 'all';
 
       return view('admin/subscription/detail',
       [
         'subscription' => $subscription,
+        'filter' => $filter,
         'users' => $users,
         'stores' => $stores
+      ]);
+    }
+
+    public function filter(Request $request, $id)
+    {
+      $subscription = subscription::findOrFail($id);
+      // dd($subscription);
+      if ($request->filter == 'active') {
+        $stores = Store::all()
+        ->where('subscription_id', $id)
+        ->where('status', 1);
+      } elseif ($request->filter == 'awaiting') {
+        $stores = Store::all()
+        ->where('subscription_id', $id)
+        ->where('status', 0)
+        ->where('subscription_id', '!=', null);
+      } else {
+        $stores = store::all()->where('subscription_id', $id);
+      }
+
+      $filter = $request->filter;
+      if ($request->filter == 'awaiting') {
+        $filter = 'awaiting paymnet';
+      } elseif ($request->filter == 'not') {
+        $filter = 'not subscribe';
+      }
+      $subscriptions = subscription::all();
+      $users = user::all();
+
+      return view('admin/subscription/detail',
+      [
+        'stores' => $stores,
+        'filter' => $filter,
+        'subscription' => $subscription,
+        'users' => $users
       ]);
     }
 

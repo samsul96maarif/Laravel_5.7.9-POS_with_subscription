@@ -52,7 +52,7 @@
             <br>
             <div class="row">
               <div class="col-md-2">
-                <label for=""class="col-form-label">Invoice quota</label>
+                <label for=""class="col-form-label">Invoices quota</label>
               </div>
               <div class="col-md-4">
                 {{-- kolom untuk isi tabel "num_invoices" --}}
@@ -67,7 +67,7 @@
             </div>
             <div class="row">
               <div class="col-md-2">
-                <label for="" class="col-form-label">Contact quota</label>
+                <label for="" class="col-form-label">Contacts quota</label>
               </div>
               <div class="col-md-4">
                 {{-- kolom untuk isi tabel "num_users" --}}

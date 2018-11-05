@@ -35,7 +35,7 @@
                 {{-- kolom untuk isi tabel "num_invoices" --}}
                 {{-- old('nama variable') = untuk menyimpan nilai lama, jadi bila tidak valid hanya tabel yang tidak valid
                 yang nilainya akan terhapus --}}
-                <input class="form-control" type="number" name="num_invoices" value="{{ old('num_invoices') }}" placeholder="Invoice quota">
+                <input class="form-control" type="number" name="num_invoices" value="{{ old('num_invoices') }}" placeholder="Invoices quota">
                 {{-- untuk mengeluarkan error pada value "name" --}}
                 @if($errors->has('num_invoices'))
                   <p>{{ $errors->first('num_invoices') }}</p>
@@ -48,7 +48,7 @@
                 {{-- kolom untuk isi tabel "num_users" --}}
                 {{-- old('nama variable') = untuk menyimpan nilai lama, jadi bila tidak valid hanya tabel yang tidak valid
                 yang nilainya akan terhapus --}}
-                <input class="form-control" type="number" name="num_users" value="{{ old('num_users') }}" placeholder="Contact quota">
+                <input class="form-control" type="number" name="num_users" value="{{ old('num_users') }}" placeholder="Contacts quota">
                 {{-- untuk mengeluarkan error pada value "name" --}}
                 @if($errors->has('num_users'))
                   <p>{{ $errors->first('num_users') }}</p>

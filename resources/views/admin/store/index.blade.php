@@ -2,19 +2,19 @@
 
 @section('title', 'Stores')
 
-@section('headline', 'Store')
+@section('headline', $filter.' Store')
 
 @section('content')
 
   <div class="col-md-4">
     <div class="card md">
       <div class="card-body">
-        <form class="" action="/admin/store/filter" method="post">
+        <form class="" action="/admin/store" method="post">
           <div class="row">
             <div class="col">
               <select class="form-control" name="filter">
                 <option value="active">Active</option>
-                <option value="awaiting">Awaiting</option>
+                <option value="awaiting">Awaiting Payment</option>
                 <option value="not">Not Subscribe</option>
                 <option value="all">All</option>
               </select>
