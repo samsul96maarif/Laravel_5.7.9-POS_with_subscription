@@ -9,6 +9,7 @@ use App\Models\Store;
 use App\Models\Invoice;
 use App\Models\InvoiceDetail;
 use App\Models\Subscription;
+use Illuminate\Support\Facades\DB;
 
 class SalesOrderController extends Controller
 {
@@ -20,8 +21,8 @@ class SalesOrderController extends Controller
     {
       $user_id = Auth::id();
       $store = store::where('user_id', $user_id)->first();
-      $contacts = contact::all()->where('store_id', $store->id);
       $salesOrders = SalesOrder::all()->where('store_id', $store->id);
+      $contacts = contact::all()->where('store_id', $store->id);
       $invoices = invoice::all();
       $invoiceDetails = invoiceDetail::all();
       return view('user/sales_order/index',
@@ -166,5 +167,27 @@ class SalesOrderController extends Controller
       $salesOrder = salesOrder::findOrFail($id);
       $salesOrder->delete();
       return redirect('/sales_order');
+    }
+
+    public function search(Request $request)
+    {
+      // dd($request->search);
+      $id = Auth::id();
+      $store = store::where('user_id', $id)->first();
+      $salesOrders = DB::table('sales_orders')
+                      ->where('order_number', 'like', '%'.$request->q.'%')
+                      ->where('store_id', $store->id)
+                      ->get();
+
+      $contacts = contact::all()->where('store_id', $store->id);
+      $invoices = invoice::all();
+      $invoiceDetails = invoiceDetail::all();
+      return view('user/sales_order/index',
+      [
+        'salesOrders' => $salesOrders,
+        'contacts' => $contacts,
+        'invoiceDetails' => $invoiceDetails,
+        'invoices' => $invoices
+      ]);
     }
 }

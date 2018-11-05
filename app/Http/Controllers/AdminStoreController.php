@@ -10,7 +10,8 @@ use App\Models\User;
 use App\Models\SalesOrder;
 use App\Models\Contact;
 use App\Models\Item;
-
+use Illuminate\Support\Facades\DB;
+use Auth;
 use Carbon\Carbon;
 
 class AdminStoreController extends Controller
@@ -122,6 +123,28 @@ class AdminStoreController extends Controller
         'subscriptions' => $subscriptions,
         'users' => $users
       ]);
+    }
+
+    public function search(Request $request)
+    {
+      $id = Auth::id();
+      // dd($user);
+
+      $stores = DB::table('stores')
+                      ->where('name', 'like', '%'.$request->q.'%')
+                      ->get();
+
+      $subscriptions = subscription::all();
+      $users = user::all();
+      $filter = 'all';
+
+      return view('admin/store/index',
+        [
+          'stores' => $stores,
+          'filter' => $filter,
+          'subscriptions' => $subscriptions,
+          'users' => $users
+        ]);
     }
 
 }

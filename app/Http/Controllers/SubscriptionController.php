@@ -61,6 +61,6 @@ class SubscriptionController extends Controller
     // dd($store);
     $store->save();
 
-    return redirect('/home');
+    return redirect('/subscription');
   }
 }

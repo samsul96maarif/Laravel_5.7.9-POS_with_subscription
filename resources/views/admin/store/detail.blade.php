@@ -25,7 +25,7 @@
           <br>
           <div class="row">
             <div class="col-md-4">
-              <label for="" class="col-form-label">Subscription</label>
+              <label for="" class="col-form-label">Package Subscription</label>
             </div>
             @if ($store->subscription_id == null)
               <div class="col">

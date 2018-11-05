@@ -9,7 +9,7 @@
   <table class="table">
     <thead>
       <th>#</th>
-      <th>Name</th>
+      <th>Package Name</th>
       <th>Price</th>
       <th>Invoices quota</th>
       <th>Contacts quota</th>

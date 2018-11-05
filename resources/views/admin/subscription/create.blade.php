@@ -15,7 +15,7 @@
             {{-- kolom untuk isi tabel "name" --}}
             {{-- old('nama variable') = untuk menyimpan nilai lama, jadi bila tidak valid hanya tabel yang tidak valid
             yang nilainya akan terhapus --}}
-            <input class="form-control" type="text" name="name" value="{{ old('name') }}" placeholder="Name Packet">
+            <input class="form-control" type="text" name="name" value="{{ old('name') }}" placeholder="Package Name Packet">
             {{-- untuk mengeluarkan error pada value "name" --}}
             @if($errors->has('name'))
               <p>{{ $errors->first('name') }}</p>

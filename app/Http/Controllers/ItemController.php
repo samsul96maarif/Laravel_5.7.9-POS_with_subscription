@@ -9,6 +9,7 @@ use App\Models\User;
 use App\Models\Store;
 use App\Models\Item;
 use App\Models\ItemMedias;
+use Illuminate\Support\Facades\DB;
 
 class ItemController extends Controller
 {
@@ -132,5 +133,19 @@ class ItemController extends Controller
       $item = item::find($id);
       $item->delete();
       return redirect('/item');
+    }
+
+    public function search(Request $request)
+    {
+      $id = Auth::id();
+      // dd($user);
+      $store = store::where('user_id', $id)->first();
+
+      $items = DB::table('items')
+                      ->where('name', 'like', '%'.$request->q.'%')
+                      ->where('store_id', $store->id)
+                      ->get();
+
+      return view('user/item/index', ['items' => $items]);
     }
 }

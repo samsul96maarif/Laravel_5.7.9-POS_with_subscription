@@ -7,7 +7,7 @@
 @section('content')
 
   <div class="row justify-content-center">
-    <div class="col-md-4">
+    <div class="col-md-6">
       <div class="card">
         <div class="card-header">
           <div class="col text-center">
@@ -19,8 +19,8 @@
             {{-- untuk mendeklarasikan bahwa ini menggunakn metode put di web.php nya Route::put --}}
             {{ method_field('PUT') }}
             <div class="row">
-              <div class="col-md-2">
-                <label for="" class="col-form-label">Name</label>
+              <div class="col-md-4">
+                <label for="" class="col-form-label">Package Name</label>
               </div>
               <div class="col">
                 {{-- kolom untuk isi tabel "name" --}}
@@ -35,7 +35,7 @@
             </div>
             <br>
             <div class="row">
-              <div class="col-md-2">
+              <div class="col-md-4">
                 <label for="" class="col-form-label">Price</label>
               </div>
               <div class="col">
@@ -51,10 +51,10 @@
             </div>
             <br>
             <div class="row">
-              <div class="col-md-2">
+              <div class="col-md-4">
                 <label for=""class="col-form-label">Invoices quota</label>
               </div>
-              <div class="col-md-4">
+              <div class="col-md-3">
                 {{-- kolom untuk isi tabel "num_invoices" --}}
                 {{-- old('nama variable') = untuk menyimpan nilai lama, jadi bila tidak valid hanya tabel yang tidak valid
                 yang nilainya akan terhapus --}}
@@ -65,11 +65,12 @@
                 @endif
               </div>
             </div>
+            <br>
             <div class="row">
-              <div class="col-md-2">
+              <div class="col-md-4">
                 <label for="" class="col-form-label">Contacts quota</label>
               </div>
-              <div class="col-md-4">
+              <div class="col-md-3">
                 {{-- kolom untuk isi tabel "num_users" --}}
                 {{-- old('nama variable') = untuk menyimpan nilai lama, jadi bila tidak valid hanya tabel yang tidak valid
                 yang nilainya akan terhapus --}}
@@ -80,6 +81,7 @@
                 @endif
               </div>
             </div>
+            <br>
             <div class="row content-center">
               <div class="col text-center">
                 <input class="btn btn-primary" type="submit" name="submit" value="update">

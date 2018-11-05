@@ -48,6 +48,9 @@ Route::prefix('admin')->group(function () {
 
     // store
     Route::get('/store', 'AdminStoreController@index');
+    // search
+    Route::get('/store/search', 'AdminStoreController@search');
+    // detail
     Route::get('/store/{id}', 'AdminStoreController@show');
     Route::post('/store', 'AdminStoreController@filter');
     // meng aktifkan subscription store
@@ -58,6 +61,8 @@ Route::prefix('admin')->group(function () {
 
     // user
     Route::get('/user', 'AdminUserController@index');
+    // search
+    Route::get('/user/search', 'AdminUserController@search');
     Route::get('/user/{id}', 'AdminUserController@show');
     // end user
 
@@ -96,6 +101,8 @@ Route::delete('/store/{id}/delete', 'StoreController@delete');
 
 // contact
 Route::get('/contact', 'ContactController@index');
+// search
+Route::get('/contact/search', 'ContactController@search');
 // create contact
 Route::get('/contact/create', 'ContactController@create');
 Route::post('/contact', 'ContactController@store');
@@ -109,6 +116,8 @@ Route::delete('/contact/{id}/delete', 'ContactController@delete');
 
 // items
 Route::get('/item', 'ItemController@index');
+// search
+Route::get('/item/search', 'ItemController@search');
 // create item
 Route::get('/item/create', 'ItemController@create');
 Route::post('/item', 'ItemController@store');
@@ -121,6 +130,8 @@ Route::delete('/item/{id}/delete', 'ItemController@delete');
 
 // sales order
 Route::get('/sales_order', 'SalesOrderController@index');
+// search
+Route::get('/sales_order/search', 'SalesOrderController@search');
 // ngebuat sales order
 Route::get('/sales_order/create', 'SalesOrderController@create');
 Route::post('/sales_order', 'SalesOrderController@store');

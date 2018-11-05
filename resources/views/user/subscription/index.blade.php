@@ -21,9 +21,10 @@
             </ul>
             @if ($store->subscription_id == $subscription->id)
               @if ($store->status == 1)
-                <button type="button" name="" class="btn btn-lg btn-block btn-outline-primary" style="background-color:#007bff;color:white;">Active</button>
+                {{-- <button type="button" name="" class="btn btn-lg btn-block btn-outline-primary" style="background-color:#007bff;color:white;">Active</button> --}}
+                <button type="button" name="" class="btn btn-lg btn-block btn-success">Activated</button>
               @else
-                <button type="button" name="" class="btn btn-lg btn-block btn-outline-primary" style="background-color:#4f4f4f;color:white;">Awaiting Payment</button>
+                <button type="button" name="" class="btn btn-lg btn-block btn-secondary">Awaiting Payment</button>
               @endif
             @else
             <form  action="/subscription/{{ $subscription->id }}/pilih" method="get">

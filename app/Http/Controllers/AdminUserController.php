@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 
 use App\Models\User;
 use App\Models\Store;
+use Illuminate\Support\Facades\DB;
 
 class AdminUserController extends Controller
 {
@@ -43,5 +44,22 @@ class AdminUserController extends Controller
       // 'salesOrders'=> $salesOrders,
       'store' => $store
     ]);
+  }
+
+  public function search(Request $request)
+  {
+
+    $users = DB::table('users')
+                    ->where('name', 'like', '%'.$request->q.'%')
+                    ->where('role', false)
+                    ->get();
+
+    $stores = store::all();
+                    // dd($users);
+    return view('admin/user/index',
+      [
+        'users' => $users,
+        'stores' => $stores
+      ]);
   }
 }

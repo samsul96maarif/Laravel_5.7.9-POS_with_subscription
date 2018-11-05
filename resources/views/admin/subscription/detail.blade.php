@@ -6,7 +6,7 @@
 
   <table class="table">
     <thead>
-      <th>Name</th>
+      <th>Package Name</th>
       <th>Price</th>
       <th>Invoices quota</th>
       <th>Contacts quota</th>

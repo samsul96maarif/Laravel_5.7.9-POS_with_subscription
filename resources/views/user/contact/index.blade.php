@@ -6,6 +6,18 @@
 
 @section('content')
 
+  <div class="col-md-4 offset-md-8">
+    <form class="" action="/contact/search" method="get">
+      <div class="input-group mb-3">
+        <input type="search" name="q" class="form-control" placeholder="Search" aria-describedby="button-addon2" value="">
+        <div class="input-group-append">
+          <input id="button-addon2" class="btn btn-primary" type="submit" name="submit" value="Search">
+        </div>
+        {{-- {{ csrf_field() }} --}}
+      </div>
+    </form>
+  </div>
+
   <table class="table">
   <thead>
     <tr>

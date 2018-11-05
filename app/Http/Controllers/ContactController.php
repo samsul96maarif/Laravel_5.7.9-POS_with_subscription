@@ -8,6 +8,7 @@ use App\Models\Contact;
 use App\Models\Store;
 use App\Models\Subscription;
 use App\Models\Invoice;
+use Illuminate\Support\Facades\DB;
 
 use Auth;
 
@@ -107,5 +108,19 @@ class ContactController extends Controller
           return redirect('/contact');
         }
         throw new \Exception("contact telah digunakan pada invoice, silahkan hapus invoice terlebih dahulu");
+      }
+
+      public function search(Request $request)
+      {
+        $id = Auth::id();
+        // dd($user);
+        $store = store::where('user_id', $id)->first();
+
+        $contacts = DB::table('contacts')
+                        ->where('name', 'like', '%'.$request->q.'%')
+                        ->where('store_id', $store->id)
+                        ->get();
+
+        return view('user/contact/index', ['contacts' => $contacts]);
       }
 }

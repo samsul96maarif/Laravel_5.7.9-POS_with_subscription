@@ -6,26 +6,40 @@
 
 @section('content')
 
-  <div class="col-md-4">
-    <div class="card md">
-      <div class="card-body">
-        <form class="" action="/admin/store" method="post">
-          <div class="row">
-            <div class="col">
-              <select class="form-control" name="filter">
-                <option value="active">Active</option>
-                <option value="awaiting">Awaiting Payment</option>
-                <option value="not">Not Subscribe</option>
-                <option value="all">All</option>
-              </select>
+  <div class="row">
+    <div class="col-md-4">
+      <div class="card md">
+        <div class="card-body">
+          <form class="" action="/admin/store" method="post">
+            <div class="row">
+              <div class="col">
+                <select class="form-control" name="filter">
+                  <option value="active">Active</option>
+                  <option value="awaiting">Awaiting Payment</option>
+                  <option value="not">Not Subscribe</option>
+                  <option value="all">All</option>
+                </select>
+              </div>
+              <div class="col-md-4">
+                <input class="btn btn-primary" type="submit" name="submit" value="Search">
+              </div>
             </div>
-            <div class="col-md-3">
-              <input class="btn btn-outline-primary" type="submit" name="submit" value="cari">
-            </div>
-          </div>
-          {{ csrf_field() }}
-        </form>
+            {{ csrf_field() }}
+          </form>
+        </div>
       </div>
+    </div>
+
+    <div class="col-md-4 offset-md-4">
+      <form class="" action="/admin/store/search" method="get">
+        <div class="input-group mb-3">
+          <input type="search" name="q" class="form-control" placeholder="Search" aria-describedby="button-addon2" value="">
+          <div class="input-group-append">
+            <input id="button-addon2" class="btn btn-primary" type="submit" name="submit" value="Search">
+          </div>
+          {{-- {{ csrf_field() }} --}}
+        </div>
+      </form>
     </div>
   </div>
   <br>
@@ -36,8 +50,8 @@
     <thead>
       <th>#</th>
       <th>Owner</th>
-      <th>Subscription</th>
-      <th>Name</th>
+      <th>Package Subscription</th>
+      <th>Store Name</th>
       <th>Phone</th>
       <th>Company Address</th>
       <th>Zipcode</th>
