@@ -38,6 +38,7 @@ Route::prefix('admin')->group(function () {
     Route::post('/subscription', 'AdminSubscriptionController@store');
     // detail
     Route::get('/subscription/{id}', 'AdminSubscriptionController@show');
+    Route::post('/subscription/{id}', 'AdminSubscriptionController@filter');
     //update 1.pindah ke form dl, 2.lakukan update di function lain
     Route::get('/subscription/{id}/edit', 'AdminSubscriptionController@edit');
     Route::put('/subscription/{id}', 'AdminSubscriptionController@update');
@@ -48,7 +49,7 @@ Route::prefix('admin')->group(function () {
     // store
     Route::get('/store', 'AdminStoreController@index');
     Route::get('/store/{id}', 'AdminStoreController@show');
-    Route::post('/store/filter', 'AdminStoreController@filter');
+    Route::post('/store', 'AdminStoreController@filter');
     // meng aktifkan subscription store
     Route::put('/store/{id}', 'AdminStoreController@active');
     // menambah masa aktif
@@ -67,7 +68,7 @@ Route::prefix('admin')->group(function () {
 
     // salesOrder
     Route::get('/sales_order', 'AdminSalesController@index');
-    
+
     // end sales order
 
 });
@@ -147,9 +148,21 @@ Route::post('/report/item', 'ReportController@Item');
 // Route::post('/report/item/custome', 'ReportController@ItemCustome');
 // Route::post('/report/item/custome', 'ReportController@Item');
 
-Route::get('/report/by_customer', 'ReportController@salesByCustomerMonth');
+Route::get('/report/customer', 'ReportController@salesByCustomerMonth');
 Route::post('/report/customer', 'ReportController@Customer');
 // Route::post('/report/customer/custome', 'ReportController@CustomerCustome');
 // Route::post('/report/customer/custome', 'ReportController@Customer');
 // end report
+
+// profile
+Route::get('profile', 'UserController@index');
+Route::put('profile/{id}', 'UserController@update');
+// end profile
 // end user page
+
+
+// ganti password
+Route::group(['middleware' => 'auth'], function () {
+    Route::get('password', 'PasswordController@change')->name('password.change');
+    Route::put('password', 'PasswordController@update')->name('password.update');
+});
