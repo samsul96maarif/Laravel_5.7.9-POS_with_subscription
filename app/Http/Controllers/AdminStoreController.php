@@ -64,38 +64,39 @@ class AdminStoreController extends Controller
       ]);
     }
 
+    // fungsi untuk mengaktifkan package subscription pada store
     public function active(Request $request, $id)
     {
       $now = carbon::now();
       $store = store::find($id);
       $store->status = $request->status;
+
       if ($store->status == 1) {
         $store->expire_date = Carbon::now()->addDays(30);
-        // dd($store->expire_date);
         $payment = payment::where('store_id', $store->id)->first();
-        // dd($payment);
         $payment->delete();
       } else {
+        // unutk menonaktifkan package subscription
+        // sekarang fungsi ini masih dinonaktofkan
         $store->expire_date = null;
         $store->subscription_id = null;
       }
-      // dd($store);
+
       $store->save();
       return redirect('/admin/payment');
     }
 
+    // fungsi untuk menambah masa aktif package subscription
     public function extend(Request $request, $id)
     {
       $store = store::find($id);
       $now = $store->expire_date;
-      // dd($now);
+
       if ($store->status == 1) {
-        $store->expire_date = $now->addDays(30);
-        // dd($store->expire_date);
+        $store->expire_date = $now->addDays($request->expire_date);
       }
 
       $payment = payment::where('store_id', $store->id)->first();
-      // dd($payment);
       $payment->delete();
 
       $store->save();

@@ -19,11 +19,16 @@
               <li>store {{ $subscription->num_invoices }} invoice</li>
               <li>store {{ $subscription->num_users }} contact</li>
               @if ($store->subscription_id == $subscription->id)
-                @if ($payment->store_id == $store->id)
-                  @if ($store->status == 1)
-                    <li><b>awaiting payment for extend period</b></li>
+                @if ($payment != null)
+                  @if ($payment->store_id == $store->id)
+                    @if ($store->status == 1)
+                      <li><b>awaiting payment for extend period</b></li>
+                    @endif
+                    {{-- ($payment->store_id == $store->id) --}}
                   @endif
+                  {{-- ($payment != null) --}}
                 @endif
+                {{-- ($store->subscription_id == $subscription->id) --}}
               @endif
             </ul>
             @if ($store->subscription_id == $subscription->id)

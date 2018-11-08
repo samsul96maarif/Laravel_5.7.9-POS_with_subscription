@@ -39,6 +39,7 @@ class SubscriptionController extends Controller
     $store = store::where('user_id', $user_id)->first();
     $subscriptions = subscription::all();
     $payment = payment::where('store_id', $store->id)->first();
+    // dd($payment);
     return view('user/subscription/index',
     [
       'subscriptions' => $subscriptions,
@@ -47,29 +48,26 @@ class SubscriptionController extends Controller
     ]);
   }
 
+  // fungsi untuk melihat detail Package subscription
   public function show($id)
   {
     $user = Auth::user();
     $store = store::where('user_id', $user->id)->first();
     $subscription = subscription::findOrFail($id);
-    // $uniq = $store->id;
+
     $uniq = rand(1,999);
     $amount = $subscription->price - $uniq;
     $code = substr($amount, -3);
+    $rekening = '093482';
 
     $payment = payment::where('uniq_code', 778)->first();
 
     if ($payment != null) {
-      // dd($payment);
       $uniq = rand(1,999);
       $amount = $subscription->price - $uniq;
       $code = substr($amount, -3);
       $payment = payment::where('uniq_code', $code)->first();
     }
-    // dd($newstring);
-    // $amount = 292340000001239;
-    // dd(number_format($amount,2,",","."));
-    $rekening = '093482';
     return view('user/subscription/show',
     [
       'subscription' => $subscription,
@@ -88,12 +86,17 @@ class SubscriptionController extends Controller
     $user = Auth::user();
     $store = store::where('user_id', $user->id)->first();
     $subscription = subscription::findOrFail($id);
-    // $uniq = $store->id;
+
     $uniq = rand(1,999);
     $amount = $subscription->price - $uniq;
     $code = substr($amount, -3);
     $rekening = '093482';
-    // dd($payment);
+
+    if ($store->subscription_id != null && $store->status == 1) {
+      // throw new \Exception("anda telah memiliki Package subscription, apakah anda ingin mengahpusnya dan mengganti dengan yang baru?");
+    } else {
+      // code...
+    }
 
     $store->subscription_id = $subscription->id;
     $store->status = 0;
@@ -115,13 +118,21 @@ class SubscriptionController extends Controller
         }
         // end batas perulangn pengecekan yang sama
         $payment = new payment;
-        $payment->uniq_code = $code;
         $payment->store_id = $store->id;
-        $payment->save();
       } else {
-        $payment->uniq_code = $code;
-        $payment->save();
+        // pengecekan apakah uniq code sudah ada
+        $cariPayment = payment::where('uniq_code', $code)->first();
+        // perulangan sampai tidak ada yang sama
+        while ($cariPayment != null) {
+          $uniq = rand(1,999);
+          $amount = $subscription->price - $uniq;
+          $code = substr($amount, -3);
+          $cariPayment = payment::where('uniq_code', $code)->first();
+        }
       }
+      $payment->uniq_code = $code;
+      $payment->save();
+      // dd($code);
 
       return view('user/subscription/buy',
       [

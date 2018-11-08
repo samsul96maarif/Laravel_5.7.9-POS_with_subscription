@@ -45,12 +45,14 @@
         <li style="color:green;">unique code : - Rp.{{ number_format($uniq,2,",",".") }}</li>
         <li>Total Amount : Rp.{{ number_format($amount,2,",",".") }}</li>
       </ul>
-      <form  action="/subscription/extend" method="post">
+      {{-- form i have completed payment --}}
+      {{-- <form  action="/subscription/extend" method="post">
         <input type="hidden" name="id" value="{{ $subscription->id }}">
         <input type="hidden" name="uniq" value="{{ $code }}">
         {{ csrf_field() }}
         <input class="btn btn-lg btn-block btn-outline-primary" type="submit" name="submit" value="I have Completed Payment">
-      </form>
+      </form> --}}
+      <a class="btn btn-lg btn-block btn-outline-primary" href="/subscription">I have Completed Payment</a>
     </div>
   </div>
 

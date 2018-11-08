@@ -39,7 +39,6 @@
           <div class="input-group-append">
             <input id="button-addon2" class="btn btn-primary" type="submit" name="submit" value="Search">
           </div>
-          {{-- {{ csrf_field() }} --}}
         </div>
       </form>
     </div>
@@ -91,6 +90,8 @@
                         <div class="col">
                           <form class="" action="/admin/store/{{ $store->id }}/extend" method="post">
                             {{ method_field('PUT') }}
+                            {{-- rencananya expire date bisa docustome ingin
+                            menambah berapa bulan --}}
                             <input type="text" name="expire_date" value="30" hidden>
                             <input class="btn btn-warning" type="submit" name="submit" value="extend period">
                             {{ csrf_field() }}
