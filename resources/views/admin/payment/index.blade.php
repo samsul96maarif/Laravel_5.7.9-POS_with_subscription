@@ -59,6 +59,7 @@
       @foreach ($payments as $payment)
         <tr>
           <th scope="row">{{ $i }}</th>
+          {{-- uniq code adalah 3 digit terakhir dari transfer --}}
           <td>{{ $payment->uniq_code }}</td>
 
           @foreach ($stores as $store)
@@ -68,16 +69,8 @@
               @foreach ($subscriptions as $subscription)
                 @if ($subscription->id == $store->subscription_id)
                   <td><a class="btn" href="/admin/subscription/{{ $store->subscription_id }}">{{ $subscription->name }}</a></td>
-                  {{-- <td>
-                    <form class="" action="/admin/store/{{ $store->id }}" method="post">
-                      {{ method_field('PUT') }}
-                      <input type="text" name="status" value="1" hidden>
-                      <input class="btn btn-sm btn-primary" type="submit" name="submit" value="activate">
-                      {{ csrf_field() }}
-                    </form>
-                  </td> --}}
-                  {{-- batas --}}
                   <td>
+                    {{-- unutk mengaktifkan --}}
                     @if ($store->status == 0)
                       <form class="" action="/admin/store/{{ $store->id }}" method="post">
                         {{ method_field('PUT') }}
@@ -85,6 +78,7 @@
                         <input class="btn btn-primary" type="submit" name="submit" value="activate">
                         {{ csrf_field() }}
                       </form>
+                      {{-- unutk meng extend --}}
                     @else
                       <div class="row btn-atas">
                         <div class="col">
@@ -98,6 +92,7 @@
                           </form>
                         </div>
                       </div>
+                      {{-- unutk menonaktifkan --}}
                       {{-- <div class="row">
                         <div class="col">
                           <form class="" action="/admin/store/{{ $store->id }}" method="post">
@@ -121,6 +116,7 @@
         @php
         $i++;
         @endphp
+        {{-- foreach payments --}}
       @endforeach
 
     </tbody>

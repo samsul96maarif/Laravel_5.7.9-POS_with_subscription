@@ -14,7 +14,6 @@
           <div class="row">
             <div class="col-md-2">
               <label for="" class="col-form-label">Name</label>
-              {{-- <p>Name</p> --}}
             </div>
             <div class="col">
               <span class="form-control text-center">{{ $user->name}}</span>
@@ -24,7 +23,6 @@
           <div class="row">
             <div class="col-md-2">
               <label for="" class="col-form-label">Email</label>
-              {{-- <p>Email</p> --}}
             </div>
             <div class="col">
               <span class="form-control text-center">{{ $user->email }}</span>
@@ -39,9 +37,7 @@
               @if ($store == null)
                 <p class="form-control text-center">dont have yet</p>
               @else
-                {{-- <div class="form-control text-center"> --}}
-                  <a class="col btn btn-outline-link" href="/admin/store/{{ $store->id }}">{{ $store->name }}</a>
-                {{-- </div> --}}
+                <a class="col btn btn-outline-link" href="/admin/store/{{ $store->id }}">{{ $store->name }}</a>
               @endif
             </div>
           </div>

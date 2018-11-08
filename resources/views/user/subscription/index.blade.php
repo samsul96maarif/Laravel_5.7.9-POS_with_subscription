@@ -40,6 +40,8 @@
                 </div>
                 <div class="row">
                   <div class="col">
+
+                    {{-- bila tidak ada ditabel payment maka akan ditawarkan extend periode --}}
                     @if ($payment == null)
                       <a class="btn btn-lg btn-block btn-primary" href="/subscription/{{ $subscription->id }}/detail_packet">extend periode</a>
                     {{-- @else --}}
@@ -55,15 +57,20 @@
                     </form> --}}
                   </div>
                 </div>
+                {{-- $store->status == 1 --}}
               @else
                 <button type="button" name="" class="btn btn-lg btn-block btn-secondary">Awaiting Payment</button>
               @endif
+
+              {{-- $store->subscription_id == $subscription->id --}}
             @else
             <form  action="/subscription/{{ $subscription->id }}/detail" method="get">
               <input class="btn btn-lg btn-block btn-outline-primary" type="submit" name="submit" value="buy">
             </form>
             @endif
+            {{-- <div class="card-body"> --}}
           </div>
+          {{-- <div class="card mb-4 shadow-sm"> --}}
         </div>
       @endforeach
     </div>

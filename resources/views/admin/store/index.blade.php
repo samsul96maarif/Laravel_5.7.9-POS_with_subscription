@@ -37,7 +37,6 @@
           <div class="input-group-append">
             <input id="button-addon2" class="btn btn-primary" type="submit" name="submit" value="Search">
           </div>
-          {{-- {{ csrf_field() }} --}}
         </div>
       </form>
     </div>

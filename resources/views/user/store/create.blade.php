@@ -64,10 +64,7 @@
           <input class="btn btn-primary" type="submit" name="submit" value="save">
         </div>
       </div>
-
-    {{-- kolom untuk isi tabel "name" --}}
-    {{-- old('nama variable') = untuk menyimpan nilai lama, jadi bila tidak valid hanya tabel yang tidak valid
-    yang nilainya akan terhapus --}}
     {{ csrf_field() }}
   </form>
+  
 @endsection

@@ -107,6 +107,7 @@
           </div>
           {{ csrf_field() }}
     </form>
+    {{-- unutk delere --}}
       {{-- </form><br>
       <form class="" action="/store/{{ $store->id }}/delete" method="post">
         {{ method_field('DELETE') }}

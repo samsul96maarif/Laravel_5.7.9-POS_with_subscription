@@ -74,10 +74,5 @@
           </div>
           {{ csrf_field() }}
     </form>
-      {{-- </form><br>
-      <form class="" action="/store/{{ $store->id }}/delete" method="post">
-        {{ method_field('DELETE') }}
-        <input type="submit" name="submit" value="delete">
-        {{ csrf_field() }}
-      </form> --}}
+    
 @endsection
