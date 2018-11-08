@@ -10,6 +10,7 @@ use App\Models\User;
 use App\Models\SalesOrder;
 use App\Models\Contact;
 use App\Models\Item;
+use App\Models\Payment;
 use Illuminate\Support\Facades\DB;
 use Auth;
 use Carbon\Carbon;
@@ -71,13 +72,16 @@ class AdminStoreController extends Controller
       if ($store->status == 1) {
         $store->expire_date = Carbon::now()->addDays(30);
         // dd($store->expire_date);
+        $payment = payment::where('store_id', $store->id)->first();
+        // dd($payment);
+        $payment->delete();
       } else {
         $store->expire_date = null;
         $store->subscription_id = null;
       }
-
+      // dd($store);
       $store->save();
-      return redirect('/admin/store');
+      return redirect('/admin/payment');
     }
 
     public function extend(Request $request, $id)
@@ -89,8 +93,13 @@ class AdminStoreController extends Controller
         $store->expire_date = $now->addDays(30);
         // dd($store->expire_date);
       }
+
+      $payment = payment::where('store_id', $store->id)->first();
+      // dd($payment);
+      $payment->delete();
+
       $store->save();
-      return redirect('/admin/store');
+      return redirect('/admin/payment');
     }
 
     public function filter(Request $request)

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use App\Models\Store;
+use App\Models\Subscription;
 
 use Auth;
 
@@ -28,8 +29,15 @@ class StoreController extends Controller
     {
       $user_id = Auth::id();
       $store = store::where('user_id', $user_id)->first();
+      $subscription = subscription::where('id', $store->subscription_id)->first();
+      // dd($subscription);
+      // dd($store->subscription_id->name);
       // dd($store);
-      return view('user/store/index', ['store' => $store]);
+      return view('user/store/index',
+      [
+        'store' => $store,
+        'subscription' => $subscription
+      ]);
     }
 
   // create

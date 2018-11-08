@@ -66,6 +66,12 @@ Route::prefix('admin')->group(function () {
     Route::get('/user/{id}', 'AdminUserController@show');
     // end user
 
+    // paymet
+    Route::get('/payment', 'AdminPaymentController@index');
+    // search
+    Route::get('/payment/search', 'AdminPaymentController@search');
+    // endpayment
+
     // contact
     Route::get('/contact', 'AdminContactController@index');
     Route::get('/contact/{id}', 'AdminContactController@show');
@@ -82,8 +88,20 @@ Route::prefix('admin')->group(function () {
 // user page
 // subscription
 Route::get('/subscription', 'SubscriptionController@index');
-Route::get('/subscription/{id}/pilih', 'SubscriptionController@show');
-Route::post('/subscription/beli', 'SubscriptionController@beli');
+// detail
+Route::get('/subscription/{id}/detail', 'SubscriptionController@show');
+// untuk membeli dan membuat payment
+Route::get('/subscription/{id}/buy', 'SubscriptionController@buy');
+// pilih extend
+Route::get('/subscription/{id}/detail_packet', 'SubscriptionController@pilihExtend');
+// untuk memperpanjang dan membuat payment
+Route::get('/subscription/{id}/extend', 'SubscriptionController@extend');
+
+// Route::post('/subscription/extend', 'SubscriptionController@extendPeriod');
+
+// Route::post('/subscription/beli', 'SubscriptionController@beli');
+
+Route::get('/subscription/bill/{request}', 'SubscriptionController@bill');
 // end subscription
 
 
