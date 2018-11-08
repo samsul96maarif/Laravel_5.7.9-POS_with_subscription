@@ -10,24 +10,29 @@ use App\Models\Store;
 use App\Models\Item;
 use App\Models\Contact;
 use App\Models\InvoiceDetail;
-
+// unutk menggunakan auth
 use Auth;
 
 class InvoiceController extends Controller
 {
     public function __construct()
     {
-        $this->middleware(['auth', 'gate', 'get.subscription', 'max.order', 'check.item']);
+      // auth : unutk mengecek auth
+      // gate : unutk mengecek apakah sudah membuat store
+      // getSubscription : unutk mengecek subscription store
+      // maxOrder : untuk mengcek quote invoice subscription
+        $this->middleware(['auth', 'gate', 'get.subscription', 'max.order']);
     }
+
     public function create($salesOrder_id, $invoice_id)
     {
       $salesOrder = salesOrder::findOrFail($salesOrder_id);
-      // dd($salesOrder);
       $invoice = invoice::findOrFail($invoice_id);
       $invoiceDetails = invoiceDetail::all()->where('invoice_id', $invoice_id);
       $user_id = Auth::id();
       $store = store::where('user_id', $user_id)->first();
       $items = item::all()->where('store_id', $store->id);
+
       return view('user/sales_order/addItem',
       [
         'items' => $items,
@@ -57,27 +62,25 @@ class InvoiceController extends Controller
       $total = $item->price*$request->quantity;
 
       $invoiceDetail = new invoiceDetail;
-      // invoice detail
       $invoiceDetail->store_id = $store->id;
+      $invoiceDetail->invoice_id = $request->invoice;
       $invoiceDetail->item_id = $request->item_id;
       $invoiceDetail->item_price = $price;
       $invoiceDetail->item_quantity = $request->quantity;
       $invoiceDetail->total = $total;
-      // invoice detail
-      $invoiceDetail->invoice_id = $request->invoice;
       $invoiceDetail->save();
 
+// unutk menambahkan total dari semua invoice detail ke invoice dan sales order
       $total = 0;
       $invoiceDetails = invoiceDetail::all()->where('invoice_id', $request->invoice);
       foreach ($invoiceDetails as $invoice_detail) {
         $total = $invoice_detail->total + $total;
       }
 
-      // dd($total);
       $invoice = invoice::findOrFail($request->invoice);
       $invoice->total = $total;
       $invoice->save();
-      // dd($invoice);
+
       $salesOrder = salesOrder::findOrFail($request->sales_order);
       $salesOrder->total = $total;
       $salesOrder->save();
@@ -93,10 +96,10 @@ class InvoiceController extends Controller
       $salesOrder = salesOrder::findOrFail($salesOrder_id);
       $invoice = invoice::findOrFail($invoice_id);
       $invoiceDetail = invoiceDetail::findOrFail($invoiceDetail_id);
-
       $user_id = Auth::id();
       $store = store::where('user_id', $user_id)->first();
       $items = item::all()->where('store_id', $store->id);
+
       return view('user/sales_order/editInvoice',
       [
         'salesOrder' => $salesOrder,
@@ -112,18 +115,18 @@ class InvoiceController extends Controller
         'item_id' => 'required',
         'quantity' => 'required|integer|min:1',
       ]);
-      $item = item::find($request->item_id);
 
+      $item = item::find($request->item_id);
+// mengecek bila quantity lebih sedikit dari sebelumnya maka quantity item ditambah dengan selisih
       if ($request->quantity_old > $request->quantity) {
         $addStock = $request->quantity_old - $request->quantity;
         $item->stock = $item->stock + $addStock;
         $item->save();
+        // bila lebih sedikit maka akan dikurang dengan selisihnya
       } else {
-        // dd($request->quantity_old);
         $minStock = $request->quantity-$request->quantity_old;
-        // dd($minStock);
         $item->stock = $item->stock - $minStock;
-        // dd($item->stock);
+        // mengecek bila hasil selisih kurang dari 0 maka tidak bisa
         if ($item->stock < 0) {
           throw new \Exception("quantity lebih banyak dari stock barang");
           return redirect('/sales_order');
@@ -133,9 +136,10 @@ class InvoiceController extends Controller
 
       $user_id = Auth::id();
       $store = store::where('user_id', $user_id)->first();
+
       $price = $item->price;
       $total = $item->price*$request->quantity;
-      // invoice detail
+
       $invoiceDetail = invoiceDetail::findOrFail($invoiceDetail_id);
       $invoiceDetail->item_id = $request->item_id;
       $invoiceDetail->item_price = $price;
@@ -170,18 +174,17 @@ class InvoiceController extends Controller
       // dd($item->stock);
       $item->save();
       $invoiceDetail->delete();
-
+// unutk menambahkan total dari semua invoice detail ke invoice dan sales order
       $total = 0;
       $invoiceDetails = invoiceDetail::all()->where('invoice_id', $invoice_id);
       foreach ($invoiceDetails as $invoice_detail) {
         $total = $invoice_detail->total + $total;
       }
 
-      // dd($total);
       $invoice = invoice::findOrFail($invoice_id);
       $invoice->total = $total;
       $invoice->save();
-      // dd($invoice);
+
       $salesOrder = salesOrder::findOrFail($salesOrder_id);
       $salesOrder->total = $total;
       $salesOrder->save();

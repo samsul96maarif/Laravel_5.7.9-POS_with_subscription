@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 
 use App\Models\Store;
 use App\Models\Subscription;
-
+// unutk menggunakan auth
 use Auth;
 
 class StoreController extends Controller
@@ -14,15 +14,8 @@ class StoreController extends Controller
 
   public function __construct()
   {
+    // auth : unutk mengecek auth
       $this->middleware('auth');
-  }
-
-  public function home()
-  {
-    // $user_store = User_Store::where('user_id', )
-    $tes = store::all();
-    dd($tes);
-    return view('welcome');
   }
 
   public function index()
@@ -30,9 +23,7 @@ class StoreController extends Controller
       $user_id = Auth::id();
       $store = store::where('user_id', $user_id)->first();
       $subscription = subscription::where('id', $store->subscription_id)->first();
-      // dd($subscription);
-      // dd($store->subscription_id->name);
-      // dd($store);
+
       return view('user/store/index',
       [
         'store' => $store,
@@ -43,14 +34,18 @@ class StoreController extends Controller
   // create
 // 1. mengarahkan ke form
   public function create(){
-    // $store = store::find(1);
+
+    // bila admin di alihkan ke hal admin
     if (Auth::user()->isAdmin()) {
       return redirect('/admin');
     }
     return view('user/store/create');
   }
   // 2.store data
-  public function store(Request $request){
+  public function store(Request $request)
+  {
+
+    $user_id = Auth::id();
     // contoh penggunaan validate dimana :
     // 1. value name required
     $this->validate($request, [
@@ -60,7 +55,6 @@ class StoreController extends Controller
       'zipcode' => 'required|numeric',
     ]);
 
-    $user_id = Auth::id();
     $store = new store;
 
     if ($request->file('logo') == "") {
@@ -82,11 +76,15 @@ class StoreController extends Controller
     $store->company_address = $request->company_address;
     $store->zipcode = $request->zipcode;
     $store->save();
+
     return redirect('/home');
   }
 
   // 1. store data update
-        public function update(Request $request, $id){
+        public function update(Request $request, $id)
+        {
+
+          $store = store::find($id);
 
           $this->validate($request, [
             'name' => 'required',
@@ -95,7 +93,6 @@ class StoreController extends Controller
             'zipcode' => 'required|numeric',
           ]);
 
-          $store = store::find($id);
 
           if ($request->file('logo') == "") {
               // code...
@@ -115,6 +112,7 @@ class StoreController extends Controller
           $store->company_address = $request->company_address;
           $store->zipcode = $request->zipcode;
           $store->save();
+
           return redirect('/home');
         }
 
@@ -123,6 +121,7 @@ class StoreController extends Controller
         {
           $store = store::find($id);
           $store->delete();
+
           return redirect('/home');
         }
 }

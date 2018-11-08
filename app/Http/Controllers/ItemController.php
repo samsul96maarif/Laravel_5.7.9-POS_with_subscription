@@ -16,6 +16,9 @@ class ItemController extends Controller
 
   public function __construct()
   {
+    // auth : unutk mengecek auth
+    // gate : unutk mengecek apakah sudah membuat store
+    // getSubscription : unutk mengecek subscription store
       $this->middleware(['auth', 'gate', 'get.subscription']);
   }
 
@@ -23,7 +26,6 @@ class ItemController extends Controller
   {
     $user_id = Auth::id();
     $store = store::where('user_id', $user_id)->first();
-    // dd($store);
     $items = item::all()->where('store_id', $store->id);
 
     return view('user/item/index', ['items' => $items]);
@@ -43,11 +45,9 @@ class ItemController extends Controller
       'price' => 'required|integer',
     ]);
 
-
     $user_id = Auth::id();
-
     $store = store::where('user_id', $user_id)->first();
-    // dd($store->id);
+
     $item = new item;
     $item->store_id = $store->id;
     $item->name = $request->name;
@@ -55,6 +55,7 @@ class ItemController extends Controller
     $item->price = $request->price;
     $item->stock = $request->stock;
     $item->save();
+
     if ($request->file('image') == "") {
       // code...
     } else {
@@ -70,6 +71,7 @@ class ItemController extends Controller
       $itemMedia->image = $fileName;
       $itemMedia->save();
     }
+
     return redirect('/item');
   }
 
@@ -78,6 +80,7 @@ class ItemController extends Controller
       public function edit($id){
         $item = item::find($id);
         $itemMedias = itemMedias::where('item_id', $id)->get();
+
         return view('user/item/edit',
         [
           'item' => $item,
@@ -100,6 +103,7 @@ class ItemController extends Controller
         $item->price = $request->price;
         $item->stock = $request->stock;
         $item->save();
+
         if ($request->file('image') == "") {
           // code...
         } else {
@@ -138,7 +142,6 @@ class ItemController extends Controller
     public function search(Request $request)
     {
       $id = Auth::id();
-      // dd($user);
       $store = store::where('user_id', $id)->first();
 
       $items = DB::table('items')

@@ -1,6 +1,7 @@
 <?php
 namespace App\Http\Controllers;
 use Illuminate\Http\Request;
+// menggunakan auth
 use Auth;
 use App\Models\SalesOrder;
 use App\Models\Item;
@@ -9,12 +10,19 @@ use App\Models\Store;
 use App\Models\Invoice;
 use App\Models\InvoiceDetail;
 use App\Models\Subscription;
+// menggunakan db builder
 use Illuminate\Support\Facades\DB;
 
 class SalesOrderController extends Controller
 {
     public function __construct()
     {
+      // auth : unutk mengecek auth
+      // gate : unutk mengecek apakah sudah membuat store
+      // getSubscription : unutk mengecek subscription store
+      // maxOrder : untuk mengcek quote invoice subscription
+      // checkitem : mengecek apakah ada item
+      // checkContact : mengecek apakah ada contact
         $this->middleware(['auth', 'gate', 'get.subscription', 'max.order', 'check.item', 'check.contact']);
     }
     public function index()
@@ -25,6 +33,7 @@ class SalesOrderController extends Controller
       $contacts = contact::all()->where('store_id', $store->id);
       $invoices = invoice::all();
       $invoiceDetails = invoiceDetail::all();
+
       return view('user/sales_order/index',
       [
         'salesOrders' => $salesOrders,
@@ -40,6 +49,7 @@ class SalesOrderController extends Controller
       $store = store::where('user_id', $user_id)->first();
       $items = item::all()->where('store_id', $store->id);
       $contacts = contact::all()->where('store_id', $store->id);
+
       return view('user/sales_order/createInvoice',
       [
         'items' => $items,
@@ -50,23 +60,22 @@ class SalesOrderController extends Controller
     public function store(Request $request)
     {
 
+      $user_id = Auth::id();
+      $store = store::where('user_id', $user_id)->first();
+      $subscription = subscription::findOrFail($store->subscription_id);
+      $salesOrders = salesOrder::all()->where('store_id', $store->id);
+
       $this->validate($request, [
         'item_id' => 'required',
         'quantity' => 'required|integer|min:1',
         'contact_id' => 'required',
       ]);
 
-      $user_id = Auth::id();
-      $store = store::where('user_id', $user_id)->first();
-      $subscription = subscription::findOrFail($store->subscription_id);
-      $salesOrders = salesOrder::all()->where('store_id', $store->id);
-
       $i = 0;
       foreach ($salesOrders as $key) {
         $i++;
       }
 
-      // dd($i);
       if ($i >= $subscription->num_invoices) {
         throw new \Exception("kuota sales order telah melebihi kapasitas, silahkan upgrade paket");
       }
@@ -80,38 +89,41 @@ class SalesOrderController extends Controller
 
       $price = $item->price;
       $total = $item->price*$request->quantity;
-      $salesOrder = new salesOrder;
-      $invoice = new invoice;
-      $invoiceDetail = new invoiceDetail;
+
       // sales order
+      $salesOrder = new salesOrder;
       $salesOrder->store_id = $store->id;
       $salesOrder->contact_id = $request->contact_id;
-      // invoice detail
-      $invoiceDetail->store_id = $store->id;
-      $invoiceDetail->item_id = $request->item_id;
-      $invoiceDetail->item_price = $price;
-      $invoiceDetail->item_quantity = $request->quantity;
-      $invoiceDetail->total = $total;
       $salesOrder->save();
-      // invoice
-      $invoice->store_id = $store->id;
-      $invoice->sales_order_id = $salesOrder->id;
-      $invoice->contact_id = $request->contact_id;
-      $invoice->save();
-      // invoice detail
-      $invoiceDetail->invoice_id = $invoice->id;
-      $invoiceDetail->save();
       // sales order
       $salesOrder->total = $total;
       $salesOrder->order_number = 'SO-'.$salesOrder->id;
       $salesOrder->save();
+
+      // invoice
+      $invoice = new invoice;
+      $invoice->store_id = $store->id;
+      $invoice->sales_order_id = $salesOrder->id;
+      $invoice->contact_id = $request->contact_id;
+      $invoice->save();
       // invoice
       $invoice->total = $total;
       $invoice->number = 'INV-'.$invoice->id;
       $invoice->save();
 
+      // invoice detail
+      $invoiceDetail = new invoiceDetail;
+      $invoiceDetail->store_id = $store->id;
+      $invoiceDetail->invoice_id = $invoice->id;
+      $invoiceDetail->item_id = $request->item_id;
+      $invoiceDetail->item_price = $price;
+      $invoiceDetail->item_quantity = $request->quantity;
+      $invoiceDetail->total = $total;
+      $invoiceDetail->save();
+
       $item->stock = $item->stock - $request->quantity;
       $item->save();
+
       return redirect('/sales_order');
     }
 
@@ -122,9 +134,9 @@ class SalesOrderController extends Controller
       $salesOrder = salesOrder::findOrFail($id);
       $items = item::all()->where('store_id', $store->id);
       $contacts = contact::all()->where('store_id', $store->id);
-      // dd($salesOrder);
       $invoice = invoice::where('sales_order_id', $salesOrder->id)->first();
       $invoiceDetails = invoiceDetail::all()->where('invoice_id', $invoice->id);
+
       return view('user/sales_order/detail',
       [
         'items' => $items,
@@ -140,9 +152,8 @@ class SalesOrderController extends Controller
       $user_id = Auth::id();
       $store = store::where('user_id', $user_id)->first();
       $contacts = contact::all()->where('store_id', $store->id);
-
       $salesOrder = salesOrder::findOrFail($id);
-      // $invoice = invoice::where('sales_order_id', $id)->first();
+
       return view('user/sales_order/edit',
       [
         'contacts' => $contacts,
@@ -155,10 +166,11 @@ class SalesOrderController extends Controller
       $salesOrder = salesOrder::findOrFail($id);
       $salesOrder->contact_id = $request->contact_id;
       $salesOrder->save();
-      // dd($salesOrder);
+
       $invoice = invoice::where('sales_order_id', $salesOrder->id)->first();
       $invoice->contact_id = $request->contact_id;
       $invoice->save();
+
       return redirect('/sales_order');
     }
 
@@ -166,22 +178,24 @@ class SalesOrderController extends Controller
     {
       $salesOrder = salesOrder::findOrFail($id);
       $salesOrder->delete();
+
       return redirect('/sales_order');
     }
 
     public function search(Request $request)
     {
-      // dd($request->search);
+
       $id = Auth::id();
       $store = store::where('user_id', $id)->first();
+      $contacts = contact::all()->where('store_id', $store->id);
+      $invoices = invoice::all();
+      $invoiceDetails = invoiceDetail::all();
+
       $salesOrders = DB::table('sales_orders')
                       ->where('order_number', 'like', '%'.$request->q.'%')
                       ->where('store_id', $store->id)
                       ->get();
 
-      $contacts = contact::all()->where('store_id', $store->id);
-      $invoices = invoice::all();
-      $invoiceDetails = invoiceDetail::all();
       return view('user/sales_order/index',
       [
         'salesOrders' => $salesOrders,

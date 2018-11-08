@@ -13,7 +13,9 @@ class AdminSubscriptionController extends Controller
 
     public function __construct()
     {
+      // unutk mengecek auth
         $this->middleware('auth');
+        // untuk mengecek role user 1 / 0
         $this->middleware('admin');
     }
 
@@ -42,7 +44,7 @@ class AdminSubscriptionController extends Controller
     public function filter(Request $request, $id)
     {
       $subscription = subscription::findOrFail($id);
-      // dd($subscription);
+
       if ($request->filter == 'active') {
         $stores = Store::all()
         ->where('subscription_id', $id)

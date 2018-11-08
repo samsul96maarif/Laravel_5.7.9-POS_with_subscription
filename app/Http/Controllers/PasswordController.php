@@ -15,7 +15,7 @@ class PasswordController extends Controller
   {
       $id = Auth::id();
       $user = user::findOrFail($id);
-      // dd($user->role);
+
       if ($user->role == 1) {
         $extend = 'adminMaster';
       }else {
@@ -62,8 +62,6 @@ class PasswordController extends Controller
       // update password
       $id = Auth::id();
       $user = user::findOrFail($id);
-      // dd($user);
-      // dd($request->password);
 
       // $user->password = bcrypt(request('password'));
       $user->password = bcrypt($request->password);

@@ -6,21 +6,25 @@ use Illuminate\Http\Request;
 
 use App\Models\User;
 use App\Models\Store;
+// menggunakan db builder
 use Illuminate\Support\Facades\DB;
 
 class AdminUserController extends Controller
 {
   public function __construct()
   {
+    // mengecek auth
       $this->middleware('auth');
+      // mengecek role user 1 / 0
       $this->middleware('admin');
   }
 
   public function index()
   {
+    // memanggil user biasa(role = false)
     $users = user::all()->where('role', false);
     $stores = store::all();
-    // dd($users);
+
     return view('admin/user/index',
     [
       'users' => $users,
@@ -35,13 +39,13 @@ class AdminUserController extends Controller
     // $subscription = subscription::findOrFail($store->subscription_id);
     // $contacts = contact::all()->where('store_id', $store->id);
     // $salesOrders = salesOrder::all()->where('store_id', $store->id);
-    // dd($store);
+
     return view('admin/user/detail',
     [
-      'user' => $user,
       // 'Subscription' => $subscription,
       // 'contacts' => $contacts,
       // 'salesOrders'=> $salesOrders,
+      'user' => $user,
       'store' => $store
     ]);
   }
@@ -55,7 +59,7 @@ class AdminUserController extends Controller
                     ->get();
 
     $stores = store::all();
-                    // dd($users);
+    
     return view('admin/user/index',
       [
         'users' => $users,

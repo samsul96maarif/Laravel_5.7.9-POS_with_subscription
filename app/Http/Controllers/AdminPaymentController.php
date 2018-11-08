@@ -3,10 +3,12 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+
 use App\Models\Payment;
 use App\Models\Store;
 use App\Models\Subscription;
 use App\Models\User;
+// unutk menggunakan db builder
 use Illuminate\Support\Facades\DB;
 
 class AdminPaymentController extends Controller
@@ -14,7 +16,9 @@ class AdminPaymentController extends Controller
 
     public function __construct()
     {
+        // mengecek sudah auth belum
         $this->middleware('auth');
+        // mengecek apakah admin atau bukan
         $this->middleware('admin');
     }
 

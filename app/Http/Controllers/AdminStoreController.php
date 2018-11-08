@@ -11,15 +11,20 @@ use App\Models\SalesOrder;
 use App\Models\Contact;
 use App\Models\Item;
 use App\Models\Payment;
+// untuk menggunakan db builder
 use Illuminate\Support\Facades\DB;
+// menggunakan auth bawaan laravel
 use Auth;
+// untuk menggunakan date
 use Carbon\Carbon;
 
 class AdminStoreController extends Controller
 {
     public function __construct()
     {
+      // untuk mengecek auth
         $this->middleware('auth');
+        // unutk mengecek role user 1 / 0
         $this->middleware('admin');
     }
 
@@ -44,14 +49,15 @@ class AdminStoreController extends Controller
       $store = store::findOrFail($id);
       $subscription = subscription::where('id', $store->subscription_id)->first();
       $user = user::where('id', $store->user_id)->first();
-      // $users = user::all();
       $contacts = contact::all()->where('store_id', $id);
       $salesOrders = salesOrder::all()->where('store_id', $id);
       $items = item::all()->where('store_id', $id);
+      // mengetahui jumlah sales order dari store
       $numSalesOrders = count($salesOrders);
+      // mengetahui jumlah contact dari store
       $numContacts = count($contacts);
+      // unutk mengetahui item dari store
       $numItems = count($items);
-      // dd($user);
 
       return view('admin/store/detail',
       [
@@ -123,6 +129,7 @@ class AdminStoreController extends Controller
       } elseif ($request->filter == 'not') {
         $filter = 'not subscribe';
       }
+
       $subscriptions = subscription::all();
       $users = user::all();
 
@@ -138,7 +145,6 @@ class AdminStoreController extends Controller
     public function search(Request $request)
     {
       $id = Auth::id();
-      // dd($user);
 
       $stores = DB::table('stores')
                       ->where('name', 'like', '%'.$request->q.'%')

@@ -8,6 +8,7 @@ use App\Models\Contact;
 use App\Models\Store;
 use App\Models\Subscription;
 use App\Models\Invoice;
+// unutk menggunakan db builder
 use Illuminate\Support\Facades\DB;
 
 use Auth;
@@ -17,6 +18,10 @@ class ContactController extends Controller
 
   public function __construct()
   {
+    // auth : unutk mengecek auth
+    // gate : unutk mengecek apakah sudah membuat store
+    // getSubscription : unutk mengecek subscription store
+    // maxContact : unutk mengecek quota user subscription
       $this->middleware(['auth', 'gate', 'get.subscription', 'max.contact']);
   }
 
@@ -24,9 +29,7 @@ class ContactController extends Controller
     {
       $user_id = Auth::id();
       $store = store::where('user_id', $user_id)->first();
-      // dd($store_id);
       $contacts = contact::all()->where('store_id', $store->id);
-      // dd($contacts);
 
       return view('user/contact/index', ['contacts' => $contacts]);
     }
@@ -55,12 +58,10 @@ class ContactController extends Controller
         $i++;
       }
 
-      // dd($i);
       if ($i >= $subscription->num_users) {
         throw new \Exception("kuota sales order telah melebihi kapasitas, silahkan upgrade paket");
       }
 
-      // dd($store->id);
       $contact = new contact;
       $contact->store_id = $store->id;
       $contact->name = $request->name;
@@ -68,6 +69,7 @@ class ContactController extends Controller
       $contact->company_name = $request->company_name;
       $contact->email = $request->email;
       $contact->save();
+
       return redirect('/contact');
     }
 
@@ -75,6 +77,7 @@ class ContactController extends Controller
     // 1. get data melalui id-nya
         public function edit($id){
           $contact = contact::find($id);
+
           return view('user/contact/edit', ['contact' => $contact]);
         }
     // 2. store data update
@@ -93,6 +96,7 @@ class ContactController extends Controller
           $contact->company_name = $request->company_name;
           $contact->email = $request->email;
           $contact->save();
+
           return redirect('/contact');
         }
 
@@ -101,9 +105,8 @@ class ContactController extends Controller
       {
         $contact = contact::find($id);
         $invoice = invoice::where('contact_id', $id)->first();
-        // dd($invoice);
+
         if ($invoice == null) {
-          // dd($contact);
           $contact->delete();
           return redirect('/contact');
         }
@@ -113,7 +116,6 @@ class ContactController extends Controller
       public function search(Request $request)
       {
         $id = Auth::id();
-        // dd($user);
         $store = store::where('user_id', $id)->first();
 
         $contacts = DB::table('contacts')

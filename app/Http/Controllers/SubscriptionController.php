@@ -132,7 +132,6 @@ class SubscriptionController extends Controller
       }
       $payment->uniq_code = $code;
       $payment->save();
-      // dd($code);
 
       return view('user/subscription/buy',
       [
