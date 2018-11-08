@@ -96,13 +96,13 @@ Route::get('/subscription/{id}/detail', 'SubscriptionController@show');
 Route::get('/subscription/{id}/buy', 'SubscriptionController@buy');
 // upload bukti transfer
 Route::get('/subscription/{id}/buy/proof', 'SubscriptionController@uploadProof');
+Route::get('/subscription/{id}/extend/proof', 'SubscriptionController@uploadProof');
 // store hasil upload bukti transfer
 Route::post('/subscription/{id}/buy/proof', 'SubscriptionController@storeProof');
 // pilih extend
 Route::get('/subscription/{id}/detail_packet', 'SubscriptionController@pilihExtend');
 // untuk memperpanjang dan membuat payment
 Route::get('/subscription/{id}/extend', 'SubscriptionController@extend');
-
 // Route::post('/subscription/extend', 'SubscriptionController@extendPeriod');
 
 // Route::post('/subscription/beli', 'SubscriptionController@beli');

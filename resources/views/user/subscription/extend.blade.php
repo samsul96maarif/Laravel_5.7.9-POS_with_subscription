@@ -52,7 +52,7 @@
         {{ csrf_field() }}
         <input class="btn btn-lg btn-block btn-outline-primary" type="submit" name="submit" value="I have Completed Payment">
       </form> --}}
-      <a class="btn btn-lg btn-block btn-outline-primary" href="/subscription">I have Completed Payment</a>
+      <a class="btn btn-lg btn-block btn-outline-primary" href="/subscription/{{ $subscription->id }}/extend/proof">I have Completed Payment</a>
     </div>
   </div>
 

@@ -7,6 +7,9 @@ use Illuminate\Http\Request;
 use App\Models\Subscription;
 use App\Models\Store;
 use App\Models\Payment;
+// untuk menggunakan resize
+use Illuminate\Support\Facades\Storage;
+use Intervention\Image\Facades\Image;
 // unutk menggunakan auth
 use Auth;
 
@@ -161,16 +164,15 @@ class SubscriptionController extends Controller
     $store = store::where('user_id', $user_id)->first();
     $payment = payment::where('store_id', $store->id)->first();
 
-    // 1366 768
-    // resize
-    // $file->resize(300, 200);
-
     // menyimpan nilai image
-    $file = $request->file('proof');
+    $image = $request->file('proof');
     // mengambil nama file
-    $fileName = $file->getClientOriginalName();
+    $fileName = $image->getClientOriginalName();
+    // membuat path untuk tempat simpan
+    $path = public_path('proof/'.$fileName);
+    // resize
     // menyimpan file image kedalam folder "proof"
-    $request->file('proof')->move("proof/",$fileName);
+    $file = Image::make($image)->widen(318)->save($path);
     // menyimpan ke dalam database nama file dari image
     $payment->proof = $fileName;
     $payment->save();
