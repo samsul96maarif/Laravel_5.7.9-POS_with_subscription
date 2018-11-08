@@ -110,6 +110,12 @@
                     </a>
                   </li>
                   <li class="nav-item">
+                    <a class="nav-link active" href="/admin/payment">
+                      <span data-feather="home"></span>
+                      Payment <span class="sr-only">(current)</span>
+                    </a>
+                  </li>
+                  <li class="nav-item">
                     <a class="nav-link active" href="/admin/user">
                       <span data-feather="home"></span>
                       Users <span class="sr-only">(current)</span>

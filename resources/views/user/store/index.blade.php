@@ -38,6 +38,34 @@
           <br>
           <div class="row">
             <div class="col-md-2">
+              <p>Package Subscription</p>
+            </div>
+            <div class="col-md-6">
+              @if ($store->subscription_id == null)
+                <input class="form-control" type="text" name="name" value="dont have" readonly>
+              @else
+                @if ($store->status == 1)
+                  <input class="form-control" type="text" name="name" value="{{ $subscription->name }}" readonly>
+                @else
+                  <input class="form-control" type="text" name="name" value="awaiting payment for '{{ $subscription->name }}'" readonly>
+                @endif
+              @endif
+            </div>
+          </div>
+          <br>
+          @if ($store->subscription_id != null)
+            <div class="row">
+              <div class="col-md-2">
+                <p>Expire Date</p>
+              </div>
+              <div class="col-md-6">
+                <input class="form-control" type="text" name="name" value="{{ $store->expire_date }}" readonly>
+              </div>
+            </div>
+            <br>
+          @endif
+          <div class="row">
+            <div class="col-md-2">
               <p>Phone</p>
             </div>
             <div class="col-md-6">

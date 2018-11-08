@@ -19,11 +19,12 @@
             <li>store {{ $subscription->num_invoices }} invoice</li>
             <li>store {{ $subscription->num_users }} contact</li>
           </ul>
-          <form  action="/subscription/beli" method="post">
+          <a class="btn btn-lg btn-block btn-outline-primary" href="/subscription/{{ $subscription->id }}/buy">buy</a>
+          {{-- <form  action="/subscription/{{ $subscription->id }}/buy" method="get">
             <input type="hidden" name="id" value="{{ $subscription->id }}">
             {{ csrf_field() }}
             <input class="btn btn-lg btn-block btn-outline-primary" type="submit" name="submit" value="buy">
-          </form>
+          </form> --}}
         </div>
       </div>
     </div>

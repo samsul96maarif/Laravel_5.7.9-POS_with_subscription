@@ -18,16 +18,43 @@
               <li>free space for items</li>
               <li>store {{ $subscription->num_invoices }} invoice</li>
               <li>store {{ $subscription->num_users }} contact</li>
+              @if ($store->subscription_id == $subscription->id)
+                @if ($payment->store_id == $store->id)
+                  @if ($store->status == 1)
+                    <li><b>awaiting payment for extend period</b></li>
+                  @endif
+                @endif
+              @endif
             </ul>
             @if ($store->subscription_id == $subscription->id)
               @if ($store->status == 1)
-                {{-- <button type="button" name="" class="btn btn-lg btn-block btn-outline-primary" style="background-color:#007bff;color:white;">Active</button> --}}
-                <button type="button" name="" class="btn btn-lg btn-block btn-success">Activated</button>
+                <div class="row">
+                  <div class="col btn-atas">
+                    <button type="button" name="" class="btn btn-lg btn-block btn-success">activated</button>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col">
+                    @if ($payment == null)
+                      <a class="btn btn-lg btn-block btn-primary" href="/subscription/{{ $subscription->id }}/detail_packet">extend periode</a>
+                    {{-- @else --}}
+                      {{-- @if ($payment->store_id == $store->id) --}}
+                        {{-- <div class="col"> --}}
+                        {{-- <a class="btn btn-block btn-secondary" href="#">awaiting payment for extend period</a> --}}
+                        {{-- <button type="button" name="" class="btn btn-lg btn-block btn-secondary">awaiting payment for extend period</button> --}}
+                        {{-- </div> --}}
+                      {{-- @endif --}}
+                    @endif
+                    {{-- <form  action="/subscription/{{ $subscription->id }}/detail_packet" method="get">
+                      <input class="btn btn-lg btn-block btn-primary" type="submit" name="submit" value="extend periode">
+                    </form> --}}
+                  </div>
+                </div>
               @else
                 <button type="button" name="" class="btn btn-lg btn-block btn-secondary">Awaiting Payment</button>
               @endif
             @else
-            <form  action="/subscription/{{ $subscription->id }}/pilih" method="get">
+            <form  action="/subscription/{{ $subscription->id }}/detail" method="get">
               <input class="btn btn-lg btn-block btn-outline-primary" type="submit" name="submit" value="buy">
             </form>
             @endif

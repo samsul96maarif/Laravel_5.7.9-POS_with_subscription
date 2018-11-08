@@ -49,20 +49,21 @@
   <table class="table">
     <thead>
       <th>#</th>
+      <th>Store Name</th>
       <th>Owner</th>
       <th>Package Subscription</th>
-      <th>Store Name</th>
       <th>Phone</th>
       <th>Company Address</th>
       <th>Zipcode</th>
       <th>Status</th>
       <th>Expiry Date</th>
-      <th>Action</th>
+      {{-- <th>Action</th> --}}
     </thead>
     <tbody>
       @foreach ($stores as $store)
         <tr>
           <th scope="row">{{ $i }}</th>
+          <td><a href="/admin/store/{{ $store->id }}">{{ $store->name }}</a></td>
           @foreach ($users as $user)
             @if ($store->user_id == $user->id)
               <td><a href="/admin/user/{{ $store->user_id }}">{{ $user->name }}</a></td>
@@ -76,7 +77,6 @@
           @if ($store->subscription_id == null)
             <td>Dont Have yet</td>
           @endif
-          <td><a href="/admin/store/{{ $store->id }}">{{ $store->name }}</a></td>
           <td>{{ $store->phone }}</td>
           <td>{{ $store->company_address}}</td>
           <td>{{ $store->zipcode}}</td>
@@ -87,7 +87,8 @@
               <td>active</td>
             @endif
             <td>{{ $store->expire_date }}</td>
-            <td>
+
+            {{-- <td>
               @if ($store->status == 0)
                 <form class="" action="/admin/store/{{ $store->id }}" method="post">
                   {{ method_field('PUT') }}
@@ -106,7 +107,6 @@
                     </form>
                   </div>
                 </div>
-                {{-- <br> --}}
                 <div class="row">
                   <div class="col">
                     <form class="" action="/admin/store/{{ $store->id }}" method="post">
@@ -118,12 +118,14 @@
                   </div>
                 </div>
               @endif
-            </td>
+            </td> --}}
+
           @else
             <td>not subscribe</td>
             <td></td>
             <td></td>
           @endif
+
         </tr>
         @php
           $i++;
