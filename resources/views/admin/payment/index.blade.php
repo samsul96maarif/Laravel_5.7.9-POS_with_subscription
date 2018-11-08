@@ -50,6 +50,7 @@
   <table class="table">
     <thead>
       <th>#</th>
+      <th>Proof</th>
       <th>Unique Code</th>
       <th>Store Name</th>
       <th>Package Subscription</th>
@@ -59,8 +60,16 @@
       @foreach ($payments as $payment)
         <tr>
           <th scope="row">{{ $i }}</th>
-          {{-- uniq code adalah 3 digit terakhir dari transfer --}}
-          <td>{{ $payment->uniq_code }}</td>
+          {{-- mengecek bila bukti transfer sudah ada atau belum --}}
+          @if ($payment->proof != null)
+            <td><b>True</b></td>
+            {{-- uniq code adalah 3 digit terakhir dari transfer --}}
+            <td><a class="btn" href="/admin/payment/{{ $payment->id }}">{{ $payment->uniq_code }}</a></td>
+          @else
+            <td>False</td>
+            {{-- uniq code adalah 3 digit terakhir dari transfer --}}
+            <td>{{ $payment->uniq_code }}</td>
+          @endif
 
           @foreach ($stores as $store)
             @if ($payment->store_id == $store->id)

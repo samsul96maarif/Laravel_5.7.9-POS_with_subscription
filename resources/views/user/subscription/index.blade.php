@@ -5,7 +5,9 @@
 @section('headline', 'Subscriptions')
 
 @section('content')
-
+  @if (session()->has('success'))
+    <div class="alert alert-success">{{ session('success') }}</div>
+  @endif
     <div class="card-deck mb-3 text-center justify-content-center">
       @foreach ($subscriptions as $subscription)
         <div class="card mb-4 shadow-sm">

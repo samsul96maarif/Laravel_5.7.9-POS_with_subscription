@@ -38,6 +38,20 @@ class AdminPaymentController extends Controller
       ]);
     }
 
+    public function show($id)
+    {
+      $payment = payment::findOrFail($id);
+      $store = store::where('id', $payment->store_id)->first();
+      $subscription = subscription::where('id', $store->subscription_id)->first();
+      // dd($payment);
+      return view('admin/payment/detail',
+      [
+        'payment' => $payment,
+        'store' => $store,
+        'subscription' => $subscription
+      ]);
+    }
+
     public function search(Request $request)
     {
       $payments = DB::table('payments')

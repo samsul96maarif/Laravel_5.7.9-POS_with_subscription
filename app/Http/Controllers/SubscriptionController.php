@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\Subscription;
 use App\Models\Store;
 use App\Models\Payment;
-
+// unutk menggunakan auth
 use Auth;
 
 class SubscriptionController extends Controller
@@ -144,6 +144,41 @@ class SubscriptionController extends Controller
         'amount' => $amount,
         'rekening' => $rekening
       ]);
+  }
+
+  public function uploadProof($id)
+  {
+    return view('user/subscription/uploadProof', ['id' => $id]);
+  }
+
+  public function storeProof(Request $request, $id)
+  {
+    $this->validate($request, [
+      'proof' => 'required',
+    ]);
+
+    $user_id = Auth::id();
+    $store = store::where('user_id', $user_id)->first();
+    $payment = payment::where('store_id', $store->id)->first();
+
+    // 1366 768
+    // resize
+    // $file->resize(300, 200);
+
+    // menyimpan nilai image
+    $file = $request->file('proof');
+    // mengambil nama file
+    $fileName = $file->getClientOriginalName();
+    // menyimpan file image kedalam folder "proof"
+    $request->file('proof')->move("proof/",$fileName);
+    // menyimpan ke dalam database nama file dari image
+    $payment->proof = $fileName;
+    $payment->save();
+
+    return redirect('/subscription')
+        ->withSuccess('a payment proof has been uploaded.
+        wait for confirmation');
+
   }
 
   public function pilihExtend($id)

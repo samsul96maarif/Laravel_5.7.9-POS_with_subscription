@@ -68,6 +68,8 @@ Route::prefix('admin')->group(function () {
 
     // paymet
     Route::get('/payment', 'AdminPaymentController@index');
+    //detail unutk memeriksa proof
+    Route::get('/payment/{id}', 'AdminPaymentController@show');
     // search
     Route::get('/payment/search', 'AdminPaymentController@search');
     // endpayment
@@ -92,6 +94,10 @@ Route::get('/subscription', 'SubscriptionController@index');
 Route::get('/subscription/{id}/detail', 'SubscriptionController@show');
 // untuk membeli dan membuat payment
 Route::get('/subscription/{id}/buy', 'SubscriptionController@buy');
+// upload bukti transfer
+Route::get('/subscription/{id}/buy/proof', 'SubscriptionController@uploadProof');
+// store hasil upload bukti transfer
+Route::post('/subscription/{id}/buy/proof', 'SubscriptionController@storeProof');
 // pilih extend
 Route::get('/subscription/{id}/detail_packet', 'SubscriptionController@pilihExtend');
 // untuk memperpanjang dan membuat payment
