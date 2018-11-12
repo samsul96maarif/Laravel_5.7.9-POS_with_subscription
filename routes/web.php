@@ -176,21 +176,17 @@ Route::delete('/sales_order/{salesOrder_id}/invoice/{invoice_id}/invoice_detail/
 // report
 Route::get('/report', 'ReportController@salesByItemMonth');
 Route::post('/report/item', 'ReportController@Item');
-// Route::post('/report/item/custome', 'ReportController@ItemCustome');
-// Route::post('/report/item/custome', 'ReportController@Item');
 
 Route::get('/report/customer', 'ReportController@salesByCustomerMonth');
 Route::post('/report/customer', 'ReportController@Customer');
-// Route::post('/report/customer/custome', 'ReportController@CustomerCustome');
-// Route::post('/report/customer/custome', 'ReportController@Customer');
 // end report
 
 // profile
 Route::get('profile', 'UserController@index');
 Route::put('profile/{id}', 'UserController@update');
 // end profile
-// end user page
 
+// end user page
 
 // ganti password
 Route::group(['middleware' => 'auth'], function () {
