@@ -103,6 +103,8 @@ Route::post('/subscription/{id}/buy/proof', 'SubscriptionController@storeProof')
 Route::get('/subscription/{id}/detail_packet', 'SubscriptionController@pilihExtend');
 // untuk memperpanjang dan membuat payment
 Route::get('/subscription/{id}/extend', 'SubscriptionController@extend');
+// untuk masuk link upload proof dan lihat detail
+Route::get('subscription/cart', 'SubscriptionController@cart');
 // Route::post('/subscription/extend', 'SubscriptionController@extendPeriod');
 
 // Route::post('/subscription/beli', 'SubscriptionController@beli');
@@ -154,6 +156,7 @@ Route::delete('/item/{id}/delete', 'ItemController@delete');
 
 // sales order
 Route::get('/sales_order', 'SalesOrderController@index');
+Route::get('/cari', 'SalesOrderController@loadData');
 // search
 Route::get('/sales_order/search', 'SalesOrderController@search');
 // ngebuat sales order

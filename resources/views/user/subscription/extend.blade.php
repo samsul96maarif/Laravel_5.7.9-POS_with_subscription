@@ -38,8 +38,8 @@
           <h5 class="my-0 font-weight-normal">Please Transfer to :</h5>
         </div>
 
-        <li>Account Number : {{ $rekening }}</li>
-        <li>Account holde Name : PT.Zuragan Indonesia</li>
+        <li>Account Number : {{ $accountNumber }}</li>
+        <li>Account holde Name : {{ $accountHolderName }}</li>
         {{-- <li>Account holde Name : {{ $Account_Holder_name }}</li> --}}
         <li>Price : Rp.{{ number_format($subscription->price,2,",",".") }}</li>
         <li style="color:green;">unique code : - Rp.{{ number_format($uniq,2,",",".") }}</li>

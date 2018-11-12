@@ -6,6 +6,10 @@
 
 @section('content')
 
+  @if (session()->has('success'))
+    <div class="alert alert-success">{{ session('success') }}</div>
+  @endif
+
     <form class="" action="/store/{{ $store->id }}" method="post" value="post" enctype="multipart/form-data">
       {{ method_field('PUT') }}
           <div class="row">

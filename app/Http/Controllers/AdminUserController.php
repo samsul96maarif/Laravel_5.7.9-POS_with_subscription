@@ -36,15 +36,9 @@ class AdminUserController extends Controller
   {
     $user = user::findOrFail($id);
     $store = store::where('user_id', $id)->first();
-    // $subscription = subscription::findOrFail($store->subscription_id);
-    // $contacts = contact::all()->where('store_id', $store->id);
-    // $salesOrders = salesOrder::all()->where('store_id', $store->id);
 
     return view('admin/user/detail',
     [
-      // 'Subscription' => $subscription,
-      // 'contacts' => $contacts,
-      // 'salesOrders'=> $salesOrders,
       'user' => $user,
       'store' => $store
     ]);
@@ -59,7 +53,7 @@ class AdminUserController extends Controller
                     ->get();
 
     $stores = store::all();
-    
+
     return view('admin/user/index',
       [
         'users' => $users,

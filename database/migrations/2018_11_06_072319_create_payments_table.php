@@ -18,6 +18,11 @@ class CreatePaymentsTable extends Migration
             $table->integer('uniq_code');
             $table->integer('store_id')->unsigned();
             $table->foreign('store_id')->references('id')->on('stores')->onDelete('cascade');
+            $table->integer('subscription_id')->unsigned();
+            $table->foreign('subscription_id')->references('id')->on('subscriptions')->onDelete('cascade');
+            $table->string('proof')->nullable();
+            $table->integer('amount');
+            $table->boolean('paid')->default('0');
             $table->timestamps();
         });
     }

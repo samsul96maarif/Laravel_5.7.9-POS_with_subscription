@@ -72,7 +72,7 @@ class ItemController extends Controller
       $itemMedia->save();
     }
 
-    return redirect('/item');
+    return redirect('/item')->with('alert', 'Succeed Add Item');
   }
 
   // update
@@ -128,7 +128,7 @@ class ItemController extends Controller
           }
 
         }
-        return redirect('/item');
+        return redirect('/item')->with('alert', 'Succeed Updated '.$item->name);
       }
 
       // delete
@@ -136,7 +136,7 @@ class ItemController extends Controller
     {
       $item = item::find($id);
       $item->delete();
-      return redirect('/item');
+      return redirect('/item')->with('alert', $item->name.' Deleted!');
     }
 
     public function search(Request $request)

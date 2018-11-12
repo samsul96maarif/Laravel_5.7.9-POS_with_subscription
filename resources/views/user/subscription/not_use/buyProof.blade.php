@@ -6,6 +6,28 @@
 
 @section('content')
 
+  <div class="row justify-content-center">
+    <div class="col-md-4">
+      <div class="card">
+        <div class="card-body">
+          <form class="" action="/subscription/{{ $id }}/buy/proof" method="post" value="post" enctype="multipart/form-data">
+            <div class="row">
+              <div class="col">
+                <input class="form-control-file" type="file" name="proof" value="{{ old('proof') }}">
+                @if($errors->has('proof'))
+                  <p>{{ $errors->first('proof') }}</p>
+                @endif
+              </div>
+            </div>
+            <br>
+            <input class="btn btn-primary" type="submit" name="submit" value="upload">
+            {{ csrf_field() }}
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <div class="card shadow-sm">
     <div class="card-header">
 
@@ -32,8 +54,8 @@
         <li>- store up to {{ $subscription->num_invoices }} invoices</li>
         <li>- store up to {{ $subscription->num_users }} contacts</li>
         <hr>
-        <li>Account Number : {{ $accountNumber }}</li>
-        <li>Account holde Name : {{ $accountHolderName }}</li>
+        <li>Account Number : {{ $rekening }}</li>
+        <li>Account holde Name : PT.Zuragan Indonesia</li>
         {{-- <li>Account holde Name : {{ $Account_Holder_name }}</li> --}}
         <li>Price : Rp.{{ number_format($subscription->price,2,",",".") }}</li>
         <li style="color:green;">unique code : - Rp.{{ number_format($uniq,2,",",".") }}</li>

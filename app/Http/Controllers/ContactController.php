@@ -10,7 +10,7 @@ use App\Models\Subscription;
 use App\Models\Invoice;
 // unutk menggunakan db builder
 use Illuminate\Support\Facades\DB;
-
+// untuk menggunakan auth
 use Auth;
 
 class ContactController extends Controller
@@ -70,7 +70,7 @@ class ContactController extends Controller
       $contact->email = $request->email;
       $contact->save();
 
-      return redirect('/contact');
+      return redirect('/contact')->with('alert', 'Succeed Add Contact');
     }
 
     // update
@@ -97,7 +97,7 @@ class ContactController extends Controller
           $contact->email = $request->email;
           $contact->save();
 
-          return redirect('/contact');
+          return redirect('/contact')->with('alert', 'Succeed Updated '.$contact->name);
         }
 
         // delete
@@ -108,7 +108,7 @@ class ContactController extends Controller
 
         if ($invoice == null) {
           $contact->delete();
-          return redirect('/contact');
+          return redirect('/contact')->with('alert', $contact->name.' Deleted!');
         }
         throw new \Exception("contact telah digunakan pada invoice, silahkan hapus invoice terlebih dahulu");
       }
