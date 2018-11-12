@@ -79,8 +79,10 @@ class AdminStoreController extends Controller
 
       if ($store->status == 1) {
         $store->expire_date = Carbon::now()->addDays(30);
-        $payment = payment::where('store_id', $store->id)->first();
-        $payment->delete();
+        $payment = payment::where('store_id', $store->id)
+        ->where('paid', 0)->first();
+        $payment->paid = 1;
+        $payment->save();
       } else {
         // unutk menonaktifkan package subscription
         // sekarang fungsi ini masih dinonaktofkan
@@ -102,8 +104,10 @@ class AdminStoreController extends Controller
         $store->expire_date = $now->addDays($request->expire_date);
       }
 
-      $payment = payment::where('store_id', $store->id)->first();
-      $payment->delete();
+      $payment = payment::where('store_id', $store->id)
+      ->where('paid', 0)->first();
+      $payment->paid = 1;
+      $payment->save();
 
       $store->save();
       return redirect('/admin/payment');

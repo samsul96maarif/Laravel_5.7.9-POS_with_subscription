@@ -24,7 +24,7 @@ class AdminPaymentController extends Controller
 
     public function index()
     {
-      $payments = payment::all();
+      $payments = payment::all()->where('paid', 0);
       $stores = store::all();
       $subscriptions = subscription::all();
       $users = user::all();
@@ -43,7 +43,7 @@ class AdminPaymentController extends Controller
       $payment = payment::findOrFail($id);
       $store = store::where('id', $payment->store_id)->first();
       $subscription = subscription::where('id', $store->subscription_id)->first();
-      // dd($payment);
+      
       return view('admin/payment/detail',
       [
         'payment' => $payment,
