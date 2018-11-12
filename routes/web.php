@@ -68,10 +68,10 @@ Route::prefix('admin')->group(function () {
 
     // paymet
     Route::get('/payment', 'AdminPaymentController@index');
-    //detail unutk memeriksa proof
-    Route::get('/payment/{id}', 'AdminPaymentController@show');
     // search
     Route::get('/payment/search', 'AdminPaymentController@search');
+    //detail unutk memeriksa proof
+    Route::get('/payment/{id}', 'AdminPaymentController@show');
     // endpayment
 
     // contact
@@ -93,23 +93,16 @@ Route::get('/subscription', 'SubscriptionController@index');
 // detail
 Route::get('/subscription/{id}/detail', 'SubscriptionController@show');
 // untuk membeli dan membuat payment
-Route::get('/subscription/{id}/buy', 'SubscriptionController@buy');
+Route::post('/subscription/{id}/cart', 'SubscriptionController@buy');
 // upload bukti transfer
 Route::get('/subscription/{id}/buy/proof', 'SubscriptionController@uploadProof');
 Route::get('/subscription/{id}/extend/proof', 'SubscriptionController@uploadProof');
 // store hasil upload bukti transfer
 Route::post('/subscription/{id}/buy/proof', 'SubscriptionController@storeProof');
-// pilih extend
-Route::get('/subscription/{id}/detail_packet', 'SubscriptionController@pilihExtend');
-// untuk memperpanjang dan membuat payment
-Route::get('/subscription/{id}/extend', 'SubscriptionController@extend');
 // untuk masuk link upload proof dan lihat detail
 Route::get('subscription/cart', 'SubscriptionController@cart');
-// Route::post('/subscription/extend', 'SubscriptionController@extendPeriod');
-
-// Route::post('/subscription/beli', 'SubscriptionController@beli');
-
-Route::get('/subscription/bill/{request}', 'SubscriptionController@bill');
+// unutk melihat keranjang
+Route::get('/subscription/payment/proof', 'SubscriptionController@cart');
 // end subscription
 
 

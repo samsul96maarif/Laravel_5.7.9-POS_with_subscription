@@ -124,7 +124,7 @@ class SalesOrderController extends Controller
       $item->stock = $item->stock - $request->quantity;
       $item->save();
 
-      return redirect('/sales_order');
+      return redirect('/sales_order')->with('alert', 'Succeed Add Invoice');
     }
 
     public function show($id)
@@ -171,7 +171,7 @@ class SalesOrderController extends Controller
       $invoice->contact_id = $request->contact_id;
       $invoice->save();
 
-      return redirect('/sales_order');
+      return redirect('/sales_order')->with('alert', 'Succeed Updated Invoice');
     }
 
     public function delete($id)
@@ -179,7 +179,7 @@ class SalesOrderController extends Controller
       $salesOrder = salesOrder::findOrFail($id);
       $salesOrder->delete();
 
-      return redirect('/sales_order');
+      return redirect('/sales_order')->with('alert', $salesOrder->name.' Deleted!');
     }
 
     public function search(Request $request)
