@@ -43,7 +43,7 @@ class AdminPaymentController extends Controller
       $payment = payment::findOrFail($id);
       $store = store::where('id', $payment->store_id)->first();
       $subscription = subscription::where('id', $store->subscription_id)->first();
-      
+
       return view('admin/payment/detail',
       [
         'payment' => $payment,
@@ -55,7 +55,8 @@ class AdminPaymentController extends Controller
     public function search(Request $request)
     {
       $payments = DB::table('payments')
-                      ->where('uniq_code', 'like', '%'.$request->q.'%')
+                      ->where('amount', 'like', '%'.$request->q.'%')
+                      ->where('paid', 0)
                       ->get();
 
       $stores = store::all();

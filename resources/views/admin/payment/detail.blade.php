@@ -20,6 +20,15 @@
             </div>
           </div>
           <br>
+          <div class="row justify-content-center">
+            <div class="col-md-4">
+              <label for="" class="col-form-label">Amount</label>
+            </div>
+            <div class="col-md-6">
+              <input class="form-control" type="text" name="name" value="Rp.{{ number_format($payment->amount,2,",",".") }}" readonly>
+            </div>
+          </div>
+          <br>
           <div class="row justify-content-center btn-atas">
             <div class="col-md-4">
               <label for="" class="col-form-label">Unique Code</label>
@@ -50,7 +59,7 @@
               <div class="col text-center">
                 <form class="" action="/admin/store/{{ $store->id }}/extend" method="post">
                   {{ method_field('PUT') }}
-                  <input type="text" name="expire_date" value="30" hidden>
+                  <input type="text" name="period" value="{{ $payment->period }}" hidden>
                   <input class="btn btn-primary" type="submit" name="submit" value="extend period">
                   {{ csrf_field() }}
                 </form>
