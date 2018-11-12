@@ -49,9 +49,9 @@
                 <input class="form-control" type="text" name="name" value="dont have" readonly>
               @else
                 @if ($store->status == 1)
-                  <input class="form-control" type="text" name="name" value="{{ $subscription->name }}" readonly>
+                  <input class="form-control" type="text" name="status" value="{{ $subscription->name }}" readonly>
                 @else
-                  <input class="form-control" type="text" name="name" value="awaiting payment for '{{ $subscription->name }}'" readonly>
+                  <input class="form-control" type="text" name="status" value="awaiting payment for '{{ $subscription->name }}'" readonly>
                 @endif
               @endif
             </div>
@@ -63,7 +63,7 @@
                 <p>Expire Date</p>
               </div>
               <div class="col-md-6">
-                <input class="form-control" type="text" name="name" value="{{ $store->expire_date }}" readonly>
+                <input class="form-control" type="text" name="expire_date" value="{{ $store->expire_date }}" readonly>
               </div>
             </div>
             <br>

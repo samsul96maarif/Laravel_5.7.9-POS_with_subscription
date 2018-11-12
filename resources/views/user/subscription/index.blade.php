@@ -18,6 +18,13 @@
         </div>
       </div>
       <br>
+    @else
+      <div class="row">
+        <div class="col">
+          <a href="/subscription/payment/proof">Waiting for validation</a>
+        </div>
+      </div>
+      <br>
     @endif
   @endif
 
@@ -26,11 +33,8 @@
     var r = confirm("You Have Package Subscription before, Do You wanna Channge Package?");
     if (r == true) {
       return true;
-    //     txt = "You pressed OK!";
     } else {
       return false;
-    //   return redirect('/subscription');
-    //     txt = "You pressed Cancel!";
     }
   }
   </script>
@@ -42,7 +46,7 @@
             <h4 class="my-0 font-weight-normal">{{ $subscription->name }}</h4>
           </div>
           <div class="card-body">
-            <h2 class="card-title pricing-card-title">Rp.{{ $subscription->price }} <small class="text-muted">/ month</small></h2>
+            <h3 class="card-title pricing-card-title">Rp.{{ number_format($subscription->price,2,",",".") }} <small class="text-muted">/ month</small></h2>
             <ul class="list-unstyled mt-3 mb-4">
               <li>free space for items</li>
               <li>store {{ $subscription->num_invoices }} invoice</li>
@@ -72,7 +76,7 @@
 
                     {{-- bila tidak ada ditabel payment maka akan ditawarkan extend periode --}}
                     @if ($payment == null)
-                      <a class="btn btn-lg btn-block btn-primary" href="/subscription/{{ $subscription->id }}/detail_packet">extend periode</a>
+                      <a class="btn btn-lg btn-block btn-primary" href="/subscription/{{ $subscription->id }}/detail">extend periode</a>
                     {{-- @else --}}
                       {{-- @if ($payment->store_id == $store->id) --}}
                         {{-- <div class="col"> --}}
@@ -93,10 +97,7 @@
 
               {{-- $store->subscription_id == $subscription->id --}}
             @else
-              <a href="#"></a>
-            <form action="/subscription/{{ $subscription->id }}/detail" method="get">
-              <input onclick="return myFunction()" class="btn btn-lg btn-block btn-outline-primary" type="submit" name="submit" value="buy">
-            </form>
+              <a onclick="return myFunction()" class="btn btn-lg btn-block btn-outline-primary" href="/subscription/{{ $subscription->id }}/detail">buy</a>
             @endif
             {{-- <div class="card-body"> --}}
           </div>
