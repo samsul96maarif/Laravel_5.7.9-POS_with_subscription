@@ -12,6 +12,8 @@ use Illuminate\Support\Facades\Storage;
 use Intervention\Image\Facades\Image;
 // unutk menggunakan auth
 use Auth;
+// unutk share ke semua view
+use View;
 
 class SubscriptionController extends Controller
 {
@@ -22,8 +24,18 @@ class SubscriptionController extends Controller
    */
   public function __construct()
   {
+      // middleware
       $this->middleware(['auth', 'gate']);
-      // $this->user = Auth::id();
+      // rekening
+      $accountNumber = '093482';
+      $accountHolderName = 'PT.Zuragan Indonesia';
+
+      // Sharing is caring
+      View::share(
+        [
+          'accountNumber' => $accountNumber,
+          'accountHolderName' => $accountHolderName
+        ]);
   }
 
   /**
@@ -31,18 +43,15 @@ class SubscriptionController extends Controller
    *
    * @return \Illuminate\Http\Response
    */
-  public function home()
-  {
-      return view('user/index');
-  }
 
   public function index()
   {
     $user_id = Auth::id();
     $store = store::where('user_id', $user_id)->first();
     $subscriptions = subscription::all();
-    $payment = payment::where('store_id', $store->id)->first();
-    // dd($payment);
+    $payment = payment::where('store_id', $store->id)
+    ->where('paid', 0)->first();
+
     return view('user/subscription/index',
     [
       'subscriptions' => $subscriptions,
@@ -58,29 +67,10 @@ class SubscriptionController extends Controller
     $store = store::where('user_id', $user->id)->first();
     $subscription = subscription::findOrFail($id);
 
-    $uniq = rand(1,999);
-    $amount = $subscription->price - $uniq;
-    $code = substr($amount, -3);
-    $rekening = '093482';
-
-    $payment = payment::where('uniq_code', 778)->first();
-
-    if ($payment != null) {
-      $uniq = rand(1,999);
-      $amount = $subscription->price - $uniq;
-      $code = substr($amount, -3);
-      $payment = payment::where('uniq_code', $code)->first();
-    }
     return view('user/subscription/show',
     [
       'subscription' => $subscription,
-      'code' => $code,
-      'user' => $user,
-      'store' => $store,
-      'subscription' => $subscription,
-      'uniq' => $uniq,
-      'amount' => $amount,
-      'rekening' => $rekening
+      'store' => $store
     ]);
   }
 
@@ -92,7 +82,6 @@ class SubscriptionController extends Controller
 
     $uniq = rand(1,999);
     $amount = $subscription->price - $uniq;
-    $code = substr($amount, -3);
     $rekening = '093482';
 
     if ($store->subscription_id != null && $store->status == 1) {
@@ -106,43 +95,43 @@ class SubscriptionController extends Controller
     $store->expire_date = null;
     $store->save();
 
-    $payment = payment::where('store_id', $store->id)->first();
+    $payment = payment::where('store_id', $store->id)
+    ->where('paid', 0)->first();
 
-    // dd($payments);
     if ($payment == null) {
         // pengecekan apakah uniq code sudah ada
-        $payment = payment::where('uniq_code', $code)->first();
+        $payment = payment::where('uniq_code', $uniq)->first();
         // perulangan sampai tidak ada yang sama
         while ($payment != null) {
           $uniq = rand(1,999);
           $amount = $subscription->price - $uniq;
-          $code = substr($amount, -3);
-          $payment = payment::where('uniq_code', $code)->first();
+          $payment = payment::where('uniq_code', $uniq)->first();
         }
         // end batas perulangn pengecekan yang sama
         $payment = new payment;
         $payment->store_id = $store->id;
       } else {
         // pengecekan apakah uniq code sudah ada
-        $cariPayment = payment::where('uniq_code', $code)->first();
+        $cariPayment = payment::where('uniq_code', $uniq)->first();
         // perulangan sampai tidak ada yang sama
         while ($cariPayment != null) {
           $uniq = rand(1,999);
           $amount = $subscription->price - $uniq;
-          $code = substr($amount, -3);
-          $cariPayment = payment::where('uniq_code', $code)->first();
+          $cariPayment = payment::where('uniq_code', $uniq)->first();
         }
       }
-      $payment->uniq_code = $code;
+
+      $payment->proof = null;
+      $payment->uniq_code = $uniq;
+      $payment->amount = $amount;
+      $payment->subscription_id = $id;
       $payment->save();
 
       return view('user/subscription/buy',
       [
         'subscription' => $subscription,
-        'code' => $code,
         'user' => $user,
         'store' => $store,
-        'subscription' => $subscription,
         'uniq' => $uniq,
         'amount' => $amount,
         'rekening' => $rekening
@@ -162,7 +151,8 @@ class SubscriptionController extends Controller
 
     $user_id = Auth::id();
     $store = store::where('user_id', $user_id)->first();
-    $payment = payment::where('store_id', $store->id)->first();
+    $payment = payment::where('store_id', $store->id)
+    ->where('paid', 0)->first();
 
     // menyimpan nilai image
     $image = $request->file('proof');
@@ -188,147 +178,97 @@ class SubscriptionController extends Controller
     $user = Auth::user();
     $store = store::where('user_id', $user->id)->first();
     $subscription = subscription::findOrFail($id);
-    // $uniq = $store->id;
-    $uniq = rand(1,999);
-    $amount = $subscription->price - $uniq;
-    $code = substr($amount, -3);
 
-    $payment = payment::where('uniq_code', 778)->first();
-
-    if ($payment != null) {
-      // dd($payment);
-      $uniq = rand(1,999);
-      $amount = $subscription->price - $uniq;
-      $code = substr($amount, -3);
-      $payment = payment::where('uniq_code', $code)->first();
-    }
-    // dd($newstring);
-    // $amount = 292340000001239;
-    // dd(number_format($amount,2,",","."));
-    $rekening = '093482';
     return view('user/subscription/pilih_extend',
     [
       'subscription' => $subscription,
-      'code' => $code,
-      'user' => $user,
-      'store' => $store,
-      'subscription' => $subscription,
-      'uniq' => $uniq,
-      'amount' => $amount,
-      'rekening' => $rekening
+      'store' => $store
     ]);
   }
 
   public function extend($id)
   {
+
     $user = Auth::user();
     $store = store::where('user_id', $user->id)->first();
     $subscription = subscription::findOrFail($id);
-    // $uniq = $store->id;
     $uniq = rand(1,999);
     $amount = $subscription->price - $uniq;
-    $code = substr($amount, -3);
-    $rekening = '093482';
 
-    // fun extend periode
-    $payment = payment::where('store_id', $store->id)->first();
-    // dd($payment);
+    $payment = payment::where('store_id', $store->id)
+    ->where('paid', 0)->first();
 
     if ($payment == null) {
-      $payment = payment::where('uniq_code', $code)->first();
-
-      while ($payment != null) {
-        $uniq = rand(1,999);
-        $amount = $subscription->price - $uniq;
-        $code = substr($amount, -3);
-        $payment = payment::where('uniq_code', $code)->first();
+        // pengecekan apakah uniq code sudah ada
+        $payment = payment::where('uniq_code', $uniq)->first();
+        // perulangan sampai tidak ada yang sama
+        while ($payment != null) {
+          $uniq = rand(1,999);
+          $amount = $subscription->price - $uniq;
+          $payment = payment::where('uniq_code', $uniq)->first();
+        }
+        // end batas perulangn pengecekan yang sama
+        $payment = new payment;
+        $payment->store_id = $store->id;
+      } else {
+        // pengecekan apakah uniq code sudah ada
+        $cariPayment = payment::where('uniq_code', $uniq)->first();
+        // perulangan sampai tidak ada yang sama
+        while ($cariPayment != null) {
+          $uniq = rand(1,999);
+          $amount = $subscription->price - $uniq;
+          $cariPayment = payment::where('uniq_code', $uniq)->first();
+        }
       }
 
-      $payment = new payment;
-      $payment->uniq_code = $code;
-      $payment->store_id = $store->id;
+      $payment->proof = null;
+      $payment->uniq_code = $uniq;
+      $payment->amount = $amount;
+      $payment->subscription_id = $id;
       $payment->save();
-    } else {
-      $payment->uniq_code = $code;
-      $payment->save();
-    }
 
     return view('user/subscription/extend',
     [
       'subscription' => $subscription,
-      'code' => $code,
       'user' => $user,
       'store' => $store,
-      'subscription' => $subscription,
       'uniq' => $uniq,
-      'amount' => $amount,
-      'rekening' => $rekening
+      'amount' => $amount
     ]);
   }
 
-  // public function beli(Request $request)
-  // {
-  //   $subscription = subscription::find($request->id);
-  //   $user_id = Auth::id();
-  //   // dd($user_id);
-  //   $store = store::where('user_id', $user_id)->first();
-  //   $store->subscription_id = $subscription->id;
-  //   $store->status = 0;
-  //   $store->expire_date = null;
-  //   $store->save();
-  //
-  //   $payments = payment::where('store_id', $store->id)->first();
-  //   // dd($payments);
-  //
-  //   if ($payments == null) {
-  //     $payment = new payment;
-  //     $payment->uniq_code = $request->uniq;
-  //     $payment->store_id = $store->id;
-  //     $payment->save();
-  //   } else {
-  //     $payments->uniq_code = $request->uniq;
-  //     $payments->save();
-  //   }
-  //
-  //   return redirect('/subscription');
-  // }
-  // batas fun beli
-
-  public function extendPeriod(Request $request)
+  public function cart()
   {
-    $subscription = subscription::find($request->id);
-    $user_id = Auth::id();
-    // dd($user_id);
-    $store = store::where('user_id', $user_id)->first();
-    // $store->subscription_id = $subscription->id;
-    // $store->status = 0;
-    // $store->expire_date = null;
-    // $store->save();
 
-    $payments = payment::where('store_id', $store->id)->first();
-    // dd($payments);
+    $user = Auth::user();
+    $store = store::where('user_id', $user->id)->first();
+    $payment = payment::where('store_id', $store->id)->first();
+    $subscription = subscription::findOrFail($payment->subscription_id);
+    // $rekening = '093482';
 
-    if ($payments == null) {
-      $payment = new payment;
-      $payment->uniq_code = $request->uniq;
-      $payment->store_id = $store->id;
-      $payment->save();
+    // mengecek apakah extend atau bukan
+    if ($store->status == 1) {
+
+      return view('user/subscription/extend',
+      [
+        'subscription' => $subscription,
+        'user' => $user,
+        'store' => $store,
+        'uniq' => $payment->uniq_code,
+        'amount' => $payment->amount
+      ]);
+
     } else {
-      $payments->uniq_code = $request->uniq;
-      $payments->save();
+
+      return view('user/subscription/buy',
+      [
+        'subscription' => $subscription,
+        'user' => $user,
+        'store' => $store,
+        'uniq' => $payment->uniq_code,
+        'amount' => $payment->amount
+      ]);
     }
-
-    return redirect('/subscription');
   }
 
-  public function bill($request, $store)
-  {
-    // dd($this->user);
-    $id = Auth::id();
-    $store = store::where('user_id', $id)->first();
-    $subscription = subscription::find($request->id);
-    dd($subscription);
-    $amount = $subscription->price - $store->id;
-    $rekening = '093482';
-  }
 }
