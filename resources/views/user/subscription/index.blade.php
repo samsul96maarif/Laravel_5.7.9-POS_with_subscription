@@ -5,9 +5,36 @@
 @section('headline', 'Subscriptions')
 
 @section('content')
+  {{-- alert bila sukses mengirim payment proof --}}
   @if (session()->has('success'))
     <div class="alert alert-success">{{ session('success') }}</div>
   @endif
+  {{-- bila belum mengirim payment proof --}}
+  @if ($payment != null)
+    @if ($payment->proof == null)
+      <div class="row">
+        <div class="col">
+          <a href="/subscription/cart">Waiting for Payment Proof</a>
+        </div>
+      </div>
+      <br>
+    @endif
+  @endif
+
+  <script>
+  function myFunction() {
+    var r = confirm("You Have Package Subscription before, Do You wanna Channge Package?");
+    if (r == true) {
+      return true;
+    //     txt = "You pressed OK!";
+    } else {
+      return false;
+    //   return redirect('/subscription');
+    //     txt = "You pressed Cancel!";
+    }
+  }
+  </script>
+
     <div class="card-deck mb-3 text-center justify-content-center">
       @foreach ($subscriptions as $subscription)
         <div class="card mb-4 shadow-sm">
@@ -22,7 +49,7 @@
               <li>store {{ $subscription->num_users }} contact</li>
               @if ($store->subscription_id == $subscription->id)
                 @if ($payment != null)
-                  @if ($payment->store_id == $store->id)
+                  @if ($payment->store_id == $store->id && $payment->paid == 0)
                     @if ($store->status == 1)
                       <li><b>awaiting payment for extend period</b></li>
                     @endif
@@ -66,8 +93,9 @@
 
               {{-- $store->subscription_id == $subscription->id --}}
             @else
-            <form  action="/subscription/{{ $subscription->id }}/detail" method="get">
-              <input class="btn btn-lg btn-block btn-outline-primary" type="submit" name="submit" value="buy">
+              <a href="#"></a>
+            <form action="/subscription/{{ $subscription->id }}/detail" method="get">
+              <input onclick="return myFunction()" class="btn btn-lg btn-block btn-outline-primary" type="submit" name="submit" value="buy">
             </form>
             @endif
             {{-- <div class="card-body"> --}}
