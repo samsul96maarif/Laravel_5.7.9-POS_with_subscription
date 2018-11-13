@@ -126,7 +126,7 @@ Route::get('/contact/search', 'ContactController@search');
 Route::get('/contact/create', 'ContactController@create');
 Route::post('/contact', 'ContactController@store');
 // edit contact
-Route::get('/contact/{id}/edit', 'ContactController@edit');
+Route::get('/contact/{id}/edit', 'ContactController@edit')->name('contact_detail');
 Route::put('/contact/{id}', 'ContactController@update');
 // //delete
 Route::delete('/contact/{id}/delete', 'ContactController@delete');
@@ -171,7 +171,7 @@ Route::get('/sales_order/{salesOrder_id}/invoice/{invoice_id}/invoice_detail/{in
 Route::put('/invoice/{invoice_id}/invoice_detail/{invoiceDetail_id}', 'InvoiceController@update');
 // delete
 Route::delete('/sales_order/{salesOrder_id}/invoice/{invoice_id}/invoice_detail/{invoiceDetail_id}/delete', 'InvoiceController@delete');
-// end sales order
+// end sales ordecari',r
 
 // report
 Route::get('/report', 'ReportController@salesByItemMonth');
@@ -193,3 +193,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('password', 'PasswordController@change')->name('password.change');
     Route::put('password', 'PasswordController@update')->name('password.update');
 });
+
+// coba autocompleate
+Route::get('/autoload', 'BaseController@index');
+Route::get('/autoload/cari', 'BaseController@loadData');

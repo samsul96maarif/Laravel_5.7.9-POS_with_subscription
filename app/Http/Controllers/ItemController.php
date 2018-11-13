@@ -9,7 +9,9 @@ use App\Models\User;
 use App\Models\Store;
 use App\Models\Item;
 use App\Models\ItemMedias;
+use App\Cores\Jsonable;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Http\Response;
 
 class ItemController extends Controller
 {
@@ -29,6 +31,7 @@ class ItemController extends Controller
     $items = item::all()->where('store_id', $store->id);
 
     return view('user/item/index', ['items' => $items]);
+    // return $this->json(Response::HTTP_OK, "Fetch Item", $items);
   }
 
   public function create()

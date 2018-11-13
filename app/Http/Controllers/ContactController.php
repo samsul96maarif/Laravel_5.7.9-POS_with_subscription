@@ -29,7 +29,23 @@ class ContactController extends Controller
     {
       $user_id = Auth::id();
       $store = store::where('user_id', $user_id)->first();
-      $contacts = contact::all()->where('store_id', $store->id);
+      // $contacts = contact::all()->where('store_id', $store->id);
+
+      $data = contact::all()->where('store_id', $store->id);;
+
+      if(count($data) > 0){ //mengecek apakah data kosong atau tidak
+          $res['message'] = "Success!";
+          $res['values'] = $data;
+          // return response($res);
+      }
+      else{
+          $res['message'] = "Empty!";
+          // return response($res);
+      }
+
+      // dd($res);
+
+      $contacts = json_decode($res['values']);
 
       return view('user/contact/index', ['contacts' => $contacts]);
     }
@@ -97,7 +113,8 @@ class ContactController extends Controller
           $contact->email = $request->email;
           $contact->save();
 
-          return redirect('/contact')->with('alert', 'Succeed Updated '.$contact->name);
+          return redirect()->route('contact_detail', [$id])->with('alert', 'Succeed Updated '.$contact->name);
+          // return redirect('/contact')->with('alert', 'Succeed Updated '.$contact->name);
         }
 
         // delete
