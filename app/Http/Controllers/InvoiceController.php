@@ -44,6 +44,9 @@ class InvoiceController extends Controller
 
     public function store(Request $request)
     {
+      $user_id = Auth::id();
+      $store = store::where('user_id', $user_id)->first();
+      
       $this->validate($request, [
         'item_id' => 'required',
         'quantity' => 'required|integer|min:1',
@@ -81,8 +84,6 @@ class InvoiceController extends Controller
         return redirect('/sales_order');
       }
 
-      $user_id = Auth::id();
-      $store = store::where('user_id', $user_id)->first();
       // $price = $item->price;
       // $total = $item->price*$request->quantity;
 
