@@ -196,4 +196,5 @@ Route::group(['middleware' => 'auth'], function () {
 
 // coba autocompleate
 Route::get('/autoload', 'BaseController@index');
-Route::get('/autoload/cari', 'BaseController@loadData');
+Route::get('/autoload/cari', 'BaseController@loadData')->name('autocomplete.cari');
+Route::get('/autocomplete/fetch', 'BaseController@fetch')->name('autocomplete.fetch');
