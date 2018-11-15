@@ -50,6 +50,9 @@ class SalesOrderController extends Controller
       $items = item::all()->where('store_id', $store->id);
       $contacts = contact::all()->where('store_id', $store->id);
 
+      // tes javasript
+      // return view('tes/createInvoice', ['items' => $items]);
+      // end tes
       return view('user/sales_order/createInvoice',
       [
         'items' => $items,
