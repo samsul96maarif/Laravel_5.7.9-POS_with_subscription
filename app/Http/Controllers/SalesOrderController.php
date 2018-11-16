@@ -51,7 +51,11 @@ class SalesOrderController extends Controller
       $contacts = contact::all()->where('store_id', $store->id);
 
       // tes javasript
-      // return view('tes/createInvoice', ['items' => $items]);
+      // return view('tes/createInvoice',
+      // [
+      //   'items' => $items,
+      //   'contacts' => $contacts
+      // ]);
       // end tes
       return view('user/sales_order/createInvoice',
       [
@@ -71,7 +75,7 @@ class SalesOrderController extends Controller
       $this->validate($request, [
         'item_id' => 'required',
         'quantity' => 'required|integer|min:1',
-        'contact_id' => 'required',
+        'contact' => 'required',
       ]);
 
       $i = 0;
@@ -92,6 +96,10 @@ class SalesOrderController extends Controller
 
       $price = $item->price;
       $total = $item->price*$request->quantity;
+
+      // mencari contact yang sesuai request
+      $contact = contact::where('name', $request->contact)->first();
+      dd($contact);
 
       // sales order
       $salesOrder = new salesOrder;

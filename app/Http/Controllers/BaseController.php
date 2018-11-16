@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Store;
+use App\Models\Contact;
 use Auth;
 
 // use App\Models\Item;
@@ -39,7 +40,7 @@ class BaseController extends Controller
       if($request->get('query'))
       {
         $query = $request->get('query');
-        $data = DB::table('items')
+        $data = DB::table('contacts')
         ->where('name', 'LIKE', "%{$query}%")
         ->where('store_id', $store->id)
         ->get();
