@@ -198,3 +198,4 @@ Route::group(['middleware' => 'auth'], function () {
 Route::get('/autoload', 'BaseController@index');
 Route::get('/autoload/cari', 'BaseController@loadData')->name('autocomplete.cari');
 Route::get('/autocomplete/fetch', 'BaseController@fetch')->name('autocomplete.fetch');
+Route::get('/autocomplete/fetch/item', 'BaseController@fetchItem')->name('autocomplete.fetch.item');

@@ -73,7 +73,7 @@ class SalesOrderController extends Controller
       $salesOrders = salesOrder::all()->where('store_id', $store->id);
 
       $this->validate($request, [
-        'item_id' => 'required',
+        // 'item_id' => 'required',
         'quantity' => 'required|integer|min:1',
         'contact' => 'required',
       ]);
@@ -87,6 +87,20 @@ class SalesOrderController extends Controller
         throw new \Exception("kuota sales order telah melebihi kapasitas, silahkan upgrade paket");
       }
 
+      dd($request->item);
+
+      // foreach ($items[] as $key) {
+        // code...
+      // }
+
+      // $finalValues = [];
+      // foreach ($prices as $i => $price) {
+      //   $finalValues[
+      //         "from" => $from[i];
+      //         "to" => $to[i];
+      //         "price" => $price;
+      // }
+
       $item = item::find($request->item_id);
 
       if ($request->quantity > $item->stock) {
@@ -99,6 +113,9 @@ class SalesOrderController extends Controller
 
       // mencari contact yang sesuai request
       $contact = contact::where('name', $request->contact)->first();
+      if ($contact == null) {
+        throw new \Exception("kontak tidak ditemukan");
+      }
       dd($contact);
 
       // sales order

@@ -49,7 +49,33 @@ class BaseController extends Controller
         foreach($data as $row)
         {
           $output .= '
-          <span class="btn dropdown-item">'.$row->name.'</span>
+          <span class="btn contact-list dropdown-item">'.$row->name.'</span>
+          ';
+        }
+        $output .= '</div>';
+        echo $output;
+      }
+
+    }
+
+    function fetchItem(Request $request)
+    {
+      $user = Auth::user();
+      $store = store::where('user_id', $user->id)->first();
+
+      if($request->get('query'))
+      {
+        $query = $request->get('query');
+        $data = DB::table('items')
+        ->where('name', 'LIKE', "%{$query}%")
+        ->where('store_id', $store->id)
+        ->get();
+
+        $output = '<div class="dropdown-menu" style="display:block; position:relative">';
+        foreach($data as $row)
+        {
+          $output .= '
+          <span class="btn item-list dropdown-item">'.$row->name.'</span>
           ';
         }
         $output .= '</div>';
