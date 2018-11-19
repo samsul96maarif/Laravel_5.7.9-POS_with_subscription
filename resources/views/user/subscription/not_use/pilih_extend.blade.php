@@ -21,11 +21,6 @@
             <li>expire date : {{ $store->expire_date }}</li>
           </ul>
           <a class="btn btn-lg btn-block btn-outline-primary" href="/subscription/{{ $subscription->id }}/extend">Extend Periode</a>
-          {{-- <form  action="/subscription/{{ $subscription->id }}/buy" method="get">
-            <input type="hidden" name="id" value="{{ $subscription->id }}">
-            {{ csrf_field() }}
-            <input class="btn btn-lg btn-block btn-outline-primary" type="submit" name="submit" value="buy">
-          </form> --}}
         </div>
       </div>
     </div>

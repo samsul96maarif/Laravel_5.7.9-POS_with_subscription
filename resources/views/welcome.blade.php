@@ -82,12 +82,21 @@
             }
 
             .pricing-header {
-              max-width: 700px;
+              /* max-width: 700px; */
             }
 
-            .card-deck .card {
+            /* .card-deck .card {
               min-width: 165px;
-              }
+              } */
+
+              .card-deck .card {
+                min-width: 220px;
+                max-width: 440px;
+                }
+
+                .card-title .pricing-card-title{
+                  font-size: 15px;
+                }
 
               h1{
                 font-size: 32px;
@@ -123,7 +132,7 @@
                 <h4 class="my-0 font-weight-normal">{{ $subscription->name }}</h4>
               </div>
               <div class="card-body">
-                <h1 class="card-title pricing-card-title">Rp.{{ $subscription->price }} <small class="text-muted">/ month</small></h1>
+                <h3 class="card-title pricing-card-title">Rp.{{ number_format($subscription->price,2,",",".") }} <small class="text-muted">/ month</small></h3>
                 <ul class="list-unstyled mt-3 mb-4">
                   <li>free space for items</li>
                   <li>store {{ $subscription->num_invoices }} invoice</li>

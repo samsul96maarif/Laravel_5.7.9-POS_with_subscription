@@ -18,18 +18,16 @@ class Gate
     public function handle($request, Closure $next)
     {
       $user_id = Auth::id();
-      // dd($user_id);
+
       // mencari store yang milik user
       $store = store::where('user_id', $user_id)->first();
-      // dd($store);
 
+      // bila belum memiliki store diarahkan ke halaman create
       if ($store == null) {
-        // dd($store);
+
         return redirect('/create');
-        // return view('auth/login');
       }
 
-      // dd($store);
       return $next($request);
     }
 }

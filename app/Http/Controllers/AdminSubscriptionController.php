@@ -123,6 +123,7 @@ class AdminSubscriptionController extends Controller
           $subscription->num_invoices = $request->num_invoices;
           $subscription->num_users = $request->num_users;
           $subscription->save();
+
           return redirect('/admin/subscription');
         }
 
@@ -131,6 +132,7 @@ class AdminSubscriptionController extends Controller
       {
         $subscription = subscription::find($id);
         $subscription->delete();
+        
         return redirect('/admin/subscription');
       }
 }

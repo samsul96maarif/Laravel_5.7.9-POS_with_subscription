@@ -14,7 +14,7 @@ class UpdatePaymentsTable extends Migration
     public function up()
     {
       Schema::table('payments', function (Blueprint $table) {
-        $table->string('proof')->nullable();
+        $table->integer('period')->default(1);
       });
     }
 
