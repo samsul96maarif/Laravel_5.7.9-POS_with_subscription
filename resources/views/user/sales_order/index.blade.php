@@ -6,16 +6,30 @@
 
 @section('content')
 
-  <div class="col-md-4 offset-md-8">
-    <form class="" action="/sales_order/search" method="get">
-      <div class="input-group mb-3">
-        <input type="search" name="q" class="form-control" placeholder="Search" aria-describedby="button-addon2" value="">
-        <div class="input-group-append">
-          <input id="button-addon2" class="btn btn-primary" type="submit" name="submit" value="Search">
+  @if (session('alert'))
+    <div class="alert alert-success">
+        {{ session('alert') }}
+    </div>
+  @endif
+
+  <div class="row">
+    <div class="col-md-4">
+      <form class="" action="/sales_order/create" method="get">
+        <input type="submit" name="submit" value="add sales order" class="btn btn-primary">
+      </form>
+    </div>
+    <div class="col-md-4 offset-md-4">
+      <form class="" action="/sales_order/search" method="get">
+        <div class="input-group mb-3">
+          <input type="search" name="q" class="form-control" placeholder="Search" aria-describedby="button-addon2" value="">
+          <div class="input-group-append">
+            <input id="button-addon2" class="btn btn-primary" type="submit" name="submit" value="Search">
+          </div>
         </div>
-      </div>
-    </form>
+      </form>
+    </div>
   </div>
+
 
   <table class="table">
   <thead>
@@ -36,7 +50,7 @@
     <tr>
         <th scope="row">{{ $i }}</th>
         <td>{{ $salesOrder->created_at }}</td>
-        <td> <a href="/sales_order/{{ $salesOrder->id }}">{{ $salesOrder->order_number }}</a></td>
+        <td> <a class="btn" href="/sales_order/{{ $salesOrder->id }}">{{ $salesOrder->order_number }}</a></td>
         @foreach ($invoices as $invoice)
           @if ($invoice->sales_order_id == $salesOrder->id)
             @foreach ($contacts as $contact)
@@ -57,7 +71,7 @@
             <div class="col text-left btn-kanan">
               <form class="" action="/sales_order/{{ $salesOrder->id }}/delete" method="post">
                 {{ method_field('DELETE') }}
-                <input type="submit" name="submit" value="delete" class="btn btn-outline-danger">
+                <input onclick="return confirm('Do you Wanna Delete {{ $salesOrder->order_number}}')" type="submit" name="submit" value="delete" class="btn btn-outline-danger">
                 {{ csrf_field() }}
               </form>
             </div>
@@ -70,10 +84,5 @@
   @endforeach
 </tbody>
 </table>
-
-  </table>
-  <form class="" action="/sales_order/create" method="get">
-    <input type="submit" name="submit" value="add sales order" class="btn btn-primary">
-  </form>
 
 @endsection

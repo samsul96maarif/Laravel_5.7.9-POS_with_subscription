@@ -50,6 +50,13 @@ class SalesOrderController extends Controller
       $items = item::all()->where('store_id', $store->id);
       $contacts = contact::all()->where('store_id', $store->id);
 
+      // tes javasript
+      // return view('tes/createInvoice',
+      // [
+      //   'items' => $items,
+      //   'contacts' => $contacts
+      // ]);
+      // end tes
       return view('user/sales_order/createInvoice',
       [
         'items' => $items,
@@ -66,9 +73,9 @@ class SalesOrderController extends Controller
       $salesOrders = salesOrder::all()->where('store_id', $store->id);
 
       $this->validate($request, [
-        'item_id' => 'required',
+        // 'item_id' => 'required',
         'quantity' => 'required|integer|min:1',
-        'contact_id' => 'required',
+        'contact' => 'required',
       ]);
 
       $i = 0;
@@ -80,6 +87,20 @@ class SalesOrderController extends Controller
         throw new \Exception("kuota sales order telah melebihi kapasitas, silahkan upgrade paket");
       }
 
+      dd($request->item);
+
+      // foreach ($items[] as $key) {
+        // code...
+      // }
+
+      // $finalValues = [];
+      // foreach ($prices as $i => $price) {
+      //   $finalValues[
+      //         "from" => $from[i];
+      //         "to" => $to[i];
+      //         "price" => $price;
+      // }
+
       $item = item::find($request->item_id);
 
       if ($request->quantity > $item->stock) {
@@ -89,6 +110,13 @@ class SalesOrderController extends Controller
 
       $price = $item->price;
       $total = $item->price*$request->quantity;
+
+      // mencari contact yang sesuai request
+      $contact = contact::where('name', $request->contact)->first();
+      if ($contact == null) {
+        throw new \Exception("kontak tidak ditemukan");
+      }
+      dd($contact);
 
       // sales order
       $salesOrder = new salesOrder;
@@ -124,7 +152,7 @@ class SalesOrderController extends Controller
       $item->stock = $item->stock - $request->quantity;
       $item->save();
 
-      return redirect('/sales_order');
+      return redirect('/sales_order')->with('alert', 'Succeed Add Invoice');
     }
 
     public function show($id)
@@ -171,7 +199,7 @@ class SalesOrderController extends Controller
       $invoice->contact_id = $request->contact_id;
       $invoice->save();
 
-      return redirect('/sales_order');
+      return redirect('/sales_order')->with('alert', 'Succeed Updated Invoice');
     }
 
     public function delete($id)
@@ -179,7 +207,7 @@ class SalesOrderController extends Controller
       $salesOrder = salesOrder::findOrFail($id);
       $salesOrder->delete();
 
-      return redirect('/sales_order');
+      return redirect('/sales_order')->with('alert', $salesOrder->name.' Deleted!');
     }
 
     public function search(Request $request)

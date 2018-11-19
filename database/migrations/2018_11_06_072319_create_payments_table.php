@@ -14,11 +14,17 @@ class CreatePaymentsTable extends Migration
     public function up()
     {
         Schema::create('payments', function (Blueprint $table) {
-            $table->increments('id');
-            $table->integer('uniq_code');
-            $table->integer('store_id')->unsigned();
-            $table->foreign('store_id')->references('id')->on('stores')->onDelete('cascade');
-            $table->timestamps();
+          $table->increments('id');
+          $table->integer('uniq_code');
+          $table->integer('store_id')->unsigned();
+          $table->foreign('store_id')->references('id')->on('stores')->onDelete('cascade');
+          $table->integer('subscription_id')->unsigned();
+          $table->foreign('subscription_id')->references('id')->on('subscriptions')->onDelete('cascade');
+          $table->string('proof')->nullable();
+          $table->integer('amount');
+          $table->boolean('paid')->default('0');
+          $table->integer('period')->default(1);
+          $table->timestamps();
         });
     }
 

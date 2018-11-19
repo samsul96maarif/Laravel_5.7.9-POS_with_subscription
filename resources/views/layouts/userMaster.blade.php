@@ -39,6 +39,9 @@
     {{-- css custome --}}
     <link href="{{ asset('css/master.css') }}" rel="stylesheet">
 
+    {{-- autocomplete --}}
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
     <title>@yield('title')</title>
   </head>
   <body>

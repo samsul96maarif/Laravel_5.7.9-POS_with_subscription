@@ -6,6 +6,12 @@
 
 @section('content')
 
+  @if (session('alert'))
+    <div class="alert alert-success">
+        {{ session('alert') }}
+    </div>
+  @endif
+
   <div class="col-md-4 offset-md-8">
     <form class="" action="/item/search" method="get">
       <div class="input-group mb-3">
@@ -49,7 +55,7 @@
             <div class="col text-left btn-kanan">
               <form class="" action="/item/{{ $item->id }}/delete" method="post">
                 {{ method_field('DELETE') }}
-                  <input class="btn btn-outline-danger" type="submit" name="submit" value="delete">
+                  <input onclick="return confirm('Do you wanna Delete {{ $item->name }}')" class="btn btn-outline-danger" type="submit" name="submit" value="delete">
                 {{ csrf_field() }}
               </form>
             </div>

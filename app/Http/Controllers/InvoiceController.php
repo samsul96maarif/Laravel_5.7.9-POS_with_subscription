@@ -44,31 +44,48 @@ class InvoiceController extends Controller
 
     public function store(Request $request)
     {
+      $user_id = Auth::id();
+      $store = store::where('user_id', $user_id)->first();
+
       $this->validate($request, [
         'item_id' => 'required',
         'quantity' => 'required|integer|min:1',
       ]);
 
       $item = item::find($request->item_id);
+      $salesOrder = salesOrder::findOrFail($request->sales_order);
+
+      $price = $item->price;
+      $total = $item->price*$request->quantity;
+
+      // mengecek apakah item sudah ada di invoice detail
+      $invoiceDetail = invoiceDetail::where('invoice_id', $request->invoice)
+        ->where('item_id', $item->id)->first();
+
+        if ($invoiceDetail != null) {
+          $invoiceDetail->item_quantity = $invoiceDetail->item_quantity + $request->quantity;
+          $invoiceDetail->total = $invoiceDetail->total + $total;
+          $invoiceDetail->save();
+          $message = $item->name.' telah ada dalam sales order '.$salesOrder->order_number.' qty  telah ditambahkan';
+        } else {
+          $invoiceDetail = new invoiceDetail;
+          $invoiceDetail->store_id = $store->id;
+          $invoiceDetail->invoice_id = $request->invoice;
+          $invoiceDetail->item_id = $request->item_id;
+          $invoiceDetail->item_price = $price;
+          $invoiceDetail->item_quantity = $request->quantity;
+          $invoiceDetail->total = $total;
+          $invoiceDetail->save();
+          $message = 'Succeed Updated Invoice';
+        }
 
       if ($request->quantity > $item->stock) {
         throw new \Exception("quantity lebih banyak dari stock barang");
         return redirect('/sales_order');
       }
 
-      $user_id = Auth::id();
-      $store = store::where('user_id', $user_id)->first();
-      $price = $item->price;
-      $total = $item->price*$request->quantity;
-
-      $invoiceDetail = new invoiceDetail;
-      $invoiceDetail->store_id = $store->id;
-      $invoiceDetail->invoice_id = $request->invoice;
-      $invoiceDetail->item_id = $request->item_id;
-      $invoiceDetail->item_price = $price;
-      $invoiceDetail->item_quantity = $request->quantity;
-      $invoiceDetail->total = $total;
-      $invoiceDetail->save();
+      // $price = $item->price;
+      // $total = $item->price*$request->quantity;
 
 // unutk menambahkan total dari semua invoice detail ke invoice dan sales order
       $total = 0;
@@ -80,15 +97,14 @@ class InvoiceController extends Controller
       $invoice = invoice::findOrFail($request->invoice);
       $invoice->total = $total;
       $invoice->save();
-
-      $salesOrder = salesOrder::findOrFail($request->sales_order);
+      // sales order
       $salesOrder->total = $total;
       $salesOrder->save();
 
       $item->stock = $item->stock - $request->quantity;
       $item->save();
 
-      return redirect('/sales_order');
+      return redirect('/sales_order')->with('alert', $message);
     }
 
     public function edit($salesOrder_id, $invoice_id, $invoiceDetail_id)
@@ -162,16 +178,14 @@ class InvoiceController extends Controller
       $salesOrder->total = $total;
       $salesOrder->save();
 
-      return redirect('/sales_order');
+      return redirect('/sales_order')->with('alert', 'Succeed Updated Invoice');
     }
 
     public function delete($salesOrder_id, $invoice_id, $invoiceDetail_id)
     {
       $invoiceDetail = invoiceDetail::findOrFail($invoiceDetail_id);
       $item = item::findOrFail($invoiceDetail->item_id);
-      // dd($item);
       $item->stock = $item->stock + $invoiceDetail->item_quantity;
-      // dd($item->stock);
       $item->save();
       $invoiceDetail->delete();
 // unutk menambahkan total dari semua invoice detail ke invoice dan sales order
@@ -189,6 +203,6 @@ class InvoiceController extends Controller
       $salesOrder->total = $total;
       $salesOrder->save();
 
-      return redirect('/sales_order');
+      return redirect('/sales_order')->with('alert', 'Succeed Updated Invoice');
     }
 }

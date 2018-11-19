@@ -7,35 +7,10 @@
 @section('content')
 
   <div class="row">
-    {{-- <div class="col-md-4">
-      <div class="card md">
-        <div class="card-header">
-          appears according to package subscription
-        </div>
-        <div class="card-body">
-          <form class="" action="/admin/store" method="post">
-            <div class="row">
-              <div class="col">
-                <select class="form-control" name="filter">
-                  @foreach ($subscriptions as $subscription)
-                    <option value={{ $subscription->id }}>{{ $subscription->name }}</option>
-                  @endforeach
-                </select>
-              </div>
-              <div class="col-md-4">
-                <input class="btn btn-primary" type="submit" name="submit" value="Search">
-              </div>
-            </div>
-            {{ csrf_field() }}
-          </form>
-        </div>
-      </div>
-    </div> --}}
-
     <div class="col-md-4 offset-md-8">
       <form class="" action="/admin/payment/search" method="get">
         <div class="input-group mb-3">
-          <input type="search" name="q" class="form-control" placeholder="Search Unique Code" aria-describedby="button-addon2" value="">
+          <input type="search" name="q" class="form-control" placeholder="Type last 3 digit of amount" aria-describedby="button-addon2" value="">
           <div class="input-group-append">
             <input id="button-addon2" class="btn btn-primary" type="submit" name="submit" value="Search">
           </div>
@@ -52,6 +27,7 @@
       <th>#</th>
       <th>Proof</th>
       <th>Unique Code</th>
+      <th>Amount</th>
       <th>Store Name</th>
       <th>Package Subscription</th>
       <th>Action</th>
@@ -70,6 +46,8 @@
             {{-- uniq code adalah 3 digit terakhir dari transfer --}}
             <td>{{ $payment->uniq_code }}</td>
           @endif
+
+          <td>{{ number_format($payment->amount,2,",",".") }}</td>
 
           @foreach ($stores as $store)
             @if ($payment->store_id == $store->id)
@@ -95,7 +73,7 @@
                             {{ method_field('PUT') }}
                             {{-- rencananya expire date bisa docustome ingin
                             menambah berapa bulan --}}
-                            <input type="text" name="expire_date" value="30" hidden>
+                            <input type="text" name="period" value="{{ $payment->period }}" hidden>
                             <input class="btn btn-warning" type="submit" name="submit" value="extend period">
                             {{ csrf_field() }}
                           </form>

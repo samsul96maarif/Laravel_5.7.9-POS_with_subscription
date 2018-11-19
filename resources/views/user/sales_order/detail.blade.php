@@ -73,7 +73,7 @@
                   <div class="col text-left btn-kanan">
                     <form class="" action="/sales_order/{{ $salesOrder->id }}/invoice/{{ $invoice->id }}/invoice_detail/{{ $invoiceDetail->id }}/delete" method="post">
                       {{ method_field('DELETE') }}
-                      <input class="btn btn-outline-danger" type="submit" name="submit" value="delete">
+                      <input onclick="return confirm('Do you wanna delete {{ $item->name }} from invoice?')" class="btn btn-outline-danger" type="submit" name="submit" value="delete">
                       {{ csrf_field() }}
                     </form>
                   </div>
