@@ -97,7 +97,12 @@
 
               {{-- $store->subscription_id == $subscription->id --}}
             @else
-              <a onclick="return myFunction()" class="btn btn-lg btn-block btn-outline-primary" href="/subscription/{{ $subscription->id }}/detail">buy</a>
+              {{-- bila sudah memiliki subscription maka akan muncul alert --}}
+              @if ($store->subscription_id != null)
+                <a onclick="return myFunction()" class="btn btn-lg btn-block btn-outline-primary" href="/subscription/{{ $subscription->id }}/detail">buy</a>
+              @else
+                <a class="btn btn-lg btn-block btn-outline-primary" href="/subscription/{{ $subscription->id }}/detail">buy</a>
+              @endif
             @endif
             {{-- <div class="card-body"> --}}
           </div>
