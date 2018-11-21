@@ -47,7 +47,7 @@
             <td>{{ $payment->uniq_code }}</td>
           @endif
 
-          <td>{{ number_format($payment->amount,2,",",".") }}</td>
+          <td>Rp.{{ number_format($payment->amount,2,",",".") }}</td>
 
           @foreach ($stores as $store)
             @if ($payment->store_id == $store->id)

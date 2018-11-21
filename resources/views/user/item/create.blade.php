@@ -6,6 +6,10 @@
 
 @section('content')
 
+  @if (session()->has('success'))
+    <div class="alert alert-info">{{ session('success') }}</div>
+  @endif
+
   <div class="row justify-content-center">
     <div class="col-md-6">
       <div class="card">

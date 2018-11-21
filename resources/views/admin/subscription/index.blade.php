@@ -23,7 +23,7 @@
         <tr>
           <th scope="row">{{ $i }}</th>
           <td><a class="btn" href="/admin/subscription/{{ $subscription->id }}">{{ $subscription->name }}</a></td>
-          <td>{{ $subscription->price }}</td>
+          <td>Rp.{{ number_format($subscription->price,2,",",".") }}</td>
           <td>{{ $subscription->num_invoices }}</td>
           <td>{{ $subscription->num_users }}</td>
           <td>

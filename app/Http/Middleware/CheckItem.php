@@ -31,6 +31,6 @@ class CheckItem
         if ($i > 0) {
           return $next($request);
         }
-        return redirect('/item/create');
+        return redirect('/item/create')->withSuccess('please create item, that you wanna sale before create sales order.');
     }
 }

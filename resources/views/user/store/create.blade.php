@@ -6,6 +6,10 @@
 
 @section('content')
 
+  @if (session()->has('success'))
+    <div class="alert alert-info">{{ session('success') }}</div>
+  @endif
+
   <form class="" action="/store" method="post" value="post" enctype="multipart/form-data">
       <div class="row">
         <div class="col-md-2">

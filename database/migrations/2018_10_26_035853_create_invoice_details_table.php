@@ -22,7 +22,7 @@ class CreateInvoiceDetailsTable extends Migration
           $table->integer('item_id')->unsigned();
           $table->foreign('item_id')->references('id')->on('items')->onDelete('cascade');
           $table->integer('item_price');
-          $table->integer('item_quantity');
+          $table->integer('item_quantity')->default(1);
           $table->integer('total');
           $table->timestamps();
           $table->softDeletes();

@@ -19,11 +19,12 @@ class RedirectIfAuthenticated
     public function handle($request, Closure $next, $guard = null)
     {
         if (Auth::guard($guard)->check()) {
-          // dd(Auth::user()->isAdmin());
+          // periksa apakah admin
             if (Auth::user()->isAdmin()) {
               return redirect('/admin');
             }
-            return redirect('/user');
+            // return redirect('/user');
+            return redirect('/home');
         }
 
         return $next($request);

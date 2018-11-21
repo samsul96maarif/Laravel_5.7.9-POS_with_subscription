@@ -6,6 +6,10 @@
 
 @section('content')
 
+  @if (session()->has('success'))
+    <div class="alert alert-info">{{ session('success') }}</div>
+  @endif
+
   <div class="card shadow-sm">
     <div class="card-header">
 
