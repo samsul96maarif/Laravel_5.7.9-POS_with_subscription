@@ -62,7 +62,7 @@ class BaseController extends Controller
     {
       $user = Auth::user();
       $store = store::where('user_id', $user->id)->first();
-
+// dd($store);
       if($request->get('query'))
       {
         $query = $request->get('query');

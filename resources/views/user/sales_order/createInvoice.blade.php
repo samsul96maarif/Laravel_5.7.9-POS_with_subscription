@@ -6,12 +6,12 @@
 
 @section('content')
 
-  <span>
+  {{-- <span>
     <input type="text" name="item" id="item_name" class="item_name form-control input-lg" placeholder="Search Item..." />
   </span>
   <span id="item_list">
   </span>
-  <br>
+  <br> --}}
 
   <script type="text/javascript">
 
@@ -64,10 +64,11 @@
       $(document).on('click', '.item-list', function(){
         $('#item_name').val($(this).text());
 
-        // $("div.item").append('<input type="text" name="item[]" class="item form-control"><br><br>');
-        $('#tambah-item').append('<div class="row"><div class="col-md-8"><input class="form-control" type="text" name="item[]" value="" placeholder=""></div><div class="col"><input class="form-control col" type="number" name="quantity[]" min="1" placeholder="Qty" min="1"></div></div><br>');
+        $('#tambah-item').append('<div class="row"><div class="col-md-8"><input class="form-control" type="text" name="item[]" value="" placeholder=""></div><div class="col"><input class="form-control col" type="number" name="quantity[]" min="1" placeholder="Qty" value="1" min="1"></div></div><br>');
 
         $('input[name="item[]"]:last').val($(this).text());
+
+        $('#item_name').val('');
 
         $('#item_list').fadeOut();
       });
@@ -76,11 +77,6 @@
         $('#item_list').fadeOut();
       });
       //end auto complete item
-
-      $('#tambah').click(function(){
-        $('div.tambah').prepend('<input type="text" name="item[]" class="item_name form-control input-lg" placeholder="Search Item..." /><br>');
-      });
-
 
     });
   </script>
@@ -107,14 +103,33 @@
                 @endif
               </div>
             </div>
+
+            <button type="button" name="button" id="add-contact">add new contact</button>
+
             <div class="row item">
               <div class="col">
                 <label class="col-form-label" for="">Item</label>
               </div>
             </div>
+            <input type="text" name="item_name" id="item_name" class="item_name form-control input-lg" placeholder="Search Item..." />
+            <span id="item_list">
+            </span>
+            {{-- error item --}}
+            @if($errors->has('item'))
+              <p>{{ $errors->first('item') }}</p>
+            @endif
+            {{-- error qty --}}
+            @if($errors->has('quantity'))
+              <p>{{ $errors->first('quantity') }}</p>
+            @endif
+
+            <br>
+
+            {{-- tempat unutk append input item --}}
             <div class="" id="tambah-item">
 
             </div>
+
             {{-- <div class="row">
               <div class="col-md-8"> --}}
 
@@ -137,13 +152,6 @@
               </div>
             </div>
             <br> --}}
-            {{-- tombol untuk tambah item --}}
-            <div class="tambah">
-
-            </div>
-            <button type="button" id="tambah" name="button">tambah item</button>
-
-            <br><br>
 
             <input class="btn btn-primary" type="submit" name="submit" value="create">
             {{ csrf_field() }}

@@ -40,11 +40,9 @@ class ContactController extends Controller
       }
       else{
           $res['message'] = "Empty!";
+          $res['values'] = $data;
           // return response($res);
       }
-
-      // dd($res);
-
       $contacts = json_decode($res['values']);
 
       return view('user/contact/index', ['contacts' => $contacts]);
