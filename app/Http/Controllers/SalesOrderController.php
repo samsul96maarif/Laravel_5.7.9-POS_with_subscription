@@ -81,12 +81,61 @@ class SalesOrderController extends Controller
       // memanggil semua sales order unutk dihitung
       // sudah berapa sales order yang dimiliki store
       $salesOrders = salesOrder::all()->where('store_id', $store->id);
+      // memanggil semua contact unutk dihitung
+      // sudah berapa contact yang dimiliki store
+      $contacts = contact::all()->where('store_id', $store->id);
+
+      if ($request->name == null) {
+
+        $this->validate($request, [
+          'contact' => 'required',
+        ]);
+
+        // mencari contact yang sesuai request
+        $contact = contact::where('name', $request->contact)->first();
+        if ($contact == null) {
+          throw new \Exception("kontak tidak ditemukan");
+        }
+      } else {
+        $this->validate($request, [
+          'name' => 'required',
+        ]);
+
+        if ($request->phone != null) {
+          $this->validate($request, [
+            'phone' => 'numeric',
+          ]);
+        }
+
+        if ($request->email != null) {
+          $this->validate($request, [
+            'email' => 'string|email|max:255|unique:users',
+          ]);
+        }
+        // mengcek apakah contact ovelrload dari package
+        $i = 0;
+        foreach ($contacts as $key) {
+          $i++;
+        }
+
+        if ($i >= $subscription->num_users) {
+          throw new \Exception("kuota sales order telah melebihi kapasitas, silahkan upgrade paket");
+        }
+
+        $contact = new contact;
+        $contact->store_id = $store->id;
+        $contact->name = $request->name;
+        $contact->phone = $request->phone;
+        $contact->company_name = $request->company_name;
+        $contact->email = $request->email;
+        $contact->save();
+      }
 
       $this->validate($request, [
-        // 'item_id' => 'required',
-        // 'quantity' => 'required|integer|min:1',
-        'contact' => 'required',
+        'item' => 'required',
+        'quantity' => 'required|min:1',
       ]);
+
       // menghitung jumlah sales order
       $i = 0;
       foreach ($salesOrders as $key) {
@@ -96,12 +145,6 @@ class SalesOrderController extends Controller
       if ($i >= $subscription->num_invoices) {
         throw new \Exception("kuota sales order telah melebihi kapasitas, silahkan upgrade paket");
       }
-
-    // mencari contact yang sesuai request
-    $contact = contact::where('name', $request->contact)->first();
-    if ($contact == null) {
-      throw new \Exception("kontak tidak ditemukan");
-    }
 
     $count = count($request->item);
     $total = 0;
@@ -136,23 +179,39 @@ class SalesOrderController extends Controller
       $invoice->total = $total;
       $invoice->number = 'INV-'.$invoice->id;
       $invoice->save();
+
       // pembuatan invoice detail
       for ($i=0; $i < $count; $i++) {
         $item = item::where('name', $request->item[$i])->first();
-        // invoice detail
-        $invoiceDetail = new invoiceDetail;
-        $invoiceDetail->store_id = $store->id;
-        $invoiceDetail->invoice_id = $invoice->id;
-        $invoiceDetail->item_id = $item->id;
-        $invoiceDetail->item_price = $item->price;
-        $invoiceDetail->item_quantity = $request->quantity[$i];
-        $invoiceDetail->total = $item->price*$request->quantity[$i];
-        $invoiceDetail->save();
+        // mengecek apakah item sudah ada di invoice detail
+        $invoiceDetail = invoiceDetail::where('invoice_id', $invoice->id)
+        ->where('item_id', $item->id)->first();
+
+        if ($invoiceDetail != null) {
+          $price = $item->price;
+          $total = $item->price*$request->quantity[$i];
+
+          $invoiceDetail->item_quantity = $invoiceDetail->item_quantity + $request->quantity[$i];
+          $invoiceDetail->total = $invoiceDetail->total + $total;
+          $invoiceDetail->save();
+          $message = $item->name.' telah ada dalam sales order '.$salesOrder->order_number.' qty  telah ditambahkan';
+        } else {
+          // invoice detail
+          $invoiceDetail = new invoiceDetail;
+          $invoiceDetail->store_id = $store->id;
+          $invoiceDetail->invoice_id = $invoice->id;
+          $invoiceDetail->item_id = $item->id;
+          $invoiceDetail->item_price = $item->price;
+          $invoiceDetail->item_quantity = $request->quantity[$i];
+          $invoiceDetail->total = $item->price*$request->quantity[$i];
+          $invoiceDetail->save();
+        }
 
         $item->stock = $item->stock - $request->quantity[$i];
         $item->save();
       }
 
+      return redirect()->route('sales_order_bill', ['id' => $salesOrder->id]);
       return redirect('/sales_order')->with('alert', 'Succeed Add Invoice');
     }
 
@@ -167,6 +226,26 @@ class SalesOrderController extends Controller
       $invoiceDetails = invoiceDetail::all()->where('invoice_id', $invoice->id);
 
       return view('user/sales_order/detail',
+      [
+        'items' => $items,
+        'contacts' =>$contacts,
+        'salesOrder' => $salesOrder,
+        'invoice' => $invoice,
+        'invoiceDetails' => $invoiceDetails
+      ]);
+    }
+
+    public function bill($id)
+    {
+      $user_id = Auth::id();
+      $store = store::where('user_id', $user_id)->first();
+      $salesOrder = salesOrder::findOrFail($id);
+      $items = item::all()->where('store_id', $store->id);
+      $contacts = contact::all()->where('store_id', $store->id);
+      $invoice = invoice::where('sales_order_id', $salesOrder->id)->first();
+      $invoiceDetails = invoiceDetail::all()->where('invoice_id', $invoice->id);
+
+      return view('user/sales_order/bill',
       [
         'items' => $items,
         'contacts' =>$contacts,
@@ -192,14 +271,21 @@ class SalesOrderController extends Controller
 
     public function update(Request $request, $id)
     {
+      // mencari contact yang sesuai request
+      $contact = contact::where('name', $request->contact)->first();
+      if ($contact == null) {
+        throw new \Exception("kontak tidak ditemukan");
+      }
+
       $salesOrder = salesOrder::findOrFail($id);
-      $salesOrder->contact_id = $request->contact_id;
+      $salesOrder->contact_id = $contact->id;
       $salesOrder->save();
 
       $invoice = invoice::where('sales_order_id', $salesOrder->id)->first();
-      $invoice->contact_id = $request->contact_id;
+      $invoice->contact_id = $contact->id;
       $invoice->save();
 
+      return redirect()->route('sales_order_bill', ['id' => $salesOrder->id]);
       return redirect('/sales_order')->with('alert', 'Succeed Updated Invoice');
     }
 

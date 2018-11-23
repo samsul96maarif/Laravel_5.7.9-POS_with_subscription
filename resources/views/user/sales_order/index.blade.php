@@ -49,8 +49,8 @@
   @foreach ($salesOrders as $salesOrder)
     <tr>
         <th scope="row">{{ $i }}</th>
-        <td>{{ $salesOrder->created_at }}</td>
-        <td> <a class="btn" href="/sales_order/{{ $salesOrder->id }}">{{ $salesOrder->order_number }}</a></td>
+        <td>{{ date('d-m-Y', strtotime($salesOrder->created_at)) }}</td>
+        <td> <a class="btn" href="/sales_order/{{ $salesOrder->id }}/detail">{{ $salesOrder->order_number }}</a></td>
         @foreach ($invoices as $invoice)
           @if ($invoice->sales_order_id == $salesOrder->id)
             @foreach ($contacts as $contact)
@@ -62,20 +62,11 @@
         @endforeach
         <td>Rp.{{ $salesOrder->total }}</td>
         <td>
-          <div class="row">
-            <div class="col text-right btn-kiri">
-              <form class="" action="/sales_order/{{ $salesOrder->id }}" method="get">
-                <input type="submit" name="submit" value="edit" class="btn btn-outline-primary">
-              </form>
-            </div>
-            <div class="col text-left btn-kanan">
-              <form class="" action="/sales_order/{{ $salesOrder->id }}/delete" method="post">
-                {{ method_field('DELETE') }}
-                <input onclick="return confirm('Do you Wanna Delete {{ $salesOrder->order_number}}')" type="submit" name="submit" value="delete" class="btn btn-outline-danger">
-                {{ csrf_field() }}
-              </form>
-            </div>
-          </div>
+          <form class="" action="/sales_order/{{ $salesOrder->id }}/delete" method="post">
+            {{ method_field('DELETE') }}
+            <input onclick="return confirm('Do you Wanna Delete {{ $salesOrder->order_number}}')" type="submit" name="submit" value="delete" class="btn btn-outline-danger">
+            {{ csrf_field() }}
+          </form>
         </td>
         @php
           $i++;
