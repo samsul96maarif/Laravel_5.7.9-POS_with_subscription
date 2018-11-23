@@ -45,7 +45,11 @@
             </div>
             <br>
             <div class="row">
-              <div class="col-md-6">
+              <div class="col-md-2 btn-kiri">
+                <input class="form-control" type="text" name="" value="Rp." readonly>
+              </div>
+              {{-- <label for="price" class=" col-form-label text-md-right">Rp.</label> --}}
+              <div class="col-md-6 btn-kanan">
                 <input class="form-control" type="number" name="price" value="{{ old('price') }}" placeholder="price ex:1000" min="1">
                 @if($errors->has('price'))
                   <p>{{ $errors->first('price') }}</p>

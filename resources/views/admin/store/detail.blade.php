@@ -6,6 +6,10 @@
 
 @section('content')
 
+  @if (session()->has('success'))
+    <div class="alert alert-success">{{ session('success') }}</div>
+  @endif
+
   <div class="row justify-content-center">
     <div class="col-md-6">
       <div class="card">
@@ -149,7 +153,8 @@
             @endif
           </div>
           <br>
-          <div class="row">
+          {{-- tombol ini disembunyikan fungsi dialihkan ke page payment --}}
+          {{-- <div class="row">
             @if ($store->status > 0)
               <div class="col text-right">
                 <form class="" action="/admin/store/{{ $store->id }}/extend" method="post">
@@ -179,7 +184,7 @@
             @else
 
             @endif
-          </div>
+          </div> --}}
 
         </div>
       </div>

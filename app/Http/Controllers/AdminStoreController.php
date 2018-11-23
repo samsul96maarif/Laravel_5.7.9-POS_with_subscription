@@ -80,6 +80,9 @@ class AdminStoreController extends Controller
       if ($store->status == 1) {
         $payment = payment::where('store_id', $store->id)
           ->where('paid', 0)->first();
+
+        $subscription = subscription::findOrFail($payment->subscription_id);
+
         $addDays = $payment->period * 30;
         $store->expire_date = Carbon::now()->addDays($addDays);
         $payment->paid = 1;
@@ -92,7 +95,7 @@ class AdminStoreController extends Controller
       }
 
       $store->save();
-      return redirect('/admin/payment');
+      return redirect()->route('admin.store.detail', ['id' => $store->id])->withSuccess('activate package '.$subscription->name.' for '.$store->name.' succeed');
     }
 
     // fungsi untuk menambah masa aktif package subscription
