@@ -42,7 +42,7 @@
               <label for="" class="col-form-label">Store Name</label>
             </div>
             <div class="col-md-6">
-              <a class="btn btn-lg" href="/admin/store/{{ $store->id }}">{{ $store->name }}</a>
+              <a onclick="return confirm('Do you wanna leave this page')" class="btn btn-lg" href="/admin/store/{{ $store->id }}">{{ $store->name }}</a>
             </div>
           </div>
           <div class="row justify-content-center">
@@ -50,7 +50,7 @@
               <label for="" class="col-form-label">Package Subscription</label>
             </div>
             <div class="col-md-6">
-              <a class="btn btn-lg" href="/admin/subscription/{{ $subscription->id }}">{{ $subscription->name }}</a>
+              <a onclick="return confirm('Do you wanna leave this page')" class="btn btn-lg" href="/admin/subscription/{{ $subscription->id }}">{{ $subscription->name }}</a>
             </div>
           </div>
           <br>
@@ -60,7 +60,7 @@
                 <form class="" action="/admin/store/{{ $store->id }}/extend" method="post">
                   {{ method_field('PUT') }}
                   <input type="text" name="period" value="{{ $payment->period }}" hidden>
-                  <input class="btn btn-primary" type="submit" name="submit" value="extend period">
+                  <input onclick="return confirm('Do you wanna extend package {{ $subscription->name }} for {{ $store->name }}')" class="btn btn-primary" type="submit" name="submit" value="extend period">
                   {{ csrf_field() }}
                 </form>
               </div>
@@ -69,7 +69,7 @@
                 <form class="" action="/admin/store/{{ $store->id }}" method="post">
                   {{ method_field('PUT') }}
                   <input type="text" name="status" value="1" hidden>
-                  <input class="btn btn-primary" type="submit" name="submit" value="activate">
+                  <input onclick="return confirm('Do you wanna activate package {{ $subscription->name }} for {{ $store->name }}')" class="btn btn-primary" type="submit" name="submit" value="activate">
                   {{ csrf_field() }}
                 </form>
               </div>

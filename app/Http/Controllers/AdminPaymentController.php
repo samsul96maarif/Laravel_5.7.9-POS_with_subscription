@@ -71,4 +71,22 @@ class AdminPaymentController extends Controller
         'users' => $users
       ]);
     }
+
+    public function paid($value='')
+    {
+      $stores = store::all();
+      $subscriptions = subscription::all();
+      $users = user::all();
+      $payments = payment::all()
+      ->where('proof', '!=' , null)
+      ->where('paid', 0);
+
+      return view('admin/payment/index',
+      [
+        'payments' => $payments,
+        'stores' => $stores,
+        'subscriptions' => $subscriptions,
+        'users' => $users
+      ]);
+    }
 }
