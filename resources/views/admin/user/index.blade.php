@@ -2,20 +2,59 @@
 
 @section('title', 'Users')
 
-@section('headline', 'Customers')
+@section('headline', 'Users')
 
 @section('content')
 
+  <script type="text/javascript">
+
+  // autocomplete user
+    $(document).ready(function(){
+
+      $('#user_name').keyup(function(){
+        var query = $(this).val();
+        if(query != '')
+        {
+          $.ajax({
+            url:"{{ route('autocomplete.fetch.user') }}",
+            data:{query:query},
+            delay: 250,
+            success:function(data){
+              $('#user_list').fadeIn();
+              $('#user_list').html(data);
+            }
+          });
+        }
+      });
+
+      $(document).on('click', '.contact-list', function(){
+        $('#user_name').val($(this).text());
+        $('#user_list').fadeOut();
+      });
+
+      $(document).on('click', 'body', function(){
+        $('#user_list').fadeOut();
+      });
+      // end autocomplete user
+
+    });
+  </script>
+
   <div class="col-md-4 offset-md-8">
     <form class="" action="/admin/user/search" method="get">
-      <div class="input-group mb-3">
-        <input type="search" name="q" class="form-control" placeholder="Search" aria-describedby="button-addon2" value="">
+      <div class="input-group mb-3" style="margin-bottom:0!important;">
+        <span>
+          <input type="text" name="q" id="user_name" class="form-control" aria-describedby="button-addon2" autocomplete="off" placeholder="Search User..." />
+        </span>
         <div class="input-group-append">
           <input id="button-addon2" class="btn btn-primary" type="submit" name="submit" value="Search">
         </div>
       </div>
+      <span id="user_list">
+      </span>
     </form>
   </div>
+<br>
 
 @php
   $i=1;

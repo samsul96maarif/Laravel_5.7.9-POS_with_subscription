@@ -62,7 +62,7 @@ class BaseController extends Controller
     {
       $user = Auth::user();
       $store = store::where('user_id', $user->id)->first();
-// dd($store);
+      
       if($request->get('query'))
       {
         $query = $request->get('query');
@@ -74,8 +74,59 @@ class BaseController extends Controller
         $output = '<div class="dropdown-menu" style="display:block; position:relative">';
         foreach($data as $row)
         {
+          // tampilan yang ada harganya
+          // $output .= '
+          // <span class="btn item-list dropdown-item">'.$row->name.' = Rp.'.number_format($row->price,2,",",".").'</span>
+          // ';
           $output .= '
           <span class="btn item-list dropdown-item">'.$row->name.'</span>
+          ';
+        }
+        $output .= '</div>';
+        echo $output;
+      }
+
+    }
+
+    function fetchStore(Request $request)
+    {
+
+      if($request->get('query'))
+      {
+        $query = $request->get('query');
+        $data = DB::table('stores')
+        ->where('name', 'LIKE', "%{$query}%")
+        ->get();
+
+        $output = '<div class="dropdown-menu" style="display:block; position:relative">';
+        foreach($data as $row)
+        {
+          $output .= '
+          <span class="btn contact-list dropdown-item">'.$row->name.'</span>
+          ';
+        }
+        $output .= '</div>';
+        echo $output;
+      }
+
+    }
+
+    function fetchUser(Request $request)
+    {
+
+      if($request->get('query'))
+      {
+        $query = $request->get('query');
+        $data = DB::table('users')
+        ->where('name', 'LIKE', "%{$query}%")
+        ->where('role', 0)
+        ->get();
+
+        $output = '<div class="dropdown-menu" style="display:block; position:relative">';
+        foreach($data as $row)
+        {
+          $output .= '
+          <span class="btn contact-list dropdown-item">'.$row->name.'</span>
           ';
         }
         $output .= '</div>';

@@ -54,7 +54,7 @@
       <tr>
           <th scope="row">{{ $i }}</th>
           <td>{{ $customer->name }}</td>
-          <td>Rp.{{ $customer->total }}</td>
+          <td>Rp.{{ number_format($customer->total,2,",",".") }}</td>
           @php
             $total = $customer->total + $total;
             $i++;
@@ -72,7 +72,7 @@
     <tr>
       <th>Total</th>
       <td></td>
-      <td>Rp.{{ $total }}</td>
+      <td>Rp.{{ number_format($total,2,",",".") }}</td>
     </tr>
   </tbody>
   </table>

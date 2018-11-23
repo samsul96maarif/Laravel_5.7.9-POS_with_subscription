@@ -6,6 +6,40 @@
 
 @section('content')
 
+  <script type="text/javascript">
+
+  // autocomplete contact
+    $(document).ready(function(){
+
+      $('#store_name').keyup(function(){
+        var query = $(this).val();
+        if(query != '')
+        {
+          $.ajax({
+            url:"{{ route('autocomplete.fetch.store') }}",
+            data:{query:query},
+            delay: 250,
+            success:function(data){
+              $('#store_list').fadeIn();
+              $('#store_list').html(data);
+            }
+          });
+        }
+      });
+
+      $(document).on('click', '.contact-list', function(){
+        $('#store_name').val($(this).text());
+        $('#store_list').fadeOut();
+      });
+
+      $(document).on('click', 'body', function(){
+        $('#store_list').fadeOut();
+      });
+      // end autocomplete store
+
+    });
+  </script>
+
   <div class="row">
     <div class="col-md-4">
       <div class="card md">
@@ -32,12 +66,16 @@
 
     <div class="col-md-4 offset-md-4">
       <form class="" action="/admin/store/search" method="get">
-        <div class="input-group mb-3">
-          <input type="search" name="q" class="form-control" placeholder="Search" aria-describedby="button-addon2" value="">
+        <div class="input-group mb-3" style="margin-bottom:0!important;">
+          <span>
+            <input type="text" name="q" id="store_name" class="form-control" aria-describedby="button-addon2" autocomplete="off" placeholder="Search Store..." />
+          </span>
           <div class="input-group-append">
             <input id="button-addon2" class="btn btn-primary" type="submit" name="submit" value="Search">
           </div>
         </div>
+        <span id="store_list">
+        </span>
       </form>
     </div>
   </div>
@@ -85,7 +123,7 @@
             @else
               <td>active</td>
             @endif
-            <td>{{ $store->expire_date }}</td>
+            <td>{{ date('d-m-Y', strtotime($store->expire_date)) }}</td>
 
             {{-- <td>
               @if ($store->status == 0)

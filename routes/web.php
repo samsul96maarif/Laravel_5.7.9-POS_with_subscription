@@ -156,7 +156,8 @@ Route::get('/sales_order/search', 'SalesOrderController@search');
 Route::get('/sales_order/create', 'SalesOrderController@create');
 Route::post('/sales_order', 'SalesOrderController@store');
 // lihat detail
-Route::get('/sales_order/{id}', 'SalesOrderController@show');
+Route::get('/sales_order/{id}/detail', 'SalesOrderController@show')->name('sales_order_detail');
+Route::get('/sales_order/{id}', 'SalesOrderController@bill')->name('sales_order_bill');
 // edit sales order
 Route::get('/sales_order/{id}/edit', 'SalesOrderController@edit');
 Route::put('/sales_order/{id}', 'SalesOrderController@update');
@@ -165,9 +166,13 @@ Route::delete('sales_order/{id}/delete', 'SalesOrderController@delete');
 
 //tambah detail invoice
 Route::get('/sales_order/{salesOrder_id}/invoice/{invoice_id}/create', 'InvoiceController@create');
-Route::post('/sales_order/{id}/invoice', 'InvoiceController@store');
+Route::post('/sales_order/{salesOrder_id}/invoice/{invoice_id}/add_item', 'InvoiceController@store');
 //edit detail invoice
 Route::get('/sales_order/{salesOrder_id}/invoice/{invoice_id}/invoice_detail/{invoiceDetail_id}/edit', 'InvoiceController@edit');
+//decrease qty item
+Route::put('/sales_order/{salesOrder_id}/invoice/{invoice_id}/invoice_detail/{invoiceDetail_id}/decrease', 'InvoiceController@decrease');
+//increase qty item
+Route::put('/sales_order/{salesOrder_id}/invoice/{invoice_id}/invoice_detail/{invoiceDetail_id}/increase', 'InvoiceController@increase');
 Route::put('/invoice/{invoice_id}/invoice_detail/{invoiceDetail_id}', 'InvoiceController@update');
 // delete
 Route::delete('/sales_order/{salesOrder_id}/invoice/{invoice_id}/invoice_detail/{invoiceDetail_id}/delete', 'InvoiceController@delete');
@@ -199,3 +204,5 @@ Route::get('/autoload', 'BaseController@index');
 Route::get('/autoload/cari', 'BaseController@loadData')->name('autocomplete.cari');
 Route::get('/autocomplete/fetch', 'BaseController@fetch')->name('autocomplete.fetch');
 Route::get('/autocomplete/fetch/item', 'BaseController@fetchItem')->name('autocomplete.fetch.item');
+Route::get('/autocomplete/fetch/store', 'BaseController@fetchStore')->name('autocomplete.fetch.store');
+Route::get('/autocomplete/fetch/user', 'BaseController@fetchUser')->name('autocomplete.fetch.user');

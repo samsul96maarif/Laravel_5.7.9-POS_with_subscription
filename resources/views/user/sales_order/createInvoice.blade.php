@@ -6,18 +6,10 @@
 
 @section('content')
 
-  {{-- <span>
-    <input type="text" name="item" id="item_name" class="item_name form-control input-lg" placeholder="Search Item..." />
-  </span>
-  <span id="item_list">
-  </span>
-  <br> --}}
-
   <script type="text/javascript">
 
-  // autocomplete contact
     $(document).ready(function(){
-
+      // autocomplete contact
       $('#contact_name').keyup(function(){
         var query = $(this).val();
         if(query != '')
@@ -60,23 +52,37 @@
           });
         }
       });
-
+      // unutk mengambil nilai dari atuocomplete
       $(document).on('click', '.item-list', function(){
         $('#item_name').val($(this).text());
-
-        $('#tambah-item').append('<div class="row"><div class="col-md-8"><input class="form-control" type="text" name="item[]" value="" placeholder=""></div><div class="col"><input class="form-control col" type="number" name="quantity[]" min="1" placeholder="Qty" value="1" min="1"></div></div><br>');
-
+        // menambahkan tag dan isi kedalam div yang telah disediakan
+        $('#tambah-item').append('<div class="row"><div class="col-md-5"><input class="form-control" type="text" name="item[]" value="" placeholder=""></div><div class="col-md-2"><input class="form-control" type="number" name="quantity[]" min="1" placeholder="Qty" value="1" min="1"></div><div class="col"><button class="btn btn-sm btn-danger" type="button" id="delete" name="delete">delete</button></div></div><br>');
+        // mengambil nilai dari autocompleate kedalam tag yang baru saja dibuat
         $('input[name="item[]"]:last').val($(this).text());
-
+        // membuat isi Search pada autocomplete kosong
         $('#item_name').val('');
-
+        // menutup daftar list yang sesuai dengan keyword
         $('#item_list').fadeOut();
       });
-
+      // menutup list auto complete
       $(document).on('click', 'body', function(){
         $('#item_list').fadeOut();
       });
       //end auto complete item
+
+      // delete item list
+      $(document).on('click', '#delete', function(){
+        // mengahpus br
+        $(this).parent().parent().next().remove();
+        // menghapus div row
+        $(this).parent().parent().remove();
+      });
+
+      // add new contact
+      $('.hidden').hide();
+      $('#add-contact').click(function(){
+        $('.hidden').toggle();
+      });
 
     });
   </script>
@@ -91,10 +97,11 @@
                 <label class="col-form-label" for="">Customer</label>
               </div>
             </div>
+            {{-- autocomplete contaact --}}
             <div class="row">
               <div class="col">
                 <span>
-                  <input type="text" name="contact" id="contact_name" class="form-control" placeholder="Search Contact..." />
+                  <input type="text" name="contact" id="contact_name" class="form-control" autocomplete="off" placeholder="Search Contact..." />
                 </span>
                 <span id="contact_list">
                 </span>
@@ -103,15 +110,43 @@
                 @endif
               </div>
             </div>
+            {{-- button unutk memunculkan form add contact --}}
+            <button class="btn btn-sm btn-secondory" type="button" name="button" id="add-contact">add new contact</button>
+            <br><br>
+            {{-- form add contact --}}
+            <div class="hidden">
+              <input class="form-control" type="text" name="name" value="{{ old('name') }}" placeholder="Name">
+              {{-- untuk mengeluarkan error pada value "name" --}}
+              @if($errors->has('name'))
+                <p>{{ $errors->first('name') }}</p>
+              @endif
+              <br>
 
-            <button type="button" name="button" id="add-contact">add new contact</button>
+              <input class="form-control" type="text" name="phone" value="{{ old('phone') }}" placeholder="Phone">
+              @if($errors->has('phone'))
+                <p>{{ $errors->first('phone') }}</p>
+              @endif
+              <br>
+              <input type="text" name="company_name" value="{{ old('company_name') }}" placeholder="Company Name" class="form-control">
+              @if($errors->has('company_name'))
+                <p>{{ $errors->first('company_name') }}</p>
+              @endif
+              <br>
+              <input id="email" type="email" name="email" value="{{ old('email') }}" placeholder="Email" class="form-control">
+              @if ($errors->has('email'))
+                <span class="invalid-feedback" role="alert">
+                  <strong>{{ $errors->first('email') }}</strong>
+                </span>
+              @endif
+              <br>
+            </div>
 
             <div class="row item">
               <div class="col">
                 <label class="col-form-label" for="">Item</label>
               </div>
             </div>
-            <input type="text" name="item_name" id="item_name" class="item_name form-control input-lg" placeholder="Search Item..." />
+            <input type="text" name="item_name" id="item_name" class="item_name form-control input-lg" autocomplete="off" placeholder="Search Item..." />
             <span id="item_list">
             </span>
             {{-- error item --}}
@@ -124,34 +159,12 @@
             @endif
 
             <br>
+            {{-- tinggal memunculkan price --}}
 
             {{-- tempat unutk append input item --}}
             <div class="" id="tambah-item">
 
             </div>
-
-            {{-- <div class="row">
-              <div class="col-md-8"> --}}
-
-                {{-- <input class="form-control" type="text" name="item[]" value="" placeholder=""> --}}
-
-                {{-- <select class="form-control" name="item_id">
-                  @foreach ($items as $item)
-                    <option value="{{ $item->id }}">{{ $item->name }} price = Rp.{{ $item->price }}</option>
-                  @endforeach
-                </select>
-                @if($errors->has('item_id'))
-                  <p>{{ $errors->first('item_id') }}</p>
-                @endif --}}
-              {{-- </div>
-              <div class="col">
-                <input class="form-control col" type="number" name="quantity" value="{{ old('quantity') }}" min="1" placeholder="Qty" min="1">
-                @if($errors->has('quantity'))
-                  <p>{{ $errors->first('quantity') }}</p>
-                @endif
-              </div>
-            </div>
-            <br> --}}
 
             <input class="btn btn-primary" type="submit" name="submit" value="create">
             {{ csrf_field() }}

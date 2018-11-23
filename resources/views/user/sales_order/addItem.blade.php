@@ -6,6 +6,59 @@
 
 @section('content')
 
+  <script type="text/javascript">
+
+  $(document).ready(function(){
+    // autocomplete item
+    $('#item_name').keyup(function(){
+      var query = $(this).val();
+      if(query != '')
+      {
+        $.ajax({
+          url:"{{ route('autocomplete.fetch.item') }}",
+          data:{query:query},
+          delay: 250,
+          success:function(data){
+            $('#item_list').fadeIn();
+            $('#item_list').html(data);
+          }
+        });
+      }
+    });
+
+    $(document).on('click', '.item-list', function(){
+      $('#item_name').val($(this).text());
+
+      $('#tambah-item').append('<div class="row"><div class="col-md-5"><input class="form-control" type="text" name="item[]" value="" placeholder=""></div><div class="col-md-2"><input class="form-control" type="number" name="quantity[]" min="1" placeholder="Qty" value="1" min="1"></div><div class="col"><button class="btn btn-sm btn-danger" type="button" id="delete" name="delete">delete</button></div></div><br>');
+
+      $('input[name="item[]"]:last').val($(this).text());
+
+      $('#item_name').val('');
+
+      $('#item_list').fadeOut();
+    });
+
+    $(document).on('click', 'body', function(){
+      $('#item_list').fadeOut();
+    });
+    //end auto complete item
+
+    // delete item list
+    $(document).on('click', '#delete', function(){
+      // mengahpus br
+      $(this).parent().parent().next().remove();
+      // menghapus div row
+      $(this).parent().parent().remove();
+    });
+
+    // add new contact
+    $('.hidden').hide();
+    $('#add-contact').click(function(){
+      $('.hidden').toggle();
+    });
+  });
+  </script>
+
   <table class="table">
     <thead>
       <th scope="col">#</th>
@@ -51,29 +104,31 @@
           <form class="" action="/sales_order/{{ $salesOrder->id }}/invoice" method="post" value="post">
             <input type="text" name="invoice" value="{{ $invoice->id }}" hidden>
             <input type="text" name="sales_order" value="{{ $salesOrder->id }}" hidden>
-            <div class="row">
+            <div class="row item">
               <div class="col">
                 <label class="col-form-label" for="">Item</label>
               </div>
             </div>
-            <div class="row">
-              <div class="col-md-8">
-                <select class="form-control" name="item_id">
-                  @foreach ($items as $item)
-                    <option value="{{ $item->id }}">{{ $item->name }} price = Rp.{{ $item->price }}</option>
-                  @endforeach
-                </select>
-                @if($errors->has('item_id'))
-                  <p>{{ $errors->first('item_id') }}</p>
-                @endif
-              </div>
-              <div class="col">
-                <input class="form-control col" type="number" name="quantity" value="{{ old('quantity') }}" min="1" placeholder="Qty" min="1">
-                @if($errors->has('quantity'))
-                  <p>{{ $errors->first('quantity') }}</p>
-                @endif
-              </div>
+            <input type="text" name="item_name" id="item_name" class="item_name form-control input-lg" placeholder="Search Item..." />
+            <span id="item_list">
+            </span>
+            {{-- error item --}}
+            @if($errors->has('item'))
+              <p>{{ $errors->first('item') }}</p>
+            @endif
+            {{-- error qty --}}
+            @if($errors->has('quantity'))
+              <p>{{ $errors->first('quantity') }}</p>
+            @endif
+
+            <br>
+            {{-- tinggal memunculkan price --}}
+
+            {{-- tempat unutk append input item --}}
+            <div class="" id="tambah-item">
+
             </div>
+
             <br>
             <input class="btn btn-primary" type="submit" name="submit" value="add">
             {{ csrf_field() }}
