@@ -6,6 +6,19 @@
 
 @section('content')
 
+  @php
+    $alert = 'alert-success';
+  @endphp
+  @if (session('success') == 'Delete package Failed, package has been used')
+    @php
+      $alert = 'alert-danger';
+    @endphp
+  @endif
+
+  @if (session()->has('success'))
+    <div class="alert {{ $alert }}">{{ session('success') }}</div>
+  @endif
+
   <table class="table">
     <thead>
       <th>#</th>
@@ -36,7 +49,7 @@
               <div class="col text-left btn-kanan">
                 <form class="" action="/admin/subscription/{{ $subscription->id }}/delete" method="post">
                   {{ method_field('DELETE') }}
-                  <input class="btn btn-outline-danger" type="submit" name="submit" value="delete">
+                  <input onclick="return confirm('Are you sure wanna delete package {{ $subscription->name}}')" class="btn btn-outline-danger" type="submit" name="submit" value="delete">
                   {{ csrf_field() }}
                 </form>
               </div>

@@ -4,21 +4,27 @@
 
 @section('content')
 
+  @if (session()->has('success'))
+    <div class="alert alert-danger">{{ session('success') }}</div>
+  @endif
+
   <table class="table">
     <thead>
       <th>Package Name</th>
       <th>Price</th>
       <th>Invoices quota</th>
       <th>Contacts quota</th>
-      <th>Action</th>
+      {{-- action dialih fungsikan dari index --}}
+      {{-- <th>Action</th> --}}
     </thead>
     <tbody>
       <tr>
         <td>{{ $subscription->name }}</td>
-        <td>{{ $subscription->price }}</td>
+        <td>Rp.{{ number_format($subscription->price,2,",",".") }}</td>
         <td>{{ $subscription->num_invoices }}</td>
         <td>{{ $subscription->num_users }}</td>
-        <td>
+        {{-- action dialih fungsikan hanya dari index --}}
+        {{-- <td>
           <div class="row">
             <div class="col text-right btn-kiri">
               <form class="" action="/admin/subscription/{{ $subscription->id }}/edit" method="get">
@@ -33,7 +39,7 @@
               </form>
             </div>
           </div>
-        </td>
+        </td> --}}
       </tr>
     </tbody>
   </table>
@@ -53,7 +59,7 @@
                 </select>
               </div>
               <div class="col-md-3">
-                <input class="btn btn-outline-primary" type="submit" name="submit" value="cari">
+                <input class="btn btn-primary" type="submit" name="submit" value="cari">
               </div>
             </div>
             {{ csrf_field() }}
@@ -81,7 +87,8 @@
       <th>Zipcode</th>
       <th>Status</th>
       <th>Expiry Date</th>
-      <th>Action</th>
+      {{-- dialih fungsikan lewat payment --}}
+      {{-- <th>Action</th> --}}
     </thead>
     <tbody>
       @php
@@ -101,12 +108,17 @@
           <td>{{ $store->zipcode}}</td>
           @if ($store->subscription_id > 0)
             @if ($store->status == 0)
-              <td>awaiting paymnet</td>
+              <td>
+                <a href="#" class="btn btn-outline-secondary">awaiting payment</a>
+              </td>
             @else
-              <td>active</td>
+              <td>
+                <a href="#" class="btn btn-outline-primary">active</a>
+              </td>
             @endif
             <td>{{ date('d-m-Y', strtotime($store->expire_date)) }}</td>
-            <td>
+            {{-- fungsi ini dialihkan ke payment --}}
+            {{-- <td>
               @if ($store->status == 0)
               <div class="row">
                 <div class="col">
@@ -140,7 +152,7 @@
                   </div>
                 </div>
               @endif
-            </td>
+            </td> --}}
           @endif
         </tr>
         @php

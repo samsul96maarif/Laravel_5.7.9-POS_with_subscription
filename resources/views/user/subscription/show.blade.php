@@ -19,7 +19,23 @@
             <li>free space for items</li>
             <li>store {{ $subscription->num_invoices }} invoice</li>
             <li>store {{ $subscription->num_users }} contact</li>
-            <li>berapa bulan anda ingin berlangganan : </li>
+            <hr>
+            @php
+            $message = 'berapa bulan anda ingin berlangganan';
+            $confirm = 'Do you wanna buy package '.$subscription->name;
+            $action = 'buy';
+            @endphp
+            {{-- percabangan untuk mengetahui store extend atau ingin membeli --}}
+            @if ($store->status == 1 && $store->subscription_id == $subscription->id)
+              <li>expire date : {{ date('d-m-Y', strtotime($store->expire_date)) }}</li>
+              @php
+              $message = 'berapa bulan anda ingin memperpanjang package';
+              $confirm = 'Do you wanna extend package '.$subscription->name;
+              $action = 'Extend Period';
+              @endphp
+            @endif
+            {{-- percabangan untuk mengetahui store extend atau ingin membeli --}}
+            <li><b>{{ $message }} : </b></li>
             {{-- unutk mengambil ingin berapa bulan user ingin langsung berlangganan --}}
               {{ csrf_field() }}
               <select class="col-md-4 offset-md-4 form-control" name="period">
@@ -27,22 +43,8 @@
                   <option value="{{ $i }}">{{ $i }} bulan</option>
                 @endfor
               </select>
-              @php
-                $action = 'buy';
-              @endphp
-              {{-- percabangan untuk mengetahui store extend atau ingin membeli --}}
-              @if ($store->status == 1 && $store->subscription_id == $subscription->id)
-                <li>expire date : {{ $store->expire_date }}</li>
-                @php
-                  $action = 'Extend Period';
-                @endphp
-              {{-- </ul>
-              <input class="btn btn-lg btn-block btn-outline-primary" type="submit" name="submit" value="Extend Periode"> --}}
-              {{-- <a class="btn btn-lg btn-block btn-outline-primary" href="/subscription/{{ $subscription->id }}/cart">Extend Periode</a> --}}
-              @endif
             </ul>
-            <input class="btn btn-lg btn-block btn-outline-primary" type="submit" name="submit" value="{{ $action }}">
-            {{-- <a class="btn btn-lg btn-block btn-outline-primary" href="/subscription/{{ $subscription->id }}/cart">buy</a> --}}
+            <input onclick="return confirm('{{ $confirm }}')" class="btn btn-lg btn-block btn-outline-primary" type="submit" name="submit" value="{{ $action }}">
           </form>
             {{-- card-body --}}
         </div>

@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\Subscription;
 use App\Models\User;
 use App\Models\Store;
+use App\Models\Payment;
 
 class AdminSubscriptionController extends Controller
 {
@@ -22,7 +23,10 @@ class AdminSubscriptionController extends Controller
     public function index()
     {
       $subscriptions = subscription::all();
-      return view('admin/subscription/index', ['subscriptions' => $subscriptions]);
+
+      return view('admin/subscription/index', [
+        'subscriptions' => $subscriptions
+      ]);
     }
 
     public function show($id)
@@ -124,15 +128,53 @@ class AdminSubscriptionController extends Controller
           $subscription->num_users = $request->num_users;
           $subscription->save();
 
-          return redirect('/admin/subscription');
+          return redirect()
+          ->route('admin.subscription.edit', ['id' => $subscription->id])
+          ->withSuccess('Edit package '.$subscription->name.' succeed');
         }
 
         // delete
       public function delete($id)
       {
         $subscription = subscription::find($id);
+        $store = store::where('subscription_id', $subscription->id)
+        ->where('status', 1)->first();
+
+        $payment = payment::where('subscription_id', $subscription->id)
+        ->where('proof', '!=', null)
+        ->where('paid', 0)->first();
+
+        $alert = 'alert-success';
+
+        if ($store != null || $payment != null) {
+          $alert = 'alert-danger';
+
+            return redirect()
+            ->route('admin.subscription.detail', ['id' => $subscription->id])
+            ->withSuccess('Delete package '.$subscription->name.' Failed, package has been used');
+            // ->withSuccess('Delete package '.$subscription->name.' Failed, package has been used');
+        }
+
+        $payments = payment::all()
+        ->where('subscription_id', $subscription->id)
+        ->where('paid', 0);
+
+        $stores = store::all()
+        ->where('subscription_id', $subscription->id);
+
+        foreach ($payments as $payment) {
+          $payment->delete();
+        }
+
+        foreach ($stores as $store) {
+          $store->subscription_id = null;
+          $store->save();
+        }
+
         $subscription->delete();
 
-        return redirect('/admin/subscription');
+        return redirect()
+        ->route('admin.subscription')
+        ->withSuccess('Delete package '.$subscription->name.' Succeed');
       }
 }

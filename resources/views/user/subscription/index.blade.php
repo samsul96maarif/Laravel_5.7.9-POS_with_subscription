@@ -77,17 +77,7 @@
                     {{-- bila tidak ada ditabel payment maka akan ditawarkan extend periode --}}
                     @if ($payment == null)
                       <a class="btn btn-lg btn-block btn-primary" href="/subscription/{{ $subscription->id }}/detail">extend periode</a>
-                    {{-- @else --}}
-                      {{-- @if ($payment->store_id == $store->id) --}}
-                        {{-- <div class="col"> --}}
-                        {{-- <a class="btn btn-block btn-secondary" href="#">awaiting payment for extend period</a> --}}
-                        {{-- <button type="button" name="" class="btn btn-lg btn-block btn-secondary">awaiting payment for extend period</button> --}}
-                        {{-- </div> --}}
-                      {{-- @endif --}}
                     @endif
-                    {{-- <form  action="/subscription/{{ $subscription->id }}/detail_packet" method="get">
-                      <input class="btn btn-lg btn-block btn-primary" type="submit" name="submit" value="extend periode">
-                    </form> --}}
                   </div>
                 </div>
                 {{-- $store->status == 1 --}}

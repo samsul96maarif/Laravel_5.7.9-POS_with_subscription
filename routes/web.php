@@ -28,22 +28,22 @@ Auth::routes();
 // admin page
 Route::prefix('admin')->group(function () {
     Route::get('/', function () {
-      return view('admin/index');
+      return view('admin/index')->name('admin.home');
     })->middleware('auth', 'admin');
 
     // subscription
-    Route::get('/subscription', 'AdminSubscriptionController@index');
+    Route::get('/subscription', 'AdminSubscriptionController@index')->name('admin.subscription');
     //create 1. pindah ke form dl, 2.lakukan store di function lain
-    Route::get('/subscription/create', 'AdminSubscriptionController@create');
-    Route::post('/subscription', 'AdminSubscriptionController@store');
+    Route::get('/subscription/create', 'AdminSubscriptionController@create')->Name('admin.subscription.create');
+    Route::post('/subscription', 'AdminSubscriptionController@store')->name('admin.subscription.store');
     // detail
-    Route::get('/subscription/{id}', 'AdminSubscriptionController@show');
-    Route::post('/subscription/{id}', 'AdminSubscriptionController@filter');
+    Route::get('/subscription/{id}', 'AdminSubscriptionController@show')->name('admin.subscription.detail');
+    Route::post('/subscription/{id}', 'AdminSubscriptionController@filter')->name('admin.subscription.filter');
     //update 1.pindah ke form dl, 2.lakukan update di function lain
-    Route::get('/subscription/{id}/edit', 'AdminSubscriptionController@edit');
-    Route::put('/subscription/{id}', 'AdminSubscriptionController@update');
+    Route::get('/subscription/{id}/edit', 'AdminSubscriptionController@edit')->name('admin.subscription.edit');
+    Route::put('/subscription/{id}', 'AdminSubscriptionController@update')->name('admin.subscription.update');
     // //delete
-    Route::delete('/subscription/{id}/delete', 'AdminSubscriptionController@delete');
+    Route::delete('/subscription/{id}/delete', 'AdminSubscriptionController@delete')->name('admin.subscription.delete');
     // end subscription
 
     // store
@@ -51,7 +51,7 @@ Route::prefix('admin')->group(function () {
     // search
     Route::get('/store/search', 'AdminStoreController@search');
     // detail
-    Route::get('/store/{id}', 'AdminStoreController@show');
+    Route::get('/store/{id}', 'AdminStoreController@show')->name('admin.store.detail');
     Route::post('/store', 'AdminStoreController@filter');
     // meng aktifkan subscription store
     Route::put('/store/{id}', 'AdminStoreController@active');
@@ -68,6 +68,8 @@ Route::prefix('admin')->group(function () {
 
     // paymet
     Route::get('/payment', 'AdminPaymentController@index');
+    // filter yang sudah bayar
+    Route::get('payment/paid', 'AdminPaymentController@paid');
     // search
     Route::get('/payment/search', 'AdminPaymentController@search');
     //detail unutk memeriksa proof

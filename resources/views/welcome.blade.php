@@ -17,13 +17,17 @@
         <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
 
+        {{-- css custome --}}
+        <link href="{{ asset('css/master.css') }}" rel="stylesheet">
+
         <!-- Styles -->
         <style>
             html, body {
                 background-color: #fff;
-                /* color: #636b6f; */
+                /* background-color: #0077ff; */
+                color: #636b6f;
                 color: black;
-                font-family: 'Nunito', sans-serif;
+                /* font-family: 'Nunito', sans-serif; */
                 font-weight: 200;
                 height: 100vh;
                 margin: 0;
@@ -77,19 +81,23 @@
                 font-size: 16px;
               }
             }
-            .container {
+            /* .container {
               max-width: 960px;
-            }
+            } */
 
-            .pricing-header {
-              /* max-width: 700px; */
-            }
+            /* .pricing-header {
+              max-width: 700px;
+            } */
 
             /* .card-deck .card {
               min-width: 165px;
               } */
 
-              .card-deck .card {
+              .card-deck{
+                /* background-color: white; */
+              }
+
+              /* .card-deck .card {
                 min-width: 220px;
                 max-width: 440px;
                 }
@@ -100,7 +108,7 @@
 
               h1{
                 font-size: 32px;
-              }
+              } */
         </style>
     </head>
     <body>
@@ -125,9 +133,9 @@
       </div>
 
       <div class="container">
-        <div class="card-deck mb-3 text-center">
+        <div class="card-deck mb-3 text-center justify-content-center">
           @foreach ($subscriptions as $subscription)
-            <div class="card mb-4 shadow-sm">
+            <div class="card mb-4 shadow-sm rounded">
               <div class="card-header">
                 <h4 class="my-0 font-weight-normal">{{ $subscription->name }}</h4>
               </div>
@@ -138,9 +146,7 @@
                   <li>store {{ $subscription->num_invoices }} invoice</li>
                   <li>store {{ $subscription->num_users }} contact</li>
                 </ul>
-                <form  action="/subscription/{{ $subscription->id }}/pilih" method="get">
-                  <input class="btn btn-lg btn-block btn-outline-primary" type="submit" name="submit" value="buy">
-                </form>
+                <a class="btn btn-lg btn-block btn-outline-primary" href="/subscription/{{ $subscription->id }}/detail">buy</a>
               </div>
             </div>
           @endforeach

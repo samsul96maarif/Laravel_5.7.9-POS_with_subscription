@@ -6,6 +6,10 @@
 
 @section('content')
 
+  @if (session()->has('success'))
+    <div class="alert alert-success">{{ session('success') }}</div>
+  @endif
+
   <div class="row justify-content-center">
     <div class="col-md-6">
       <div class="card">
@@ -84,7 +88,7 @@
             <br>
             <div class="row content-center">
               <div class="col text-center">
-                <input class="btn btn-primary" type="submit" name="submit" value="update">
+                <input onclick="return confirm('Do you wanna update package {{ $subscription->name}}')" class="btn btn-primary" type="submit" name="submit" value="update">
               </div>
             </div>
             {{ csrf_field() }}
