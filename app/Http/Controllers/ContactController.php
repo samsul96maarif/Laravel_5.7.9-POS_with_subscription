@@ -29,8 +29,6 @@ class ContactController extends Controller
     {
       $user_id = Auth::id();
       $store = store::where('user_id', $user_id)->first();
-      // $contacts = contact::all()->where('store_id', $store->id);
-
       $data = contact::all()->where('store_id', $store->id);;
 
       if(count($data) > 0){ //mengecek apakah data kosong atau tidak
@@ -57,10 +55,19 @@ class ContactController extends Controller
     {
       $this->validate($request, [
         'name' => 'required',
-        'phone' => 'required|numeric',
-        'company_name' => 'required',
-        'email' => 'required|string|email|max:255|unique:users',
       ]);
+
+      if ($request->phone != null) {
+        $this->validate($request, [
+          'phone' => 'numeric',
+        ]);
+      }
+
+      if ($request->email != null) {
+        $this->validate($request, [
+          'email' => 'string|email|max:255|unique:users',
+        ]);
+      }
 
       $user_id = Auth::id();
       $store = store::where('user_id', $user_id)->first();
@@ -99,10 +106,19 @@ class ContactController extends Controller
 
           $this->validate($request, [
             'name' => 'required',
-            'phone' => 'required|numeric',
-            'company_name' => 'required',
-            'email' => 'required|string|email|max:255|unique:users',
           ]);
+
+          if ($request->phone != null) {
+            $this->validate($request, [
+              'phone' => 'numeric',
+            ]);
+          }
+
+          if ($request->email != null) {
+            $this->validate($request, [
+              'email' => 'string|email|max:255|unique:users',
+            ]);
+          }
 
           $contact = contact::find($id);
           $contact->name = $request->name;
@@ -111,8 +127,8 @@ class ContactController extends Controller
           $contact->email = $request->email;
           $contact->save();
 
+          // mengarahkan kembali ke contact_detail
           return redirect()->route('contact_detail', [$id])->with('alert', 'Succeed Updated '.$contact->name);
-          // return redirect('/contact')->with('alert', 'Succeed Updated '.$contact->name);
         }
 
         // delete

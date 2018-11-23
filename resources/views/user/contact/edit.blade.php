@@ -65,7 +65,7 @@
                 <p>Email</p>
               </div>
               <div class="col-md-8">
-                <input id="email" type="email" class="form-control{{ $errors->has('email') ? ' is-invalid' : '' }}" name="email" value="{{ $contact->email }}" required placeholder="Email">
+                <input id="email" type="email" class="form-control{{ $errors->has('email') ? ' is-invalid' : '' }}" name="email" value="{{ $contact->email }}" placeholder="Email">
                 @if ($errors->has('email'))
                   <span class="invalid-feedback" role="alert">
                     <strong>{{ $errors->first('email') }}</strong>

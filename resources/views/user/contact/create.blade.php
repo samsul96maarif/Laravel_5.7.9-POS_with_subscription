@@ -22,7 +22,7 @@
             @endif
             <br>
 
-            <input class="form-control" type="text" name="phone" value="{{ old('phone') }}" placeholder="Phone">
+            <input class="form-control" type="tel" name="phone" value="{{ old('phone') }}" placeholder="Phone">
             @if($errors->has('phone'))
               <p>{{ $errors->first('phone') }}</p>
             @endif
@@ -32,11 +32,9 @@
               <p>{{ $errors->first('company_name') }}</p>
             @endif
             <br>
-            <input id="email" type="email" name="email" value="{{ old('email') }}" required placeholder="Email" class="form-control">
-            @if ($errors->has('email'))
-              <span class="invalid-feedback" role="alert">
-                <strong>{{ $errors->first('email') }}</strong>
-              </span>
+            <input id="email" type="email" name="email" value="{{ old('email') }}" placeholder="Email" class="form-control">
+            @if($errors->has('email'))
+              <p>{{ $errors->first('email') }}</p>
             @endif
             <br>
             <input class="btn btn-primary" type="submit" name="submit" value="save">
