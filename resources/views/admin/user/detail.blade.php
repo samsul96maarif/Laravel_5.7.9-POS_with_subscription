@@ -12,7 +12,7 @@
         </div>
         <div class="card-body">
           <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-3">
               <label for="" class="col-form-label">Name</label>
             </div>
             <div class="col">
@@ -21,7 +21,7 @@
           </div>
           <br>
           <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-3">
               <label for="" class="col-form-label">Email</label>
             </div>
             <div class="col">
@@ -30,8 +30,8 @@
           </div>
           <br>
           <div class="row">
-            <div class="col-md-2">
-              <label for="" class="col-form-label">Store</label>
+            <div class="col-md-3" style="padding-right:0;">
+              <label for="" class="col-form-label">Store Name</label>
             </div>
             <div class="col">
               @if ($store == null)
