@@ -105,7 +105,7 @@
             @else
               <td>active</td>
             @endif
-            <td>{{ $store->expire_date }}</td>
+            <td>{{ date('d-m-Y', strtotime($store->expire_date)) }}</td>
             <td>
               @if ($store->status == 0)
               <div class="row">

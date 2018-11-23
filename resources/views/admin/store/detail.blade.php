@@ -144,7 +144,7 @@
               </div>
             @else
               <div class="col">
-                <span class="form-control text-center">{{ $store->expire_date }}</span>
+                <span class="form-control text-center">{{ date('d-m-Y', strtotime($store->expire_date)) }}</span>
               </div>
             @endif
           </div>

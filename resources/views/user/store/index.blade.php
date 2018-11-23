@@ -63,7 +63,7 @@
                 <p>Expire Date</p>
               </div>
               <div class="col-md-6">
-                <input class="form-control" type="text" name="expire_date" value="{{ $store->expire_date }}" readonly>
+                <input class="form-control" type="text" name="expire_date" value="{{ date('d-m-Y', strtotime($store->expire_date)) }}" readonly>
               </div>
             </div>
             <br>
