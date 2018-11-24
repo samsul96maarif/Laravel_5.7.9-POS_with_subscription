@@ -48,7 +48,7 @@ class SubscriptionController extends Controller
   {
     $user_id = Auth::id();
     $store = store::where('user_id', $user_id)->first();
-    $subscriptions = subscription::all();
+    $subscriptions = subscription::all()->where('deleted_at', null);
     $payment = payment::where('store_id', $store->id)
     ->where('paid', 0)->first();
 

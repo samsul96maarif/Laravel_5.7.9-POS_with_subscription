@@ -28,7 +28,7 @@ Auth::routes();
 // admin page
 Route::prefix('admin')->group(function () {
     Route::get('/', function () {
-      return view('admin/index')->name('admin.home');
+      return view('admin/index');
     })->middleware('auth', 'admin');
 
     // subscription

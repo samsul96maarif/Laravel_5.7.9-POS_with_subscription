@@ -31,7 +31,7 @@ class SalesOrderController extends Controller
       $user_id = Auth::id();
       $store = store::where('user_id', $user_id)->first();
       $salesOrders = SalesOrder::all()->where('store_id', $store->id);
-      $contacts = contact::all()->where('store_id', $store->id);
+      $contacts = contact::all()->where('store_id', $store->id)->where('deleted_at', null);
       $invoices = invoice::all();
       $invoiceDetails = invoiceDetail::all();
 
@@ -49,7 +49,7 @@ class SalesOrderController extends Controller
       $user_id = Auth::id();
       $store = store::where('user_id', $user_id)->first();
       $items = item::all()->where('store_id', $store->id);
-      $contacts = contact::all()->where('store_id', $store->id);
+      $contacts = contact::all()->where('store_id', $store->id)->where('deleted_at', null);
 
       // tes autocompleate 21 nov
       // return view('tes/autocompleate21');
@@ -83,7 +83,7 @@ class SalesOrderController extends Controller
       $salesOrders = salesOrder::all()->where('store_id', $store->id);
       // memanggil semua contact unutk dihitung
       // sudah berapa contact yang dimiliki store
-      $contacts = contact::all()->where('store_id', $store->id);
+      $contacts = contact::all()->where('store_id', $store->id)->where('deleted_at', null);
 
       if ($request->name == null) {
 
@@ -92,7 +92,11 @@ class SalesOrderController extends Controller
         ]);
 
         // mencari contact yang sesuai request
-        $contact = contact::where('name', $request->contact)->first();
+        $contact = contact::where('name', $request->contact)
+        ->where('store_id', $store->id)
+        ->where('deleted_at', null)
+        ->first();
+
         if ($contact == null) {
           throw new \Exception("kontak tidak ditemukan");
         }
@@ -162,6 +166,7 @@ class SalesOrderController extends Controller
       // sales order
       $salesOrder = new salesOrder;
       $salesOrder->store_id = $store->id;
+      // dd($contact->id);
       $salesOrder->contact_id = $contact->id;
       $salesOrder->save();
       // sales order
@@ -221,7 +226,7 @@ class SalesOrderController extends Controller
       $store = store::where('user_id', $user_id)->first();
       $salesOrder = salesOrder::findOrFail($id);
       $items = item::all()->where('store_id', $store->id);
-      $contacts = contact::all()->where('store_id', $store->id);
+      $contacts = contact::all()->where('store_id', $store->id)->where('deleted_at', null);
       $invoice = invoice::where('sales_order_id', $salesOrder->id)->first();
       $invoiceDetails = invoiceDetail::all()->where('invoice_id', $invoice->id);
 
@@ -241,7 +246,7 @@ class SalesOrderController extends Controller
       $store = store::where('user_id', $user_id)->first();
       $salesOrder = salesOrder::findOrFail($id);
       $items = item::all()->where('store_id', $store->id);
-      $contacts = contact::all()->where('store_id', $store->id);
+      $contacts = contact::all()->where('store_id', $store->id)->where('deleted_at', null);
       $invoice = invoice::where('sales_order_id', $salesOrder->id)->first();
       $invoiceDetails = invoiceDetail::all()->where('invoice_id', $invoice->id);
 
@@ -259,7 +264,7 @@ class SalesOrderController extends Controller
     {
       $user_id = Auth::id();
       $store = store::where('user_id', $user_id)->first();
-      $contacts = contact::all()->where('store_id', $store->id);
+      $contacts = contact::all()->where('store_id', $store->id)->where('deleted_at', null);
       $salesOrder = salesOrder::findOrFail($id);
 
       return view('user/sales_order/edit',
@@ -271,8 +276,14 @@ class SalesOrderController extends Controller
 
     public function update(Request $request, $id)
     {
+      $user_id = Auth::id();
+      $store = store::where('user_id', $user_id)->first();
       // mencari contact yang sesuai request
-      $contact = contact::where('name', $request->contact)->first();
+      $contact = contact::where('name', $request->contact)
+      ->where('store_id', $store->id)
+      ->where('deleted_at', null)
+      ->first();
+
       if ($contact == null) {
         throw new \Exception("kontak tidak ditemukan");
       }
@@ -285,8 +296,7 @@ class SalesOrderController extends Controller
       $invoice->contact_id = $contact->id;
       $invoice->save();
 
-      return redirect()->route('sales_order_bill', ['id' => $salesOrder->id]);
-      return redirect('/sales_order')->with('alert', 'Succeed Updated Invoice');
+      return redirect()->route('sales_order_bill', ['id' => $salesOrder->id])->with('alert', 'Succeed Updated Invoice');
     }
 
     public function delete($id)
@@ -302,13 +312,14 @@ class SalesOrderController extends Controller
 
       $id = Auth::id();
       $store = store::where('user_id', $id)->first();
-      $contacts = contact::all()->where('store_id', $store->id);
+      $contacts = contact::all()->where('store_id', $store->id)->with('alert', 'Succeed Updated Invoice');
       $invoices = invoice::all();
       $invoiceDetails = invoiceDetail::all();
 
       $salesOrders = DB::table('sales_orders')
                       ->where('order_number', 'like', '%'.$request->q.'%')
                       ->where('store_id', $store->id)
+                      // ->where('deleted_at', null)
                       ->get();
 
       return view('user/sales_order/index',

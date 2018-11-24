@@ -60,7 +60,7 @@
             @endforeach
           @endif
         @endforeach
-        <td>Rp.{{ $salesOrder->total }}</td>
+        <td>Rp.{{ number_format($salesOrder->total,2,",",".") }}</td>
         <td>
           <form class="" action="/sales_order/{{ $salesOrder->id }}/delete" method="post">
             {{ method_field('DELETE') }}

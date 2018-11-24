@@ -43,6 +43,7 @@ class BaseController extends Controller
         $data = DB::table('contacts')
         ->where('name', 'LIKE', "%{$query}%")
         ->where('store_id', $store->id)
+        ->where('deleted_at', null)
         ->get();
 
         $output = '<div class="dropdown-menu" style="display:block; position:relative">';
@@ -62,13 +63,14 @@ class BaseController extends Controller
     {
       $user = Auth::user();
       $store = store::where('user_id', $user->id)->first();
-      
+
       if($request->get('query'))
       {
         $query = $request->get('query');
         $data = DB::table('items')
         ->where('name', 'LIKE', "%{$query}%")
         ->where('store_id', $store->id)
+        ->where('deleted_at', null)
         ->get();
 
         $output = '<div class="dropdown-menu" style="display:block; position:relative">';
@@ -96,6 +98,7 @@ class BaseController extends Controller
         $query = $request->get('query');
         $data = DB::table('stores')
         ->where('name', 'LIKE', "%{$query}%")
+        ->where('deleted_at', null)
         ->get();
 
         $output = '<div class="dropdown-menu" style="display:block; position:relative">';

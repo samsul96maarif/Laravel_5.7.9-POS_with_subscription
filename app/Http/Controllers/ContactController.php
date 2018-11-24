@@ -29,7 +29,9 @@ class ContactController extends Controller
     {
       $user_id = Auth::id();
       $store = store::where('user_id', $user_id)->first();
-      $data = contact::all()->where('store_id', $store->id);;
+      $data = contact::all()
+      ->where('store_id', $store->id)
+      ->where('deleted_at', null);
 
       if(count($data) > 0){ //mengecek apakah data kosong atau tidak
           $res['message'] = "Success!";
@@ -72,7 +74,9 @@ class ContactController extends Controller
       $user_id = Auth::id();
       $store = store::where('user_id', $user_id)->first();
       $subscription = subscription::findOrFail($store->subscription_id);
-      $contacts = contact::all()->where('store_id', $store->id);
+      $contacts = contact::all()
+      ->where('store_id', $store->id)
+      ->where('deleted_at', '!=', null);
 
       $i = 0;
       foreach ($contacts as $key) {
@@ -152,6 +156,7 @@ class ContactController extends Controller
         $contacts = DB::table('contacts')
                         ->where('name', 'like', '%'.$request->q.'%')
                         ->where('store_id', $store->id)
+                        ->where('deleted_at', null)
                         ->get();
 
         return view('user/contact/index', ['contacts' => $contacts]);

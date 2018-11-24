@@ -10,7 +10,7 @@ class IndexController extends Controller
 {
     public function index()
     {
-      $subscriptions = subscription::all();
+      $subscriptions = subscription::all()->where('deleted_at', null);
       return view('welcome', ['subscriptions' => $subscriptions]);
     }
 }
