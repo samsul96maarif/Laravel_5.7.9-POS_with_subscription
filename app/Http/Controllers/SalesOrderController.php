@@ -315,7 +315,7 @@ class SalesOrderController extends Controller
         $invoiceDetail->delete();
       }
 
-      return redirect('/sales_order')->with('alert', $salesOrder->name.' Deleted!');
+      return redirect('/sales_order')->with('alert', $salesOrder->order_number.' Deleted!');
     }
 
     public function search(Request $request)
