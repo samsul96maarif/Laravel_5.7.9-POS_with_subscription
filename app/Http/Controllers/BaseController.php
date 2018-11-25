@@ -27,7 +27,12 @@ class BaseController extends Controller
     {
     	if ($request->has('q')) {
     		$cari = $request->q;
-    		$data = DB::table('items')->select('id', 'name')->where('name', 'LIKE', '%'.$cari.'%')->get();
+    		$data = DB::table('items')
+          ->select('id', 'name')
+          ->where('name', 'LIKE', '%'.$cari.'%')
+          ->where('deleted_at', null)
+          ->get();
+
     		return response()->json($data);
     	}
     }
@@ -41,10 +46,10 @@ class BaseController extends Controller
       {
         $query = $request->get('query');
         $data = DB::table('contacts')
-        ->where('name', 'LIKE', "%{$query}%")
-        ->where('store_id', $store->id)
-        ->where('deleted_at', null)
-        ->get();
+          ->where('name', 'LIKE', "%{$query}%")
+          ->where('store_id', $store->id)
+          ->where('deleted_at', null)
+          ->get();
 
         $output = '<div class="dropdown-menu" style="display:block; position:relative">';
         foreach($data as $row)

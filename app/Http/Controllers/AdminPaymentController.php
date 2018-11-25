@@ -57,6 +57,7 @@ class AdminPaymentController extends Controller
       $payments = DB::table('payments')
                       ->where('amount', 'like', '%'.$request->q.'%')
                       ->where('paid', 0)
+                      ->where('deleted_at', null)
                       ->get();
 
       $stores = store::all();

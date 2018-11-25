@@ -50,6 +50,7 @@ class AdminUserController extends Controller
     $users = DB::table('users')
                     ->where('name', 'like', '%'.$request->q.'%')
                     ->where('role', false)
+                    ->where('deleted_at', null)
                     ->get();
 
     $stores = store::all();

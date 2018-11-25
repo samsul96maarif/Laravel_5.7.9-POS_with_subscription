@@ -157,6 +157,7 @@ class AdminStoreController extends Controller
 
       $stores = DB::table('stores')
                       ->where('name', 'like', '%'.$request->q.'%')
+                      ->where('deleted_at', null)
                       ->get();
 
       $subscriptions = subscription::all();

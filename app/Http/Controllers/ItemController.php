@@ -150,6 +150,7 @@ class ItemController extends Controller
       $items = DB::table('items')
                       ->where('name', 'like', '%'.$request->q.'%')
                       ->where('store_id', $store->id)
+                      ->where('deleted_at', null)
                       ->get();
 
       return view('user/item/index', ['items' => $items]);
