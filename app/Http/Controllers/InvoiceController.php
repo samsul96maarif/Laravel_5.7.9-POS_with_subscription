@@ -57,7 +57,9 @@ class InvoiceController extends Controller
       $count = count($request->item);
       // pembuatan invoice detail
       for ($i=0; $i < $count; $i++) {
-        $item = item::where('name', $request->item[$i])->first();
+        $item = item::where('name', $request->item[$i])
+        ->where('store_id', $store->id)
+        ->first();
 
         // mengetahui apakah quantity order lebih dari stcok barang
         if ($request->quantity[$i] > $item->stock) {
@@ -176,7 +178,7 @@ class InvoiceController extends Controller
       $invoice = invoice::findOrFail($invoice_id);
       $invoice->total = $total;
       $invoice->save();
-      
+
       $salesOrder = salesOrder::findOrFail($request->salesOrder_id);
       $salesOrder->total = $total;
       $salesOrder->save();

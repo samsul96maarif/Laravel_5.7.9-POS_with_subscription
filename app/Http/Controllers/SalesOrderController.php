@@ -153,7 +153,9 @@ class SalesOrderController extends Controller
     $count = count($request->item);
     $total = 0;
     for ($i=0; $i < $count; $i++) {
-      $item = item::where('name', $request->item[$i])->first();
+      $item = item::where('name', $request->item[$i])
+      ->where('store_id', $store->id)
+      ->first();
       // mengetahui apakah quantity order lebih dari stcok barang
       if ($request->quantity[$i] > $item->stock) {
         throw new \Exception("quantity lebih banyak dari stock barang");
@@ -166,7 +168,6 @@ class SalesOrderController extends Controller
       // sales order
       $salesOrder = new salesOrder;
       $salesOrder->store_id = $store->id;
-      // dd($contact->id);
       $salesOrder->contact_id = $contact->id;
       $salesOrder->save();
       // sales order
@@ -187,7 +188,9 @@ class SalesOrderController extends Controller
 
       // pembuatan invoice detail
       for ($i=0; $i < $count; $i++) {
-        $item = item::where('name', $request->item[$i])->first();
+        $item = item::where('name', $request->item[$i])
+        ->where('store_id', $store->id)
+        ->first();
         // mengecek apakah item sudah ada di invoice detail
         $invoiceDetail = invoiceDetail::where('invoice_id', $invoice->id)
         ->where('item_id', $item->id)->first();
