@@ -307,6 +307,14 @@ class SalesOrderController extends Controller
       $salesOrder = salesOrder::findOrFail($id);
       $salesOrder->delete();
 
+      $invoice = invoice::where('sales_order_id', $id)->first();
+      $invoice->delete();
+
+      $invoiceDetails = invoiceDetail::all()->where('invoice_id', $invoice->id);
+      foreach ($invoiceDetails as $invoiceDetail) {
+        $invoiceDetail->delete();
+      }
+
       return redirect('/sales_order')->with('alert', $salesOrder->name.' Deleted!');
     }
 
@@ -322,7 +330,7 @@ class SalesOrderController extends Controller
       $salesOrders = DB::table('sales_orders')
                       ->where('order_number', 'like', '%'.$request->q.'%')
                       ->where('store_id', $store->id)
-                      // ->where('deleted_at', null)
+                      ->where('deleted_at', null)
                       ->get();
 
       return view('user/sales_order/index',
