@@ -25,6 +25,7 @@ class CreatePaymentsTable extends Migration
           $table->boolean('paid')->default('0');
           $table->integer('period')->default(1);
           $table->timestamps();
+          $table->softDeletes();
         });
     }
 

@@ -133,6 +133,12 @@
                       Subscription <span class="sr-only">(current)</span>
                     </a>
                   </li>
+                  <li class="nav-item">
+                    <a class="nav-link active" href="/admin/report">
+                      <span data-feather="home"></span>
+                      Report <span class="sr-only">(current)</span>
+                    </a>
+                  </li>
                   {{-- bagian sales order yang dimiliki store masih dirasa ini privasi customer
                   <li class="nav-item">
                     <a class="nav-link active" href="/admin/sales_order">

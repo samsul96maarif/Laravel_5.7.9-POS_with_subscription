@@ -86,6 +86,9 @@ Route::prefix('admin')->group(function () {
 
     // end sales order
 
+    // report
+    Route::get('/report', 'AdminReportController@index')->name('admin.report');
+
 });
 // end admin page
 
