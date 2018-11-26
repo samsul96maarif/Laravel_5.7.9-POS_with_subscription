@@ -112,7 +112,7 @@
     <tr>
         <th scope="row">{{ $i }}</th>
         <td>{{ $item->name }}</td>
-        <td>{{ $item->count}}</td>
+        <td>{{ $item->count }}</td>
         <td>Rp.{{ number_format($item->total,2,",",".") }}</td>
         @php
           $total = $item->total + $total;

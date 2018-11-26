@@ -74,11 +74,12 @@ class ReportController extends Controller
 
       $items = DB::table('invoice_details')
       ->join('items', 'items.id','=','invoice_details.item_id')
-      ->select('items.name', DB::raw("SUM(invoice_details.total) as total"), DB::raw("count(invoice_details.total) as count"))
+      ->select('items.name', DB::raw("SUM(invoice_details.total) as total"), DB::raw("SUM(invoice_details.item_quantity) as count"))
       ->where('invoice_details.store_id', $store->id)
       ->where('invoice_details.deleted_at', null)
       ->whereYear('invoice_details.created_at', '=', $year)
       ->whereMonth('invoice_details.created_at', '=', $month)
+      // ->groupBy('invoice_details.item_id', 'items.name', 'invoice_details.item_quantity')
       ->groupBy('invoice_details.item_id', 'items.name')
       ->get();
 
@@ -142,7 +143,7 @@ class ReportController extends Controller
 
         $items = DB::table('invoice_details')
                 ->join('items', 'items.id','=','invoice_details.item_id')
-                ->select('items.name', DB::raw("SUM(invoice_details.total) as total"), DB::raw("count(invoice_details.total) as count"))
+                ->select('items.name', DB::raw("SUM(invoice_details.total) as total"), DB::raw("SUM(invoice_details.item_quantity) as count"))
                 ->where('invoice_details.store_id', $store->id)
                 ->where('invoice_details.deleted_at', null)
                 ->whereYear('invoice_details.created_at', '=', $year)
@@ -158,7 +159,7 @@ class ReportController extends Controller
 
         $items = DB::table('invoice_details')
                 ->join('items', 'items.id','=','invoice_details.item_id')
-                ->select('items.name', DB::raw("SUM(invoice_details.total) as total"), DB::raw("count(invoice_details.total) as count"))
+                ->select('items.name', DB::raw("SUM(invoice_details.total) as total"), DB::raw("SUM(invoice_details.item_quantity) as count"))
                 ->where('invoice_details.store_id', $store->id)
                 ->where('invoice_details.deleted_at', null)
                 ->whereBetween('invoice_details.created_at', [$startDate, $endDate])
@@ -168,7 +169,7 @@ class ReportController extends Controller
         $by = 'All Period';
         $items = DB::table('invoice_details')
                 ->join('items', 'items.id','=','invoice_details.item_id')
-                ->select('items.name', DB::raw("SUM(invoice_details.total) as total"), DB::raw("count(invoice_details.total) as count"))
+                ->select('items.name', DB::raw("SUM(invoice_details.total) as total"), DB::raw("SUM(invoice_details.item_quantity) as count"))
                 ->where('invoice_details.store_id', $store->id)
                 ->where('invoice_details.deleted_at', null)
                 ->groupBy('invoice_details.item_id', 'items.name')
@@ -180,7 +181,7 @@ class ReportController extends Controller
 
         $items = DB::table('invoice_details')
                 ->join('items', 'items.id','=','invoice_details.item_id')
-                ->select('items.name', DB::raw("SUM(invoice_details.total) as total"), DB::raw("count(invoice_details.total) as count"))
+                ->select('items.name', DB::raw("SUM(invoice_details.total) as total"), DB::raw("SUM(invoice_details.item_quantity) as count"))
                 ->where('invoice_details.store_id', $store->id)
                 ->where('invoice_details.deleted_at', null)
                 ->whereBetween('invoice_details.created_at', [$request->start_date, $request->end_date])

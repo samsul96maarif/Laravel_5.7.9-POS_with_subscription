@@ -46,21 +46,33 @@
     </div>
   @endif
 
-  <div class="col-md-4 offset-md-8">
-    <form class="" action="/contact/search" method="get">
-      <div class="input-group mb-3" style="margin-bottom:0!important;">
-        <span>
-          <input type="text" name="q" id="contact_name" class="form-control" aria-describedby="button-addon2" autocomplete="off" placeholder="Search Contact..." />
-        </span>
-        <div class="input-group-append">
-          <input id="button-addon2" class="btn btn-primary" type="submit" name="submit" value="Search">
+  <div class="row">
+    <div class="col-md-4">
+      <form class="" action="/contact/create" method="get">
+        <input class="btn btn-primary" type="submit" name="submit" value="add contact">
+      </form>
+    </div>
+
+    <div class="col-md-4 offset-md-4">
+      <form class="" action="/contact/search" method="get">
+        <div class="input-group mb-3" style="margin-bottom:0!important;">
+          <span>
+            <input type="text" name="q" id="contact_name" class="form-control" aria-describedby="button-addon2" autocomplete="off" placeholder="Search Contact..." />
+          </span>
+          <div class="input-group-append">
+            <input id="button-addon2" class="btn btn-primary" type="submit" name="submit" value="Search">
+          </div>
         </div>
-      </div>
-      <span id="contact_list">
-      </span>
-    </form>
+        <span id="contact_list">
+        </span>
+      </form>
+      {{-- col-md 4 offset 4 --}}
+    </div>
+    {{-- row --}}
   </div>
+
   <br>
+
   <table class="table">
   <thead>
     <tr>
@@ -106,9 +118,5 @@
     @endforeach
   </tbody>
 </table>
-
-  <form class="" action="/contact/create" method="get">
-    <input class="btn btn-primary" type="submit" name="submit" value="add contact">
-  </form>
 
 @endsection
