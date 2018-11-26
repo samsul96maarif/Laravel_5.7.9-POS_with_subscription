@@ -144,7 +144,6 @@ class ReportController extends Controller
                 ->select('items.name', DB::raw("SUM(invoice_details.total) as total"))
                 ->where('invoice_details.store_id', $store->id)
                 ->where('invoice_details.deleted_at', null)
-                ->where('deleted_at', null)
                 ->whereYear('invoice_details.created_at', '=', $year)
                 ->groupBy('invoice_details.item_id', 'items.name')
                 ->get();

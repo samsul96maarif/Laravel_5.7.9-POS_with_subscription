@@ -26,7 +26,7 @@
       </div> --}}
       <div class="hidden-custome-search">
         <br>
-        <form class="" action="/report/item" method="post">
+        <form class="" action="/admin/report" method="post">
           <div class="card">
             <div class="card-header">
               Custome Search
@@ -62,7 +62,7 @@
     </div>
 
     <div class="offset-md-4 col-md-4">
-      <form class="" action="/report/item" method="post">
+      <form class="" action="/admin/report" method="post">
         <div class="card">
           <div class="card-body">
             <div class="row">

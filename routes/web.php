@@ -88,6 +88,7 @@ Route::prefix('admin')->group(function () {
 
     // report
     Route::get('/report', 'AdminReportController@index')->name('admin.report');
+    Route::post('/report', 'AdminReportController@searchBy')->name('admin.report.searchBy');
 
 });
 // end admin page
