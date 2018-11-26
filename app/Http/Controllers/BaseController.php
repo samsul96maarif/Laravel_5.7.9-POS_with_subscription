@@ -128,6 +128,8 @@ class BaseController extends Controller
         $data = DB::table('users')
         ->where('name', 'LIKE', "%{$query}%")
         ->where('role', 0)
+        ->orWhere('username', 'LIKE', "%{$query}%")
+        ->where('role', 0)
         ->get();
 
         $output = '<div class="dropdown-menu" style="display:block; position:relative">';

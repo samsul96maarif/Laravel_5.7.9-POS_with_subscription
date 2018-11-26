@@ -26,15 +26,21 @@ class UserController extends Controller
 
     public function update(Request $request, $id)
     {
+      $user = user::findOrFail($id);
+// mengecek apakah emailnya diganti
+      if ($user->email != $request->email) {
+        $this->validate($request, [
+          'email' => 'required|string|email|max:255|unique:users',
+        ]);
+
+        $user->email = $request->email;
+      }
 
       $this->validate($request, [
         'name' => 'required|string|max:255',
-        'email' => 'required|string|email|max:255|unique:users',
       ]);
 
-      $user = user::findOrFail($id);
       $user->name = $request->name;
-      $user->email = $request->email;
       $user->save();
 
       return redirect('profile')->withSuccess('Profile has been updated.');

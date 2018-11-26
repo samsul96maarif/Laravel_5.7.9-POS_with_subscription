@@ -162,6 +162,7 @@ Route::get('/cari', 'SalesOrderController@loadData');
 Route::get('/sales_order/search', 'SalesOrderController@search');
 // ngebuat sales order
 Route::get('/sales_order/create', 'SalesOrderController@create');
+// Route::get('/sales_order/create', 'SalesOrderController@bill');
 Route::post('/sales_order', 'SalesOrderController@store');
 // lihat detail
 Route::get('/sales_order/{id}/detail', 'SalesOrderController@show')->name('sales_order_detail');
