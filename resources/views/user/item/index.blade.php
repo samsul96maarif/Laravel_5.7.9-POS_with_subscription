@@ -48,20 +48,30 @@
     </div>
   @endif
 
-  <div class="col-md-4 offset-md-8">
-    <form class="" action="/item/search" method="get">
-      <div class="input-group mb-3" style="margin-bottom:0!important;">
-        <span>
-          <input autocomplete="off" type="text" name="q" id="item_name" class="form-control" aria-describedby="button-addon2" placeholder="Search Contact..." />
-        </span>
-        <div class="input-group-append">
-          <input id="button-addon2" class="btn btn-primary" type="submit" name="submit" value="Search">
+  <div class="row">
+    <div class="col-md-4">
+      <form class="" action="/item/create" method="get">
+        <input class="btn btn-primary" type="submit" name="submit" value="add item">
+      </form>
+    </div>
+
+    <div class="col-md-4 offset-md-4">
+      <form class="" action="/item/search" method="get">
+        <div class="input-group mb-3" style="margin-bottom:0!important;">
+          <span>
+            <input autocomplete="off" type="text" name="q" id="item_name" class="form-control" aria-describedby="button-addon2" placeholder="Search Contact..." />
+          </span>
+          <div class="input-group-append">
+            <input id="button-addon2" class="btn btn-primary" type="submit" name="submit" value="Search">
+          </div>
         </div>
-      </div>
-      <span id="item_list">
-      </span>
-    </form>
+        <span id="item_list">
+        </span>
+      </form>
+    </div>
+    {{-- row --}}
   </div>
+
 
   <br>
 
@@ -110,9 +120,5 @@
   @endforeach
 </tbody>
 </table>
-
-  <form class="" action="/item/create" method="get">
-    <input class="btn btn-primary" type="submit" name="submit" value="add item">
-  </form>
 
 @endsection
