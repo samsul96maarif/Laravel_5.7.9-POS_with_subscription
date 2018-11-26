@@ -20,6 +20,10 @@
   <div class="row">
     <div class="col-md-4">
       <button class="btn btn-primary" id="custome-search" type="button" name="button">Custome Search</button>
+      {{-- <div class="card">
+        <div class="card-body">
+        </div>
+      </div> --}}
       <div class="hidden-custome-search">
         <br>
         <form class="" action="/admin/report" method="post">
@@ -90,9 +94,9 @@
   <thead>
     <tr>
       <th scope="col">#</th>
-      <th>Subscription Name</th>
-      <th>Quantity</th>
-      <th>Period</th>
+      <th>Item Name</th>
+      <th>Jumlah</th>
+      <th>Periode</th>
       <th>Amount</th>
     </tr>
   </thead>
@@ -105,11 +109,7 @@
   @foreach ($subscriptions as $subscription)
     <tr>
         <th scope="row">{{ $i }}</th>
-        @foreach ($packages as $package)
-          @if ($package->name == $subscription->name)
-            <td><a class="btn" href="/admin/report/{{ $package->id }}">{{ $subscription->name }}</a></td>
-          @endif
-        @endforeach
+        <td>{{ $subscription->name }}</td>
         <td>{{ $subscription->count }}</td>
         <td>{{ $subscription->period }}</td>
         <td>Rp.{{ number_format($subscription->amount,2,",",".") }}</td>

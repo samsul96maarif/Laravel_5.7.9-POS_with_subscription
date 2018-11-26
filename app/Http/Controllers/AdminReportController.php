@@ -26,11 +26,24 @@ class AdminReportController extends Controller
 
     public function index()
     {
-      $users = user::all()->where('role', 0);
-      $stores = store::all();
-      $data = payment::all()->where('paid', 1);
-      $subscriptions = subscription::all();
+      $packages = subscription::all();
       $now = Carbon::now();
+      $startDate = Carbon::now();
+      $endDate = Carbon::now();
+      $year = $now->year;
+      $month = $now->month;
+      $sekarang = $now->format('m/d/Y');
+      $by = 'on '.$now->englishMonth;
+
+      $data = DB::table('payments')
+            ->join('subscriptions', 'subscriptions.id','=','payments.subscription_id')
+            ->select('subscriptions.name', DB::raw("SUM(payments.amount) as amount"), DB::raw("count(payments.subscription_id) as count"), DB::raw("SUM(payments.period) as period"))
+            ->where('payments.deleted_at', null)
+            ->where('payments.paid', 1)
+            ->whereYear('payments.updated_at', '=', $year)
+            ->whereMonth('payments.updated_at', '=', $month)
+            ->groupBy('payments.subscription_id', 'subscriptions.name')
+            ->get();
 
       if(count($data) > 0){ //mengecek apakah data kosong atau tidak
           $res['message'] = "Success!";
@@ -42,24 +55,21 @@ class AdminReportController extends Controller
           $res['values'] = $data;
           // return response($res);
       }
-      $payments = json_decode($res['values']);
+      $subscriptions = json_decode($res['values']);
 
-      return view('admin/report/index', [
-        'payments' => $payments,
-        'users' => $users,
-        'stores' => $stores,
-        'subscriptions' => $subscriptions,
-        'now' => $now
-      ]);
+      return view('admin/report/index',
+            [
+              'by' => $by,
+              'packages' => $packages,
+              'now' => $sekarang,
+              'subscriptions' => $subscriptions,
+              'now' => $now
+            ]);
     }
 
     public function searchBy(Request $request)
     {
-
-      $subscriptions = subscription::all();
-      $users = user::all();
-      $stores = store::all();
-
+      $packages = subscription::all();
       $now = Carbon::now();
       $startDate = Carbon::now();
       $endDate = Carbon::now();
@@ -102,53 +112,85 @@ class AdminReportController extends Controller
       $endDate->hour(0)->minute(0)->second(0);
 
       if ($request->by == 'year') {
-        $by = 'This Year '.$year;
+        $by = 'In '.$year;
 
-        $payments = DB::table('payments')
-                ->where('paid', 1)
-                ->whereYear('updated_at', '=', $year)
+        $subscriptions = DB::table('payments')
+                ->join('subscriptions', 'subscriptions.id','=','payments.subscription_id')
+                ->select('subscriptions.name', DB::raw("SUM(payments.amount) as amount"), DB::raw("count(payments.amount) as count"), DB::raw("SUM(payments.period) as period"))
+                ->where('payments.deleted_at', null)
+                ->where('payments.paid', 1)
+                ->whereYear('payments.updated_at', '=', $year)
+                ->groupBy('payments.subscription_id', 'subscriptions.name')
                 ->get();
 
       } elseif ($request->by == 'month') {
-        $by = 'This Month '.$now->englishMonth;
 
-        $payments = DB::table('payments')
-                ->where('paid', 1)
-                ->whereYear('updated_at', '=', $year)
-                ->whereMonth('updated_at', '=', $month)
-                ->get();
+        return redirect()->route('admin.report');
 
       } elseif ($request->by == 'week') {
         $by = 'This Week';
 
-        $payments = DB::table('payments')
-                ->where('paid', 1)
-                ->whereBetween('updated_at', [$startDate, $endDate])
+        $subscriptions = DB::table('payments')
+                ->join('subscriptions', 'subscriptions.id','=','payments.subscription_id')
+                ->select('subscriptions.name', DB::raw("SUM(payments.amount) as amount"), DB::raw("count(payments.amount) as count"), DB::raw("SUM(payments.period) as period"))
+                ->where('payments.deleted_at', null)
+                ->where('payments.paid', 1)
+                ->whereBetween('payments.updated_at', [$startDate, $endDate])
+                ->groupBy('payments.subscription_id', 'subscriptions.name')
                 ->get();
 
       } elseif ($request->by == 'all') {
-        $by = 'This All';
+        $by = 'All Time';
 
-        return redirect()->route('admin.report');
+        $subscriptions = DB::table('payments')
+                ->join('subscriptions', 'subscriptions.id','=','payments.subscription_id')
+                ->select('subscriptions.name', DB::raw("SUM(payments.amount) as amount"), DB::raw("count(payments.amount) as count"), DB::raw("SUM(payments.period) as period"))
+                ->where('payments.deleted_at', null)
+                ->where('payments.paid', 1)
+                ->groupBy('payments.subscription_id', 'subscriptions.name')
+                ->get();
 
       } else {
-        $by = 'From '.$request->start_date.' To '.$request->end_date;
+        $mulai = date('d-m-Y', strtotime($request->start_date));
+        $sampai = date('d-m-Y', strtotime($request->end_date));
+        $by = 'From '.$mulai.' To '.$sampai;
 
-        $payments = DB::table('payments')
-                ->where('paid', 1)
-                ->whereBetween('updated_at', [$request->start_date, $request->end_date])
+        $subscriptions = DB::table('payments')
+                ->join('subscriptions', 'subscriptions.id','=','payments.subscription_id')
+                ->select('subscriptions.name', DB::raw("SUM(payments.amount) as amount"), DB::raw("count(payments.amount) as count"), DB::raw("SUM(payments.period) as period"))
+                ->where('payments.deleted_at', null)
+                ->where('payments.paid', 1)
+                ->whereBetween('payments.updated_at', [$request->start_date, $request->end_date])
+                ->groupBy('payments.subscription_id', 'subscriptions.name')
                 ->get();
       }
 
-        return view('admin/report/index',
+      return view('admin/report/index',
+      [
+        'subscriptions' => $subscriptions,
+        'by' => $by,
+        'packages' => $packages,
+        'now' => $sekarang
+      ]);
+
+    }
+
+    public function show($id)
+    {
+        $subscription = subscription::findOrFail($id);
+        $users = user::all();
+        $stores = store::all();
+        $payments = payment::all()
+        ->where('subscription_id', $id)
+        ->where('paid', 1);
+
+        return view('admin/report/detail',
         [
-          'by' => $by,
-          'now' => $sekarang,
-          'payments' => $payments,
-          'users' => $users,
+          'subscription' => $subscription,
           'stores' => $stores,
-          'subscriptions' => $subscriptions,
-          'now' => $now
+          'users' => $users,
+          'payments' => $payments
         ]);
     }
+
 }

@@ -89,7 +89,9 @@ Route::prefix('admin')->group(function () {
     // report
     Route::get('/report', 'AdminReportController@index')->name('admin.report');
     Route::post('/report', 'AdminReportController@searchBy')->name('admin.report.searchBy');
-
+    // detail
+    Route::get('/report/{id}', 'AdminReportController@show')->name('admin.report.detail');
+    // end report
 });
 // end admin page
 
@@ -185,11 +187,11 @@ Route::delete('/sales_order/{salesOrder_id}/invoice/{invoice_id}/invoice_detail/
 // end sales ordecari',r
 
 // report
-Route::get('/report', 'ReportController@salesByItemMonth');
-Route::post('/report/item', 'ReportController@Item');
+Route::get('/report', 'ReportController@salesByItemMonth')->name('report.item');
+Route::post('/report/item', 'ReportController@Item')->name('report.item.by');
 
-Route::get('/report/customer', 'ReportController@salesByCustomerMonth');
-Route::post('/report/customer', 'ReportController@Customer');
+Route::get('/report/customer', 'ReportController@salesByCustomerMonth')->name('report.customer');
+Route::post('/report/customer', 'ReportController@Customer')->name('report.customer.by');
 // end report
 
 // profile
