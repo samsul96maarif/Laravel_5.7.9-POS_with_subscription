@@ -200,6 +200,15 @@ class InvoiceController extends Controller
         $total = $invoice_detail->total + $total;
       }
 
+      if ($total == 0) {
+        // unutk merestore
+        $invoiceDetail = invoiceDetail::withTrashed()->findOrFail($invoiceDetail_id);
+        $invoiceDetail->restore();
+
+        return redirect()->route('sales_order_bill', ['id' => $salesOrder_id])
+        ->withSuccess('Cannot delete item, you have no item on order');
+      }
+
       $invoice = invoice::findOrFail($invoice_id);
       $invoice->total = $total;
       $invoice->save();
@@ -215,16 +224,33 @@ class InvoiceController extends Controller
     public function decrease($salesOrder_id, $invoice_id, $invoiceDetail_id)
     {
       $invoiceDetail = invoiceDetail::findOrFail($invoiceDetail_id);
-      $invoiceDetail->item_quantity = $invoiceDetail->item_quantity - 1;
-      $invoiceDetail->save();
-
+      $invoice = invoice::findOrFail($invoice_id);
+      $salesOrder = salesOrder::findOrFail($salesOrder_id);
       $item = item::findOrFail($invoiceDetail->item_id);
-      $item->stock = $item->stock + 1;
-      $item->save();
+
+      $invoiceDetail->item_quantity = $invoiceDetail->item_quantity - 1;
 
       if ($invoiceDetail->item_quantity == 0) {
         $invoiceDetail->delete();
+      }else {
+        $invoiceDetail->total = $invoiceDetail->item_quantity*$item->price;
+        $invoiceDetail->save();
       }
+// item
+      $item->stock = $item->stock + 1;
+      $item->save();
+// perubahan pada total invoice dan sales order
+      $total = 0;
+      $invoiceDetails = invoiceDetail::all()->where('invoice_id', $invoice_id);
+      foreach ($invoiceDetails as $value) {
+        $total = $value->total + $total;
+      }
+// perubahan total invoice
+      $invoice->total = $total;
+      $invoice->save();
+// perubahn tota sales order
+      $salesOrder->total = $total;
+      $salesOrder->save();
 
       return redirect()->route('sales_order_bill', ['id' => $salesOrder_id]);
     }
@@ -233,6 +259,8 @@ class InvoiceController extends Controller
     {
 
       $invoiceDetail = invoiceDetail::findOrFail($invoiceDetail_id);
+      $invoice = invoice::findOrFail($invoice_id);
+      $salesOrder = salesOrder::findOrFail($salesOrder_id);
       $item = item::findOrFail($invoiceDetail->item_id);
       // mengetahui apakah quantity order lebih dari stcok barang
       if ($item->stock < 1) {
@@ -241,10 +269,23 @@ class InvoiceController extends Controller
       }
 
       $invoiceDetail->item_quantity = $invoiceDetail->item_quantity + 1;
+      $invoiceDetail->total = $invoiceDetail->item_quantity*$item->price;
       $invoiceDetail->save();
-
+// pengutrangn item
       $item->stock = $item->stock - 1;
       $item->save();
+      // perubahan pada total invoice dan sales order
+      $total = 0;
+      $invoiceDetails = invoiceDetail::all()->where('invoice_id', $invoice_id);
+      foreach ($invoiceDetails as $value) {
+        $total = $value->total + $total;
+      }
+      // perubahan total invoice
+      $invoice->total = $total;
+      $invoice->save();
+      // perubahn tota sales order
+      $salesOrder->total = $total;
+      $salesOrder->save();
 
       return redirect()->route('sales_order_bill', ['id' => $salesOrder_id]);
     }

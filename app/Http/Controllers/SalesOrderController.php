@@ -51,20 +51,6 @@ class SalesOrderController extends Controller
       $items = item::all()->where('store_id', $store->id);
       $contacts = contact::all()->where('store_id', $store->id)->where('deleted_at', null);
 
-      // tes autocompleate 21 nov
-      // return view('tes/autocompleate21');
-
-      // tes autocompleate api jqueryui
-      // return view('tes/autocompleate');
-      // end tes jquery
-
-      // tes javasript
-      // return view('tes/createInvoice',
-      // [
-      //   'items' => $items,
-      //   'contacts' => $contacts
-      // ]);
-      // end tes
       return view('user/sales_order/createInvoice',
       [
         'items' => $items,
@@ -220,7 +206,6 @@ class SalesOrderController extends Controller
       }
 
       return redirect()->route('sales_order_bill', ['id' => $salesOrder->id]);
-      return redirect('/sales_order')->with('alert', 'Succeed Add Invoice');
     }
 
     public function show($id)
@@ -242,6 +227,40 @@ class SalesOrderController extends Controller
         'invoiceDetails' => $invoiceDetails
       ]);
     }
+
+    // mau mengubah langsung ke tampilan bill
+    // public function bill()
+    // {
+    //   $user_id = Auth::id();
+    //   $store = store::where('user_id', $user_id)->first();
+    //
+    //   $salesOrder = new salesOrder;
+    //   $salesOrder->store_id = $store->id;
+    //   $salesOrder->save();
+    //   // sales order
+    //   $salesOrder->order_number = 'SO-'.$salesOrder->id;
+    //   $salesOrder->save();
+    //
+    //   // invoice
+    //   $invoice = new invoice;
+    //   $invoice->store_id = $store->id;
+    //   $invoice->sales_order_id = $salesOrder->id;
+    //   $invoice->save();
+    //   // invoice
+    //   $invoice->number = 'INV-'.$invoice->id;
+    //   $invoice->save();
+    //
+    //   $items = item::all()->where('store_id', $store->id);
+    //   $contacts = contact::all()->where('store_id', $store->id)->where('deleted_at', null);
+    //
+    //   return view('tes/bill',
+    //   [
+    //     'items' => $items,
+    //     'contacts' =>$contacts,
+    //     'salesOrder' => $salesOrder,
+    //     'invoice' => $invoice
+    //   ]);
+    // }
 
     public function bill($id)
     {
@@ -305,15 +324,15 @@ class SalesOrderController extends Controller
     public function delete($id)
     {
       $salesOrder = salesOrder::findOrFail($id);
-      $salesOrder->delete();
-
       $invoice = invoice::where('sales_order_id', $id)->first();
-      $invoice->delete();
-
       $invoiceDetails = invoiceDetail::all()->where('invoice_id', $invoice->id);
+
       foreach ($invoiceDetails as $invoiceDetail) {
         $invoiceDetail->delete();
       }
+
+      $invoice->delete();
+      $salesOrder->delete();
 
       return redirect('/sales_order')->with('alert', $salesOrder->order_number.' Deleted!');
     }

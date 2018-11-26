@@ -34,9 +34,9 @@
             @if ($invoiceDetail->item_id == $item->id)
               <th scope="row">{{ $i }}</th>
               <td>{{ $item->name }}</td>
-              <td>Rp.{{ $item->price }}</td>
+              <td>Rp.{{ number_format($item->price,2,",",".") }}</td>
               <td>{{ $invoiceDetail->item_quantity }}</td>
-              <td>Rp.{{ $invoiceDetail->total }}</td>
+              <td>Rp.{{ number_format($invoiceDetail->total,2,",",".") }}</td>
             @endif
           </tr>
         @endforeach
@@ -49,7 +49,7 @@
         <td></td>
         <td></td>
         <td></td>
-        <td>{{ $salesOrder->total }}</td>
+        <td>Rp.{{ number_format($salesOrder->total,2,",",".") }}</td>
       </tr>
     </tbody>
   </table>

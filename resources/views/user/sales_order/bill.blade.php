@@ -6,6 +6,10 @@
 
 @section('content')
 
+  @if (session()->has('success'))
+    <div class="alert alert-danger">{{ session('success') }}</div>
+  @endif
+
   <script type="text/javascript">
 
   // autocomplete contact
@@ -243,7 +247,7 @@
               <div class="" id="tambah-item">
 
               </div>
-              <input class="btn btn-primary" type="submit" name="submit" value="create">
+              <input class="btn btn-primary" type="submit" name="submit" value="Add">
               {{ csrf_field() }}
             </form>
             {{-- div class="card-body" --}}
