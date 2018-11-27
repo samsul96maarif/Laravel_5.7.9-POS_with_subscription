@@ -342,7 +342,9 @@ class SalesOrderController extends Controller
 
       $id = Auth::id();
       $store = store::where('user_id', $id)->first();
-      $contacts = contact::all()->where('store_id', $store->id)->with('alert', 'Succeed Updated Invoice');
+      $contacts = contact::all()
+      ->where('store_id', $store->id);
+
       $invoices = invoice::all();
       $invoiceDetails = invoiceDetail::all();
 
