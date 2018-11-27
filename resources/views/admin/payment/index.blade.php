@@ -35,7 +35,7 @@
       <th>Proof</th>
       <th>Unique Code</th>
       <th>Amount</th>
-      <th>Store Name</th>
+      <th>Company Name</th>
       <th>Package Subscription</th>
       <th>Action</th>
     </thead>

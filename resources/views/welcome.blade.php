@@ -23,15 +23,27 @@
         <!-- Styles -->
         <style>
             html, body {
-                background-color: #fff;
+                /* background-color: #fff; */
                 /* background-color: #0077ff; */
-                color: #636b6f;
-                color: black;
+                color: white;
+                /* color: black; */
                 /* font-family: 'Nunito', sans-serif; */
                 font-weight: 200;
-                height: 100vh;
+                /* height: 100vh; */
+                height: 100%;
                 margin: 0;
                 font-size: 14px;
+
+                /* warna forest */
+                /* background-color: #486B00; */
+
+                /* background-image: linear-gradient(#A2C523,#62780F); */
+            }
+
+            body {
+              background-image: linear-gradient(#A2C523,#486B00);
+              /* background-repeat: no-repeat; */
+              background-attachment: fixed;
             }
 
             .full-height {
@@ -89,39 +101,47 @@
               max-width: 700px;
             } */
 
-            /* .card-deck .card {
-              min-width: 165px;
-              } */
-
-              .card-deck{
-                /* background-color: white; */
+            .card-deck .card {
+              /* min-width: 165px; */
+              color: black;
               }
+
+              /* .card-deck{
+                background-color: white;
+              } */
 
               /* .card-deck .card {
                 min-width: 220px;
                 max-width: 440px;
-                }
+                } */
 
-                .card-title .pricing-card-title{
+                /* .card-title .pricing-card-title{
                   font-size: 15px;
+                } */
+
+                .card-header {
+                  /* background-color:#00c6ff; */
+                  background-color: #B0BDC5;
+                  color: white;
                 }
 
-              h1{
+              /* h1{
                 font-size: 32px;
               } */
         </style>
+
     </head>
     <body>
-      <div class="d-flex flex-column flex-md-row align-items-center p-3 px-md-4 mb-3 bg-white border-bottom shadow-sm">
+      <div class="d-flex flex-column flex-md-row align-items-center p-3 px-md-4 mb-3 bg-white border-bottom shadow-sm" style="background-color: #A2C523!important; box-shadow: 0 .5rem 1rem rgba(0,0,0,.15)!important; border-bottom: 0!important;">
         <h5 class="my-0 mr-md-auto font-weight-normal">Zuragan</h5>
         <nav class="my-2 my-md-0 mr-md-3">
           @if (Route::has('login'))
               <div class="top-right links">
                   @auth
-                      <a class="p-2 text-dark" href="{{ url('/admin') }}">Home</a>
+                      <a class="p-2 text-light" href="{{ url('/admin') }}">Home</a>
                   @else
-                      <a class="p-2 text-dark" href="{{ route('login') }}">Login</a>
-                      <a class="p-2 text-dark" href="{{ route('register') }}">Register</a>
+                      <a class="p-2 text-light" href="{{ route('login') }}">Login</a>
+                      <a class="p-2 text-light" href="{{ route('register') }}">Register</a>
                   @endauth
               </div>
           @endif
@@ -142,11 +162,11 @@
               <div class="card-body">
                 <h3 class="card-title pricing-card-title">Rp.{{ number_format($subscription->price,2,",",".") }} <small class="text-muted">/ month</small></h3>
                 <ul class="list-unstyled mt-3 mb-4">
-                  <li>free space for items</li>
-                  <li>store {{ $subscription->num_invoices }} invoice</li>
-                  <li>store {{ $subscription->num_users }} contact</li>
+                  <li>Free Space For Items</li>
+                  <li>Store {{ $subscription->num_invoices }} Invoice</li>
+                  <li>Store {{ $subscription->num_users }} Contact</li>
                 </ul>
-                <a class="btn btn-lg btn-block btn-outline-primary" href="/subscription/{{ $subscription->id }}/detail">buy</a>
+                <a class="btn btn-lg btn-block btn-outline-primary" href="/subscription/{{ $subscription->id }}/detail">Buy</a>
               </div>
             </div>
           @endforeach

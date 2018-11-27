@@ -31,7 +31,7 @@
           <br>
           <div class="row">
             <div class="col-md-3" style="padding-right:0;">
-              <label for="" class="col-form-label">Store Name</label>
+              <label for="" class="col-form-label">Company Name</label>
             </div>
             <div class="col">
               @if ($store == null)

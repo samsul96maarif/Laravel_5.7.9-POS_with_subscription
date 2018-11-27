@@ -39,7 +39,7 @@
           </div>
           <div class="row justify-content-center">
             <div class="col-md-4">
-              <label for="" class="col-form-label">Store Name</label>
+              <label for="" class="col-form-label">Company Name</label>
             </div>
             <div class="col-md-6">
               <a onclick="return confirm('Do you wanna leave this page')" class="btn btn-lg" href="/admin/store/{{ $store->id }}">{{ $store->name }}</a>

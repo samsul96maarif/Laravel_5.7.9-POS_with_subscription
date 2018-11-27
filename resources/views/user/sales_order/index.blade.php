@@ -14,16 +14,14 @@
 
   <div class="row">
     <div class="col-md-4">
-      <form class="" action="/sales_order/create" method="get">
-        <input type="submit" name="submit" value="add sales order" class="btn btn-primary">
-      </form>
+      <a href="/sales_order/create" class="btn btn-primary"><i class="fas fa-plus-circle"></i> New</a>
     </div>
-    <div class="col-md-4 offset-md-4">
+    <div class="col-md-3 offset-md-5">
       <form class="" action="/sales_order/search" method="get">
         <div class="input-group mb-3">
           <input autocomplete="off" type="search" name="q" class="form-control" placeholder="Search" aria-describedby="button-addon2" value="">
           <div class="input-group-append">
-            <input id="button-addon2" class="btn btn-primary" type="submit" name="submit" value="Search">
+            <button id="button-addon2" class="btn btn-primary" type="submit" name="submit"><i class="fas fa-search"></i></button>
           </div>
         </div>
       </form>

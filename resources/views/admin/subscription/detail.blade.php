@@ -70,7 +70,7 @@
     <div class="col">
       <div class="card">
         <div class="card-header text-center">
-          <h4 class="my-0 font-weight-normal">{{ $filter }} store</h4>
+          <h4 class="my-0 font-weight-normal">{{ $filter }} Company</h4>
         </div>
       </div>
     </div>
@@ -81,7 +81,7 @@
     <thead>
       <th>#</th>
       <th>Owner</th>
-      <th>Name</th>
+      <th>Company Name</th>
       <th>Phone</th>
       <th>Company Address</th>
       <th>Zipcode</th>

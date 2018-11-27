@@ -42,12 +42,20 @@
     {{-- autocomplete --}}
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 
+    {{-- font awsome --}}
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
+
     <title>@yield('title')</title>
   </head>
   <body>
     <div id="app">
       <nav class="navbar navbar-dark fixed-top bg-dark flex-md-nowrap p-0 shadow navbar-expand-md" style="padding:10px;">
-        <div class="container">
+        {{-- penambahan warna custome --}}
+        {{-- biru --}}
+        {{-- <div class="container-fluid" style="background-color: #00c6ff!important"> --}}
+          {{-- hijau --}}
+        <div class="container-fluid" style="background-color: #A2C523!important">
+
           <a class="navbar-brand" href="{{ url('/') }}">
             Zuragan
           </a>
@@ -73,15 +81,16 @@
               </li>
                 @else
                   <li class="nav-item dropdown">
-                    <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                    <a id="navbarDropdown" class="btn dropdown-toggle" style="color:white;" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                       {{ Auth::user()->name }} <span class="caret"></span>
                     </a>
 
               <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                <a class="dropdown-item" href="/password">change password</a>
+                <a class="dropdown-item" href="/password">Change Password</a>
                 <a class="dropdown-item" href="{{ route('logout') }}"
                   onclick="event.preventDefault();
                   document.getElementById('logout-form').submit();">
+                  <i class="fas fa-sign-out-alt"></i>
                   {{ __('Logout') }}
                 </a>
                 <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
@@ -101,45 +110,54 @@
             <nav class="col-md-2 d-none d-md-block bg-light sidebar">
               <div class="sidebar-sticky">
                 <ul class="nav flex-column">
-                  <li class="nav-item nav-pills">
+                  <li class="nav-item nav-pills nav-kiri">
                     <a class="nav-link" href="/profile">
                       <span data-feather="home"></span>
+                      <i class="fas fa-user-alt"></i>
                       Profile <span class="sr-only">(current)</span>
                     </a>
                   </li>
-                  <li class="nav-item nav-pills">
+                  <li class="nav-item nav-pills nav-kiri">
                     <a class="nav-link" href="/home">
                       <span data-feather="home"></span>
+                      <i class="fas fa-building"></i>
                       Company Profile <span class="sr-only">(current)</span>
                     </a>
                   </li>
-                  <li class="nav-item nav-pills">
+                  <li class="nav-item nav-pills nav-kiri">
                     <a class="nav-item nav-link" href="/subscription">
                       <span data-feather="home"></span>
+                      {{-- <i src='icon/subscription.png' class="glyphicon"></i> --}}
+                      {{-- <img src="{{ asset('icon/subscription.png') }}" alt="Logo"> --}}
+                      <i class="fas fa-receipt"></i>
                       Subscription <span class="sr-only">(current)</span>
                     </a>
                   </li>
-                  <li class="nav-item">
-                    <a class="nav-link active" href="/sales_order">
+                  <li class="nav-item nav-kiri">
+                    <a class="nav-link" href="/sales_order">
                       <span data-feather="home"></span>
+                      <i class="fas fa-shopping-cart"></i>
                       Sales Order <span class="sr-only">(current)</span>
                     </a>
                   </li>
-                  <li class="nav-item">
-                    <a class="nav-link active" href="/contact">
+                  <li class="nav-item nav-kiri">
+                    <a class="nav-link" href="/contact">
                       <span data-feather="home"></span>
+                      <i class="fas fa-address-book"></i>
                       Contact <span class="sr-only">(current)</span>
                     </a>
                   </li>
-                  <li class="nav-item">
-                    <a class="nav-link active" href="/item">
+                  <li class="nav-item nav-kiri">
+                    <a class="nav-link" href="/item">
                       <span data-feather="home"></span>
+                      <i class="fas fa-cubes"></i>
                       Item <span class="sr-only">(current)</span>
                     </a>
                   </li>
-                  <li class="nav-item">
-                    <a class="nav-link active" href="/report">
+                  <li class="nav-item nav-kiri">
+                    <a class="nav-link" href="/report">
                       <span data-feather="home"></span>
+                      <i class="fas fa-chart-bar"></i>
                       Report <span class="sr-only">(current)</span>
                     </a>
                   </li>

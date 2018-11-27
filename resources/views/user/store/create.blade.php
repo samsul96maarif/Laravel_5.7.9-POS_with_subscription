@@ -65,7 +65,7 @@
       <br>
       <div class="row">
         <div class="col">
-          <input class="btn btn-primary" type="submit" name="submit" value="save">
+          <input class="btn btn-primary" type="submit" name="submit" value="Save">
         </div>
       </div>
     {{ csrf_field() }}

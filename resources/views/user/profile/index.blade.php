@@ -69,7 +69,7 @@
           <br>
           <div class="row">
             <div class="col">
-              <input type="submit" name="submit" value="update" class="btn btn-primary">
+              <input type="submit" name="submit" value="Update" class="btn btn-primary">
             </div>
           </div>
           {{ csrf_field() }}

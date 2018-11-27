@@ -66,7 +66,7 @@
         <th>Name</th>
         <th>Username</th>
         <th>Email</th>
-        <th>Store Name</th>
+        <th>Company Name</th>
       </tr>
     </thead>
     <tbody>

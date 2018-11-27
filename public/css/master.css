@@ -7,7 +7,17 @@
   text-align: center;
   width: 100%;
   /* background-color: black; */
-  background-color:rgb(59, 64, 69);
+  /* abu-abu */
+  /* background-color:rgb(59, 64, 69, 0.8); */
+  /* warna tanah */
+  /* background-color: #7D4427; */
+  /* background-color: rgba(232,253,17,0.1); */
+
+  /* background-color: rgba(162,197,35,0.9); */
+
+  background-color: rgba(72,107,0,0.9);
+  /* zuragan */
+  /* background-color: rgb(0,114,255,0.8); */
   z-index: 100;
 }
 
@@ -17,7 +27,8 @@
 }
 
 body {
-  font-size: .875rem;
+  /* font-size: .875rem; */
+  background-color: #eeeeee;
 }
 
 .feather {
@@ -38,15 +49,42 @@ body {
   z-index: 100; /* Behind the navbar */
   padding: 48px 0 0; /* Height of navbar */
   box-shadow: inset -1px 0 0 rgba(0, 0, 0, .1);
+
+  /* height: 36px;
+  width: 78%;
+  padding-left: 17px; */
+  /* zuragan */
+  background-image: linear-gradient(#00c6ff,#0072ff);
+  /* warna forest */
+  /* background-image: linear-gradient(#A2C523,#486B00); */
+
+  /* background-image: linear-gradient(#A6DF62, #486B00); */
 }
 
 .sidebar-sticky {
   position: relative;
   top: 0;
-  height: calc(100vh - 48px);
+  /* height: calc(100vh - 48px); */
   padding-top: .5rem;
   overflow-x: hidden;
   overflow-y: auto; /* Scrollable contents if viewport is shorter than content. */
+
+  /* coba dari boostrap template */
+  /* warna laut */
+  /* background-image: linear-gradient(#66A5AD,#07575B); */
+
+  /* warna forest */
+  background-image: linear-gradient(#A2C523,#486B00);
+  /* background-image: linear-gradient(#486B00,#A2C523); */
+
+  /* background-image: linear-gradient(#A6DF62, #486B00); */
+  /* zuragan */
+  /* background-image: linear-gradient(#00c6ff,#0072ff); */
+  height: calc(100vh - 75px);
+  /* overflow: auto; */
+  /* width: 260px; */
+  z-index: 4;
+  padding-bottom: 30px;
 }
 
 @supports ((position: -webkit-sticky) or (position: sticky)) {
@@ -56,9 +94,16 @@ body {
   }
 }
 
+/* .nav-link{
+  display: block;
+  padding: 0.5rem 1rem;
+} */
+
 .sidebar .nav-link {
   font-weight: 500;
-  color: #333;
+  /* color: #333; */
+  color: white;
+  /* padding: 6px 15px !important; */
 }
 
 .sidebar .nav-link .feather {
@@ -67,7 +112,7 @@ body {
 }
 
 .sidebar .nav-link.active {
-  /* color: #007bff; */
+  color: #007bff;
 }
 
 .sidebar .nav-link:hover .feather,
@@ -93,12 +138,10 @@ body {
  */
 
 .navbar-brand {
-  /* padding-top: .75rem;
-  padding-bottom: .75rem; */
   padding: .75rem;
-  font-size: 1rem;
-  background-color: rgba(0, 0, 0, .25);
-  box-shadow: inset -1px 0 0 rgba(0, 0, 0, .25);
+  /* font-size: 1rem; */
+  /* background-color: rgba(0, 0, 0, .25); */
+  /* box-shadow: inset -1px 0 0 rgba(0, 0, 0, .25); */
 }
 
 .navbar .form-control {
@@ -120,7 +163,8 @@ body {
 
 .nav-link:hover{
   color: white;
-  background-color: #4f4f4f;
+  /* background-color: #4f4f4f; */
+  background-color: #FFBE00;
 }
 
 .card-deck .card {
@@ -161,4 +205,12 @@ div.btn-kiri {
 
 div.btn-atas {
   margin-bottom: 5px;
+}
+
+.nav-kiri {
+  padding: 5px 0px;
+}
+
+.dropdown-user {
+  color: white;
 }

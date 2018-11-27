@@ -2,7 +2,7 @@
 
 @section('title', 'Stores')
 
-@section('headline', $filter.' Store')
+@section('headline', $filter.' Companies')
 
 @section('content')
 
@@ -86,7 +86,7 @@
   <table class="table">
     <thead>
       <th>#</th>
-      <th>Store Name</th>
+      <th>Company Name</th>
       <th>Owner</th>
       <th>Package Subscription</th>
       <th>Phone</th>

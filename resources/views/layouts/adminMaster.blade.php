@@ -39,12 +39,15 @@
     {{-- css custome --}}
     <link href="{{ asset('css/master.css') }}" rel="stylesheet">
 
+    {{-- font awsome --}}
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
+
     <title>@yield('title')</title>
   </head>
   <body>
     <div id="app">
       <nav class="navbar navbar-dark fixed-top bg-dark flex-md-nowrap p-0 shadow navbar-expand-md" style="padding:10px;">
-        <div class="container">
+        <div class="container-fluid" style="background-color: #00c6ff!important">
             <a class="navbar-brand" href="{{ url('/') }}">
                 Zuragan
             </a>
@@ -72,7 +75,7 @@
                         </li>
                     @else
                         <li class="nav-item dropdown">
-                            <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                            <a id="navbarDropdown" class="nav-link dropdown-toggle" style="color:white;" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                                 {{ Auth::user()->name }} <span class="caret"></span>
                             </a>
 
@@ -81,6 +84,7 @@
                                 <a class="dropdown-item" href="{{ route('logout') }}"
                                    onclick="event.preventDefault();
                                                  document.getElementById('logout-form').submit();">
+                                                 <i class="fas fa-sign-out-alt"></i>
                                     {{ __('Logout') }}
                                 </a>
 
@@ -103,39 +107,43 @@
             <nav class="col-md-2 d-none d-md-block bg-light sidebar">
               <div class="sidebar-sticky">
                 <ul class="nav flex-column">
-                  <li class="nav-item">
-                    <a class="nav-link active" href="/admin">
+                  <li class="nav-item nav-kiri">
+                    <a class="nav-link" href="/admin">
                       <span data-feather="home"></span>
-                      Dashboard <span class="sr-only">(current)</span>
+                      <i class="fas fa-user-alt"></i>
+                      Profile <span class="sr-only">(current)</span>
                     </a>
                   </li>
-                  <li class="nav-item">
-                    <a class="nav-link active" href="/admin/payment">
+                  <li class="nav-item nav-kiri">
+                    <a class="nav-link" href="/admin/payment">
                       <span data-feather="home"></span>
+                      <i class="fas fa-shopping-cart"></i>
                       Payment <span class="sr-only">(current)</span>
                     </a>
                   </li>
-                  <li class="nav-item">
-                    <a class="nav-link active" href="/admin/user">
-                      <span data-feather="home"></span>
+                  <li class="nav-item nav-kiri">
+                    <a class="nav-link" href="/admin/user">
+                      <span data-feather="home" class="fas fa-users"></span>
                       Users <span class="sr-only">(current)</span>
                     </a>
                   </li>
-                  <li class="nav-item">
-                    <a class="nav-link active" href="/admin/store">
-                      <span data-feather="home"></span>
-                      Store <span class="sr-only">(current)</span>
+                  <li class="nav-item nav-kiri">
+                    <a class="nav-link" href="/admin/store">
+                      <i class="fas fa-building"></i>
+                      Companies <span class="sr-only">(current)</span>
                     </a>
                   </li>
-                  <li class="nav-item">
-                    <a class="nav-link active" href="/admin/subscription">
+                  <li class="nav-item nav-kiri">
+                    <a class="nav-link" href="/admin/subscription">
                       <span data-feather="home"></span>
+                      <i class="fas fa-receipt"></i>
                       Subscription <span class="sr-only">(current)</span>
                     </a>
                   </li>
-                  <li class="nav-item">
-                    <a class="nav-link active" href="/admin/report">
+                  <li class="nav-item nav-kiri">
+                    <a class="nav-link" href="/admin/report">
                       <span data-feather="home"></span>
+                      <i class="fas fa-chart-bar"></i>
                       Report <span class="sr-only">(current)</span>
                     </a>
                   </li>
