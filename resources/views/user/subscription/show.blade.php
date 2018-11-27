@@ -16,21 +16,21 @@
           <h1 class="card-title pricing-card-title">Rp.{{ number_format($subscription->price,2,",",".") }} <small class="text-muted">/ month</small></h1>
           <form class="" action="/subscription/{{ $subscription->id }}/cart" method="post">
           <ul class="list-unstyled mt-3 mb-4">
-            <li>free space for items</li>
-            <li>store {{ $subscription->num_invoices }} invoice</li>
-            <li>store {{ $subscription->num_users }} contact</li>
+            <li>Free Space For Items</li>
+            <li>Store {{ $subscription->num_invoices }} Invoice</li>
+            <li>Store {{ $subscription->num_users }} Contact</li>
             <hr>
             @php
-            $message = 'berapa bulan anda ingin berlangganan';
-            $confirm = 'Do you wanna buy package '.$subscription->name;
-            $action = 'buy';
+            $message = 'How Many Months Do You Want to Subscribe';
+            $confirm = 'Do You Wanna Buy Package '.$subscription->name;
+            $action = 'Buy';
             @endphp
             {{-- percabangan untuk mengetahui store extend atau ingin membeli --}}
             @if ($store->status == 1 && $store->subscription_id == $subscription->id)
-              <li>expire date : {{ date('d-m-Y', strtotime($store->expire_date)) }}</li>
+              <li>Expire Date : {{ date('d-m-Y', strtotime($store->expire_date)) }}</li>
               @php
-              $message = 'berapa bulan anda ingin memperpanjang package';
-              $confirm = 'Do you wanna extend package '.$subscription->name;
+              $message = 'How Many Months Do You Want To Extend The Package';
+              $confirm = 'Do You Wanna Extend Package '.$subscription->name;
               $action = 'Extend Period';
               @endphp
             @endif

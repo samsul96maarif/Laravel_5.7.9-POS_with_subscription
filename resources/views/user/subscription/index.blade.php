@@ -14,14 +14,14 @@
     @if ($payment->proof == null)
       <div class="row">
         <div class="col">
-          <a href="/subscription/cart">Waiting for Payment Proof</a>
+          <a href="/subscription/cart">Waiting For Payment Proof</a>
         </div>
       </div>
       <br>
     @else
       <div class="row">
         <div class="col">
-          <a href="/subscription/payment/proof">Waiting for validation</a>
+          <a href="/subscription/payment/proof">Waiting For Validation</a>
         </div>
       </div>
       <br>
@@ -48,14 +48,14 @@
           <div class="card-body">
             <h3 class="card-title pricing-card-title">Rp.{{ number_format($subscription->price,2,",",".") }} <small class="text-muted">/ month</small></h3>
             <ul class="list-unstyled mt-3 mb-4">
-              <li>free space for items</li>
-              <li>store {{ $subscription->num_invoices }} invoice</li>
-              <li>store {{ $subscription->num_users }} contact</li>
+              <li>Free Space For Items</li>
+              <li>Store {{ $subscription->num_invoices }} Invoice</li>
+              <li>Store {{ $subscription->num_users }} Contact</li>
               @if ($store->subscription_id == $subscription->id)
                 @if ($payment != null)
                   @if ($payment->store_id == $store->id && $payment->paid == 0)
                     @if ($store->status == 1)
-                      <li><b>awaiting payment for extend period</b></li>
+                      <li><b>Awaiting Payment For Extend Period</b></li>
                     @endif
                     {{-- ($payment->store_id == $store->id) --}}
                   @endif
@@ -68,7 +68,7 @@
               @if ($store->status == 1)
                 <div class="row">
                   <div class="col btn-atas">
-                    <button type="button" name="" class="btn btn-lg btn-block btn-success">activated</button>
+                    <button type="button" name="" class="btn btn-lg btn-block btn-success">Activated</button>
                   </div>
                 </div>
                 <div class="row">
@@ -76,7 +76,7 @@
 
                     {{-- bila tidak ada ditabel payment maka akan ditawarkan extend periode --}}
                     @if ($payment == null)
-                      <a class="btn btn-lg btn-block btn-primary" href="/subscription/{{ $subscription->id }}/detail">extend periode</a>
+                      <a class="btn btn-lg btn-block btn-primary" href="/subscription/{{ $subscription->id }}/detail">Extend Periode</a>
                     @endif
                   </div>
                 </div>
@@ -89,9 +89,9 @@
             @else
               {{-- bila sudah memiliki subscription maka akan muncul alert --}}
               @if ($store->subscription_id != null)
-                <a onclick="return myFunction()" class="btn btn-lg btn-block btn-outline-primary" href="/subscription/{{ $subscription->id }}/detail">buy</a>
+                <a onclick="return myFunction()" class="btn btn-lg btn-block btn-outline-primary" href="/subscription/{{ $subscription->id }}/detail">Buy</a>
               @else
-                <a class="btn btn-lg btn-block btn-outline-primary" href="/subscription/{{ $subscription->id }}/detail">buy</a>
+                <a class="btn btn-lg btn-block btn-outline-primary" href="/subscription/{{ $subscription->id }}/detail">Buy</a>
               @endif
             @endif
             {{-- <div class="card-body"> --}}

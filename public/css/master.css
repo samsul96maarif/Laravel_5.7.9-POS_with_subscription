@@ -172,6 +172,12 @@ body {
   max-width: 440px;
   }
 
+  .card-header {
+    /* background-color:#00c6ff; */
+    background-color: #B0BDC5;
+    color: white;
+  }
+
 .card-title .pricing-card-title{
   font-size: 15px;
 }

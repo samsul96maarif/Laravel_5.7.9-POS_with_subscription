@@ -166,7 +166,7 @@
                   <li>Store {{ $subscription->num_invoices }} Invoice</li>
                   <li>Store {{ $subscription->num_users }} Contact</li>
                 </ul>
-                <a class="btn btn-lg btn-block btn-outline-primary" href="/subscription/{{ $subscription->id }}/detail">Buy</a>
+                <a class="btn btn-lg btn-block btn-primary" href="/subscription/{{ $subscription->id }}/detail">Buy</a>
               </div>
             </div>
           @endforeach
