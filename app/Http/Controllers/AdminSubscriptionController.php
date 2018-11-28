@@ -156,7 +156,7 @@ class AdminSubscriptionController extends Controller
 
             return redirect()
             ->route('admin.subscription.detail', ['id' => $subscription->id])
-            ->withSuccess('Delete package '.$subscription->name.' Failed, Package Has been Used');
+            ->with('alert', 'Delete package '.$subscription->name.' Failed, Package Has been Used');
         }
 
         $payments = payment::all()

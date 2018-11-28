@@ -82,7 +82,7 @@ class ContactController extends Controller
         if ($request->name == $value->name) {
           return redirect()
           ->route('contact.create')
-          ->withSuccess('Failed Add Contact, Name '.$request->name.' Already Exist, In Your Contact');
+          ->with('alert', 'Failed Add Contact, Name '.$request->name.' Already Exist, In Your Contact');
         }
       }
 
@@ -93,8 +93,8 @@ class ContactController extends Controller
 
       if ($i >= $subscription->num_users) {
         return redirect()
-        ->route('contact.create')
-        ->withSuccess('Quota Sales Order Has Exceeded Capacity, Please Upgrade Your Package');
+        ->route('contact')
+        ->with('alert', 'Quota Contact Has Exceeded Capacity, Please Upgrade Your Package');
         // throw new \Exception("kuota sales order telah melebihi kapasitas, silahkan upgrade paket");
       }
 
@@ -106,7 +106,7 @@ class ContactController extends Controller
       $contact->email = $request->email;
       $contact->save();
 
-      return redirect('/contact')->with('alert', 'Succeed Add Contact');
+      return redirect('/contact')->withSuccess('Succeed Add Contact');
     }
 
     // update
@@ -145,10 +145,12 @@ class ContactController extends Controller
         if ($request->name == $value->name && $request->name != $contact->name) {
 
           return redirect()
-          ->route('contact.edit', [$id])
-          ->withSuccess('Failed Update Contact, Name '.$request->name.' Already Exist, In Your Contact');
+          ->route('contact.edit', ['id' => $id])
+          ->with('alert', 'Failed Update Contact, Name '.$request->name.' Already Exist, In Your Contact');
         }
       }
+
+      $nameBefore = $contact->name;
 
       $contact->name = $request->name;
       $contact->phone = $request->phone;
@@ -158,7 +160,7 @@ class ContactController extends Controller
 
           // mengarahkan kembali ke contact_detail
         return redirect()->route('contact.edit', [$id])
-        ->with('alert', 'Succeed Updated '.$contact->name);
+        ->withSuccess('Succeed Updated '.$nameBefore);
       }
 
         // delete
@@ -169,7 +171,7 @@ class ContactController extends Controller
 
         if ($invoice == null) {
           $contact->delete();
-          return redirect('/contact')->with('alert', $contact->name.' Deleted!');
+          return redirect('/contact')->withSuccess($contact->name.' Deleted!');
         }
         // mengarahkan kembali ke contact
         return redirect()->route('contact')

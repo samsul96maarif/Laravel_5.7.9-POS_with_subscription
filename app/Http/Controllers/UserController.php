@@ -43,6 +43,6 @@ class UserController extends Controller
       $user->name = $request->name;
       $user->save();
 
-      return redirect('profile')->withSuccess('Profile has been updated.');
+      return redirect('profile')->withSuccess('Profile Has been Updated.');
     }
 }

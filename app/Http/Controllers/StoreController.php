@@ -77,7 +77,7 @@ class StoreController extends Controller
     $store->zipcode = $request->zipcode;
     $store->save();
 
-    return redirect('/home')->withSuccess('Store has been created.');
+    return redirect('/home')->withSuccess('Company Profile Has been Created.');
   }
 
   // 1. store data update
@@ -113,7 +113,7 @@ class StoreController extends Controller
           $store->zipcode = $request->zipcode;
           $store->save();
 
-          return redirect('/home')->withSuccess('Store has been updated.');
+          return redirect('/home')->withSuccess('Company Profile Has been Updated.');
         }
 
         // delete

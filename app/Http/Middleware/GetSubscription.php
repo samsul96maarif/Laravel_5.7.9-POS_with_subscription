@@ -25,13 +25,13 @@ class GetSubscription
         $store = store::where('user_id', $user_id)->first();
         // memeriksa apakah sudah memiliki subsription Package
         if ($store->subscription_id == null) {
-          return redirect('/subscription')->withSuccess('please subscribe first.');
+          return redirect('/subscription')->withSuccess('Please Subscribe First.');
         }
         else {
           // memeriksa apakah statusnya 'true'
           // bila false maka akan diarahkan ke compleate a payment
             if ($store->status == false) {
-              return redirect('/subscription/cart')->withSuccess('please compleate a payment.');
+              return redirect('/subscription/cart')->withSuccess('Please Compleate a Payment.');
               throw new \Exception("masih menunggu konfirmasi pembayaran");
             } else {
               // memeriksa apakah package belum expied
@@ -39,7 +39,7 @@ class GetSubscription
               if ($store->expire_date > $now) {
                 return $next($request);
               }
-              return redirect('/subscription')->withSuccess('your package was expired, please subscrib again.');
+              return redirect('/subscription')->with('alert', 'Your Package Was Expired, Please Subscribe Again.');
               throw new \Exception("subscription expired");
 
             }

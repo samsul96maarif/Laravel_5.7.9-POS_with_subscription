@@ -87,6 +87,16 @@
     });
   </script>
 
+  @if (session('alert'))
+    <div class="alert alert-danger">
+        {{ session('alert') }}
+    </div>
+  @endif
+
+  @if (session()->has('success'))
+    <div class="alert alert-success">{{ session('success') }}</div>
+  @endif
+
   <div class="row justify-content-center">
     <div class="col-md-7">
       <div class="card">

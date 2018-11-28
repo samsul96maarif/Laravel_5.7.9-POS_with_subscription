@@ -47,33 +47,33 @@ Route::prefix('admin')->group(function () {
     // end subscription
 
     // store
-    Route::get('/store', 'AdminStoreController@index');
+    Route::get('/store', 'AdminStoreController@index')->name('admin.store');
     // search
-    Route::get('/store/search', 'AdminStoreController@search');
+    Route::get('/store/search', 'AdminStoreController@search')->name('admin.store.search');
     // detail
     Route::get('/store/{id}', 'AdminStoreController@show')->name('admin.store.detail');
-    Route::post('/store', 'AdminStoreController@filter');
+    Route::post('/store', 'AdminStoreController@filter')->name('admin.store.filter');
     // meng aktifkan subscription store
-    Route::put('/store/{id}', 'AdminStoreController@active');
+    Route::put('/store/{id}', 'AdminStoreController@active')->name('admin.store.activate');
     // menambah masa aktif
-    Route::put('/store/{id}/extend', 'AdminStoreController@extend');
+    Route::put('/store/{id}/extend', 'AdminStoreController@extend')->name('admin.store.extend');
     // end store
 
     // user
-    Route::get('/user', 'AdminUserController@index');
+    Route::get('/user', 'AdminUserController@index')->name('admin.user');
     // search
-    Route::get('/user/search', 'AdminUserController@search');
-    Route::get('/user/{id}', 'AdminUserController@show');
+    Route::get('/user/search', 'AdminUserController@search')->name('admin.user.search');
+    Route::get('/user/{id}', 'AdminUserController@show')->name('admin.user.detail');
     // end user
 
     // paymet
-    Route::get('/payment', 'AdminPaymentController@index');
+    Route::get('/payment', 'AdminPaymentController@index')->name('admin.payment');
     // filter yang sudah bayar
-    Route::get('payment/paid', 'AdminPaymentController@paid');
+    Route::get('payment/paid', 'AdminPaymentController@paid')->name('admin.payment.paid');
     // search
-    Route::get('/payment/search', 'AdminPaymentController@search');
+    Route::get('/payment/search', 'AdminPaymentController@search')->name('admin.payment.search');
     //detail unutk memeriksa proof
-    Route::get('/payment/{id}', 'AdminPaymentController@show');
+    Route::get('/payment/{id}', 'AdminPaymentController@show')->name('admin.payment.detail');
     // endpayment
 
     // contact
@@ -97,20 +97,20 @@ Route::prefix('admin')->group(function () {
 
 // user page
 // subscription
-Route::get('/subscription', 'SubscriptionController@index');
+Route::get('/subscription', 'SubscriptionController@index')->name('subscription');
 // detail
-Route::get('/subscription/{id}/detail', 'SubscriptionController@show');
+Route::get('/subscription/{id}/detail', 'SubscriptionController@show')->name('subscription.detail');
 // untuk membeli dan membuat payment
-Route::post('/subscription/{id}/cart', 'SubscriptionController@buy');
+Route::post('/subscription/{id}/cart', 'SubscriptionController@buy')->name('subscription.buy');
 // upload bukti transfer
-Route::get('/subscription/{id}/buy/proof', 'SubscriptionController@uploadProof');
-Route::get('/subscription/{id}/extend/proof', 'SubscriptionController@uploadProof');
+Route::get('/subscription/{id}/buy/proof', 'SubscriptionController@uploadProof')->name('subscription.buy.upload.proof');
+Route::get('/subscription/{id}/extend/proof', 'SubscriptionController@uploadProof')->name('subscription.extend.upload.proof');
 // store hasil upload bukti transfer
-Route::post('/subscription/{id}/buy/proof', 'SubscriptionController@storeProof');
+Route::post('/subscription/{id}/buy/proof', 'SubscriptionController@storeProof')->name('subscription.store.proof');
 // untuk masuk link upload proof dan lihat detail
-Route::get('subscription/cart', 'SubscriptionController@cart');
+Route::get('subscription/cart', 'SubscriptionController@cart')->name('subscription.cart');
 // unutk melihat keranjang
-Route::get('/subscription/payment/proof', 'SubscriptionController@cart');
+Route::get('/subscription/payment/proof', 'SubscriptionController@cart')->name('subscription.payment');
 // end subscription
 
 
@@ -142,50 +142,53 @@ Route::delete('/contact/{id}/delete', 'ContactController@delete');
 
 
 // items
-Route::get('/item', 'ItemController@index');
+Route::get('/item', 'ItemController@index')->name('item');
 // search
-Route::get('/item/search', 'ItemController@search');
+Route::get('/item/search', 'ItemController@search')->name('item.search');
 // create item
-Route::get('/item/create', 'ItemController@create');
-Route::post('/item', 'ItemController@store');
+Route::get('/item/create', 'ItemController@create')->name('item.create');
+Route::post('/item', 'ItemController@store')->name('item.store');
 // edit item
-Route::get('/item/{id}/edit', 'ItemController@edit');
-Route::put('/item/{id}', 'ItemController@update');
+Route::get('/item/{id}/edit', 'ItemController@edit')->name('item.edit');
+Route::put('/item/{id}', 'ItemController@update')->name('item.update');
 // //delete
-Route::delete('/item/{id}/delete', 'ItemController@delete');
+Route::delete('/item/{id}/delete', 'ItemController@delete')->name('item.delete');
 // end item
 
 // sales order
-Route::get('/sales_order', 'SalesOrderController@index');
-Route::get('/cari', 'SalesOrderController@loadData');
+Route::get('/sales_order', 'SalesOrderController@index')->name('sales.order');
+// Route::get('/cari', 'SalesOrderController@loadData');
 // search
-Route::get('/sales_order/search', 'SalesOrderController@search');
+Route::get('/sales_order/search', 'SalesOrderController@search')->name('sales.order.search');
 // ngebuat sales order
-Route::get('/sales_order/create', 'SalesOrderController@create');
+Route::get('/sales_order/create', 'SalesOrderController@create')->name('sales.order.create');
 // Route::get('/sales_order/create', 'SalesOrderController@bill');
-Route::post('/sales_order', 'SalesOrderController@store');
+// menyimpan hasil create sales order, kemudian diarahkan ke bill
+Route::post('/sales_order', 'SalesOrderController@store')->name('sales.order.store');
 // lihat detail
-Route::get('/sales_order/{id}/detail', 'SalesOrderController@show')->name('sales_order_detail');
-Route::get('/sales_order/{id}', 'SalesOrderController@bill')->name('sales_order_bill');
+Route::get('/sales_order/{id}/detail', 'SalesOrderController@show')->name('sales.order.detail');
+Route::get('/sales_order/{id}', 'SalesOrderController@bill')->name('sales.order.bill');
 // edit sales order
-Route::get('/sales_order/{id}/edit', 'SalesOrderController@edit');
-Route::put('/sales_order/{id}', 'SalesOrderController@update');
+// Route::get('/sales_order/{id}/edit', 'SalesOrderController@edit');
+// unutk update customer
+Route::put('/sales_order/{id}', 'SalesOrderController@update')->name('sales.order.update');
 //delete
-Route::delete('sales_order/{id}/delete', 'SalesOrderController@delete');
+Route::delete('sales_order/{id}/delete', 'SalesOrderController@delete')->name('sales.order.delete');
 
 //tambah detail invoice
-Route::get('/sales_order/{salesOrder_id}/invoice/{invoice_id}/create', 'InvoiceController@create');
-Route::post('/sales_order/{salesOrder_id}/invoice/{invoice_id}/add_item', 'InvoiceController@store');
+// Route::get('/sales_order/{salesOrder_id}/invoice/{invoice_id}/create', 'InvoiceController@create')->name('invoice.create');
+// unutk menambahkan item pada bill
+Route::post('/sales_order/{salesOrder_id}/invoice/{invoice_id}/add_item', 'InvoiceController@store')->name('invoice.store');
 //edit detail invoice
-Route::get('/sales_order/{salesOrder_id}/invoice/{invoice_id}/invoice_detail/{invoiceDetail_id}/edit', 'InvoiceController@edit');
+// Route::get('/sales_order/{salesOrder_id}/invoice/{invoice_id}/invoice_detail/{invoiceDetail_id}/edit', 'InvoiceController@edit');
 //decrease qty item
-Route::put('/sales_order/{salesOrder_id}/invoice/{invoice_id}/invoice_detail/{invoiceDetail_id}/decrease', 'InvoiceController@decrease');
+Route::put('/sales_order/{salesOrder_id}/invoice/{invoice_id}/invoice_detail/{invoiceDetail_id}/decrease', 'InvoiceController@decrease')->name('invoice.decrease');
 //increase qty item
-Route::put('/sales_order/{salesOrder_id}/invoice/{invoice_id}/invoice_detail/{invoiceDetail_id}/increase', 'InvoiceController@increase');
-Route::put('/invoice/{invoice_id}/invoice_detail/{invoiceDetail_id}', 'InvoiceController@update');
-// delete
-Route::delete('/sales_order/{salesOrder_id}/invoice/{invoice_id}/invoice_detail/{invoiceDetail_id}/delete', 'InvoiceController@delete');
-// end sales ordecari',r
+Route::put('/sales_order/{salesOrder_id}/invoice/{invoice_id}/invoice_detail/{invoiceDetail_id}/increase', 'InvoiceController@increase')->name('invoice.increase');
+// Route::put('/invoice/{invoice_id}/invoice_detail/{invoiceDetail_id}', 'InvoiceController@update');
+// delete item pada bill
+Route::delete('/sales_order/{salesOrder_id}/invoice/{invoice_id}/invoice_detail/{invoiceDetail_id}/delete', 'InvoiceController@delete')->name('invoice.delete');
+// end sales order
 
 // report
 Route::get('/report', 'ReportController@salesByItemMonth')->name('report.item');
@@ -196,8 +199,8 @@ Route::post('/report/customer', 'ReportController@Customer')->name('report.custo
 // end report
 
 // profile
-Route::get('profile', 'UserController@index');
-Route::put('profile/{id}', 'UserController@update');
+Route::get('profile', 'UserController@index')->name('profile');
+Route::put('profile/{id}', 'UserController@update')->name('profile.update');
 // end profile
 
 // end user page

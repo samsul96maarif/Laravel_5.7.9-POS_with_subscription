@@ -6,9 +6,15 @@
 
 @section('content')
 
+  @if (session('alert'))
+    <div class="alert alert-danger">
+        {{ session('alert') }}
+    </div>
+  @endif
+
   @if (session()->has('success'))
-                        <div class="alert alert-success">{{ session('success') }}</div>
-                    @endif
+    <div class="alert alert-success">{{ session('success') }}</div>
+  @endif
 
     <form class="" action="/profile/{{ $user->id }}" method="post" value="post" enctype="multipart/form-data">
       {{ method_field('PUT') }}

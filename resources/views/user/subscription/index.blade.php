@@ -5,6 +5,12 @@
 @section('headline', 'Subscriptions')
 
 @section('content')
+  
+  @if (session('alert'))
+    <div class="alert alert-danger">
+        {{ session('alert') }}
+    </div>
+  @endif
   {{-- alert bila sukses mengirim payment proof --}}
   @if (session()->has('success'))
     <div class="alert alert-success">{{ session('success') }}</div>

@@ -38,6 +38,7 @@ class MaxOrder
         return $next($request);
       }
       // bila mau ditampilkan pesan error
+      return redirect('/home')->with('alert', 'Quota Sales Order Has Exceeded Capacity, Please Upgrade Your Package');
       throw new \Exception("kuota sales order telah melebihi kapasitas, silahkan upgrade paket");
     }
 }

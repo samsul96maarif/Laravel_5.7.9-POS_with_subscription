@@ -9,6 +9,8 @@ use App\Models\User;
 use App\Models\Store;
 use App\Models\Item;
 use App\Models\ItemMedias;
+use App\Models\InvoiceDetail;
+
 use App\Cores\Jsonable;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Response;
@@ -51,6 +53,16 @@ class ItemController extends Controller
     $user_id = Auth::id();
     $store = store::where('user_id', $user_id)->first();
 
+    // mengecek agar tidak ada duplikasi nama item
+    $items = item::all()->where('store_id', $store->id);
+    foreach ($items as $value) {
+      if ($value->name == $request->name) {
+        return redirect()
+        ->route('item.create')
+        ->with('alert', 'Failed Add Item, Name '.$request->name.' Already Exist, In Your Inventory');
+      }
+    }
+
     $item = new item;
     $item->store_id = $store->id;
     $item->name = $request->name;
@@ -75,7 +87,7 @@ class ItemController extends Controller
       $itemMedia->save();
     }
 
-    return redirect('/item')->with('alert', 'Succeed Add Item');
+    return redirect('/item')->withSuccess('Succeed Add Item');
   }
 
   // update
@@ -101,6 +113,21 @@ class ItemController extends Controller
         ]);
 
         $item = item::find($id);
+        // pengecekan agar tidak ada nama yang sama pada item
+        $user = Auth::user();
+        $store = store::where('user_id', $user->id)->first();
+        $items = item::all()->where('store_id', $store->id);
+        foreach ($items as $value) {
+          if ($request->name == $value->name && $request->name != $item->name) {
+
+            return redirect()
+            ->route('item.edit', ['id' => $id])
+            ->with('alert', 'Failed Update Item, Name '.$request->name.' Already Exist, In Your Inventory');
+          }
+        }
+
+        $nameBefore = $item->name;
+
         $item->name = $request->name;
         $item->description = $request->description;
         $item->price = $request->price;
@@ -131,15 +158,25 @@ class ItemController extends Controller
           }
 
         }
-        return redirect('/item')->with('alert', 'Succeed Updated '.$item->name);
+        return redirect('/item')->withSuccess('Succeed Updated '.$nameBefore);
       }
 
       // delete
     public function delete($id)
     {
       $item = item::find($id);
-      $item->delete();
-      return redirect('/item')->with('alert', $item->name.' Deleted!');
+      // mencari tahu apakah item telah digunakan sebelumnya
+      $invoiceDetail = invoiceDetail::where('item_id', $id)->first();
+
+      if ($invoiceDetail == null) {
+        $item->delete();
+        return redirect('/item')->withSuccess($item->name.' Deleted!');
+      }
+
+      // mengarahkan kembali ke item
+      return redirect()->route('item')
+      ->with('alert', 'Failed, Item '.$item->name.' Already Used In Invoice, Please Delete Invoice First');
+      throw new \Exception("contact telah digunakan pada invoice, silahkan hapus invoice terlebih dahulu");
     }
 
     public function search(Request $request)

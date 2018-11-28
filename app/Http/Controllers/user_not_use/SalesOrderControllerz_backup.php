@@ -292,7 +292,21 @@ class SalesOrderController extends Controller
         'invoiceDetails' => $invoiceDetails
       ]);
     }
-// untuk update contact/customer
+
+    public function edit($id)
+    {
+      $user_id = Auth::id();
+      $store = store::where('user_id', $user_id)->first();
+      $contacts = contact::all()->where('store_id', $store->id)->where('deleted_at', null);
+      $salesOrder = salesOrder::findOrFail($id);
+
+      return view('user/sales_order/edit',
+      [
+        'contacts' => $contacts,
+        'salesOrder' => $salesOrder
+      ]);
+    }
+
     public function update(Request $request, $id)
     {
       $user_id = Auth::id();
@@ -304,9 +318,6 @@ class SalesOrderController extends Controller
       ->first();
 
       if ($contact == null) {
-        return redirect()->route('sales.order.bill', ['id' => $id])
-        ->with('alert', $request->contact.' Not Found');
-
         throw new \Exception("kontak tidak ditemukan");
       }
 
@@ -320,9 +331,9 @@ class SalesOrderController extends Controller
 
       return redirect()
       ->route('sales.order.bill', ['id' => $salesOrder->id])
-      ->withSuccess('Succeed Updated Invoice');
+      ->with('alert', 'Succeed Updated Invoice');
     }
-// ketika cancel atau delete sales order
+
     public function delete($id)
     {
       $salesOrder = salesOrder::findOrFail($id);
@@ -336,7 +347,7 @@ class SalesOrderController extends Controller
       $invoice->delete();
       $salesOrder->delete();
 
-      return redirect('/sales_order')->withSuccess($salesOrder->order_number.' Deleted!');
+      return redirect('/sales_order')->with('alert', $salesOrder->order_number.' Deleted!');
     }
 
     public function search(Request $request)

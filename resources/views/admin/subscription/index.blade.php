@@ -6,17 +6,14 @@
 
 @section('content')
 
-  @php
-    $alert = 'alert-success';
-  @endphp
-  @if (session('success') == 'Delete package Failed, package has been used')
-    @php
-      $alert = 'alert-danger';
-    @endphp
+  @if (session('alert'))
+    <div class="alert alert-danger">
+        {{ session('alert') }}
+    </div>
   @endif
 
   @if (session()->has('success'))
-    <div class="alert {{ $alert }}">{{ session('success') }}</div>
+    <div class="alert alert-success">{{ session('success') }}</div>
   @endif
 
   <div class="btn-atas">

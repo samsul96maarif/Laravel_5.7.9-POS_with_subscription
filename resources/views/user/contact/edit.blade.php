@@ -6,14 +6,14 @@
 
 @section('content')
 
-  @if (session()->has('success'))
-    <div class="alert alert-danger">{{ session('success') }}</div>
-  @endif
-
   @if (session('alert'))
-    <div class="alert alert-success">
+    <div class="alert alert-danger">
         {{ session('alert') }}
     </div>
+  @endif
+
+  @if (session()->has('success'))
+    <div class="alert alert-success">{{ session('success') }}</div>
   @endif
 
   <div class="row justify-content-center">

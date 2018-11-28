@@ -5,6 +5,16 @@
 @section('headline', $salesOrder->order_number)
 
 @section('content')
+  @if (session('alert'))
+    <div class="alert alert-danger">
+        {{ session('alert') }}
+    </div>
+  @endif
+
+  @if (session()->has('success'))
+    <div class="alert alert-success">{{ session('success') }}</div>
+  @endif
+  
   <h3>{{ $invoice->number }}</h3>
   <div class="row">
     <div class="col-md-6">

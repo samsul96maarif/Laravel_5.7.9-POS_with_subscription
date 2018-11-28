@@ -79,7 +79,6 @@ class ReportController extends Controller
       ->where('invoice_details.deleted_at', null)
       ->whereYear('invoice_details.created_at', '=', $year)
       ->whereMonth('invoice_details.created_at', '=', $month)
-      // ->groupBy('invoice_details.item_id', 'items.name', 'invoice_details.item_quantity')
       ->groupBy('invoice_details.item_id', 'items.name')
       ->get();
 

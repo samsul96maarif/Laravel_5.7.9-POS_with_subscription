@@ -25,7 +25,7 @@ class Gate
       // bila belum memiliki store diarahkan ke halaman create
       if ($store == null) {
 
-        return redirect('/create')->withSuccess('please fill company profile first.');
+        return redirect('/create')->withSuccess('Please Fill Company Profile First.');
       }
 
       return $next($request);

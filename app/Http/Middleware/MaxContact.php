@@ -38,6 +38,7 @@ class MaxContact
         return $next($request);
       }
       // bila mau ditampilkan pesan error
+      return redirect('/home')->with('alert', 'Quota Contact Has Exceeded Capacity, Please Upgrade Your Package');
       throw new \Exception("kuota contact telah melebihi kapasitas, silahkan upgrade paket");
     }
 }
