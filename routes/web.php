@@ -127,15 +127,15 @@ Route::delete('/store/{id}/delete', 'StoreController@delete');
 
 
 // contact
-Route::get('/contact', 'ContactController@index');
+Route::get('/contact', 'ContactController@index')->name('contact');
 // search
-Route::get('/contact/search', 'ContactController@search');
+Route::get('/contact/search', 'ContactController@search')->name('contact.search');
 // create contact
-Route::get('/contact/create', 'ContactController@create');
-Route::post('/contact', 'ContactController@store');
+Route::get('/contact/create', 'ContactController@create')->name('contact.create');
+Route::post('/contact', 'ContactController@store')->name('contact.store');
 // edit contact
-Route::get('/contact/{id}/edit', 'ContactController@edit')->name('contact_detail');
-Route::put('/contact/{id}', 'ContactController@update');
+Route::get('/contact/{id}/edit', 'ContactController@edit')->name('contact.edit');
+Route::put('/contact/{id}', 'ContactController@update')->name('contact.update');
 // //delete
 Route::delete('/contact/{id}/delete', 'ContactController@delete');
 // end contact

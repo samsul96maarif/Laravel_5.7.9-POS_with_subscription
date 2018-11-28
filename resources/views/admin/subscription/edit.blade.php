@@ -30,7 +30,7 @@
                 {{-- kolom untuk isi tabel "name" --}}
                 {{-- old('nama variable') = untuk menyimpan nilai lama, jadi bila tidak valid hanya tabel yang tidak valid
                 yang nilainya akan terhapus --}}
-                <input class="form-control" type="text" name="name" value="{{ $subscription->name }}" placeholder="name">
+                <input class="form-control" type="text" name="name" value="{{ $subscription->name }}" placeholder="Package Name">
                 {{-- untuk mengeluarkan error pada value "name" --}}
                 @if($errors->has('name'))
                   <p>{{ $errors->first('name') }}</p>
@@ -56,13 +56,13 @@
             <br>
             <div class="row">
               <div class="col-md-4">
-                <label for=""class="col-form-label">Invoices quota</label>
+                <label for=""class="col-form-label">Invoices Quota</label>
               </div>
               <div class="col-md-3">
                 {{-- kolom untuk isi tabel "num_invoices" --}}
                 {{-- old('nama variable') = untuk menyimpan nilai lama, jadi bila tidak valid hanya tabel yang tidak valid
                 yang nilainya akan terhapus --}}
-                <input class="form-control" type="text" name="num_invoices" value="{{ $subscription->num_invoices }}" placeholder="jumlah invoice">
+                <input class="form-control" type="text" name="num_invoices" value="{{ $subscription->num_invoices }}" placeholder="Invoices Quota">
                 {{-- untuk mengeluarkan error pada value "name" --}}
                 @if($errors->has('num_invoices'))
                   <p>{{ $errors->first('num_invoices') }}</p>
@@ -72,13 +72,13 @@
             <br>
             <div class="row">
               <div class="col-md-4">
-                <label for="" class="col-form-label">Contacts quota</label>
+                <label for="" class="col-form-label">Contacts Quota</label>
               </div>
               <div class="col-md-3">
                 {{-- kolom untuk isi tabel "num_users" --}}
                 {{-- old('nama variable') = untuk menyimpan nilai lama, jadi bila tidak valid hanya tabel yang tidak valid
                 yang nilainya akan terhapus --}}
-                <input class="form-control" type="text" name="num_users" value="{{ $subscription->num_users }}" placeholder="jumlah user">
+                <input class="form-control" type="text" name="num_users" value="{{ $subscription->num_users }}" placeholder="Contacts Quota">
                 {{-- untuk mengeluarkan error pada value "name" --}}
                 @if($errors->has('num_users'))
                   <p>{{ $errors->first('num_users') }}</p>
@@ -88,7 +88,7 @@
             <br>
             <div class="row content-center">
               <div class="col text-center">
-                <input onclick="return confirm('Do you wanna update package {{ $subscription->name}}')" class="btn btn-primary" type="submit" name="submit" value="update">
+                <input onclick="return confirm('Do You Wanna Update Package {{ $subscription->name}}')" class="btn btn-primary" type="submit" name="submit" value="Update">
               </div>
             </div>
             {{ csrf_field() }}

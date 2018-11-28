@@ -55,6 +55,10 @@ class ContactController extends Controller
 
     public function store(Request $request)
     {
+      $user_id = Auth::id();
+      $store = store::where('user_id', $user_id)->first();
+      $subscription = subscription::findOrFail($store->subscription_id);
+
       $this->validate($request, [
         'name' => 'required',
       ]);
@@ -71,12 +75,16 @@ class ContactController extends Controller
         ]);
       }
 
-      $user_id = Auth::id();
-      $store = store::where('user_id', $user_id)->first();
-      $subscription = subscription::findOrFail($store->subscription_id);
-      $contacts = contact::all()
-      ->where('store_id', $store->id)
-      ->where('deleted_at', '!=', null);
+      $contacts = contact::all()->where('store_id', $store->id);
+
+      // mengecek apakan contact dengan nama yang dimasukkan sudah ada
+      foreach ($contacts as $value) {
+        if ($request->name == $value->name) {
+          return redirect()
+          ->route('contact.create')
+          ->withSuccess('Failed Add Contact, Name '.$request->name.' Already Exist, In Your Contact');
+        }
+      }
 
       $i = 0;
       foreach ($contacts as $key) {
@@ -84,7 +92,10 @@ class ContactController extends Controller
       }
 
       if ($i >= $subscription->num_users) {
-        throw new \Exception("kuota sales order telah melebihi kapasitas, silahkan upgrade paket");
+        return redirect()
+        ->route('contact.create')
+        ->withSuccess('Quota Sales Order Has Exceeded Capacity, Please Upgrade Your Package');
+        // throw new \Exception("kuota sales order telah melebihi kapasitas, silahkan upgrade paket");
       }
 
       $contact = new contact;
@@ -100,40 +111,55 @@ class ContactController extends Controller
 
     // update
     // 1. get data melalui id-nya
-        public function edit($id){
-          $contact = contact::find($id);
+    public function edit($id){
+      $contact = contact::find($id);
 
-          return view('user/contact/edit', ['contact' => $contact]);
-        }
+      return view('user/contact/edit', ['contact' => $contact]);
+    }
     // 2. store data update
-        public function update(Request $request, $id){
+    public function update(Request $request, $id){
 
-          $this->validate($request, [
-            'name' => 'required',
-          ]);
+      $this->validate($request, [
+        'name' => 'required',
+      ]);
 
-          if ($request->phone != null) {
-            $this->validate($request, [
-              'phone' => 'numeric',
-            ]);
-          }
+      if ($request->phone != null) {
+        $this->validate($request, [
+          'phone' => 'numeric',
+        ]);
+      }
 
-          if ($request->email != null) {
-            $this->validate($request, [
-              'email' => 'string|email|max:255|unique:users',
-            ]);
-          }
+      if ($request->email != null) {
+        $this->validate($request, [
+          'email' => 'string|email|max:255|unique:users',
+        ]);
+      }
 
-          $contact = contact::find($id);
-          $contact->name = $request->name;
-          $contact->phone = $request->phone;
-          $contact->company_name = $request->company_name;
-          $contact->email = $request->email;
-          $contact->save();
+      $contact = contact::find($id);
+
+    // mengecek apakan contact dengan nama yang dimasukkan sudah ada
+      $user = Auth::user();
+      $store = store::where('user_id', $user->id)->first();
+      $contacts = contact::all()->where('store_id', $store->id);
+      foreach ($contacts as $value) {
+        if ($request->name == $value->name && $request->name != $contact->name) {
+
+          return redirect()
+          ->route('contact.edit', [$id])
+          ->withSuccess('Failed Update Contact, Name '.$request->name.' Already Exist, In Your Contact');
+        }
+      }
+
+      $contact->name = $request->name;
+      $contact->phone = $request->phone;
+      $contact->company_name = $request->company_name;
+      $contact->email = $request->email;
+      $contact->save();
 
           // mengarahkan kembali ke contact_detail
-          return redirect()->route('contact_detail', [$id])->with('alert', 'Succeed Updated '.$contact->name);
-        }
+        return redirect()->route('contact.edit', [$id])
+        ->with('alert', 'Succeed Updated '.$contact->name);
+      }
 
         // delete
       public function delete($id)
@@ -145,6 +171,9 @@ class ContactController extends Controller
           $contact->delete();
           return redirect('/contact')->with('alert', $contact->name.' Deleted!');
         }
+        // mengarahkan kembali ke contact
+        return redirect()->route('contact')
+        ->with('alert', 'Failed, Contact '.$contact->name.' Already Used In Invoice, Please Delete Invoice First');
         throw new \Exception("contact telah digunakan pada invoice, silahkan hapus invoice terlebih dahulu");
       }
 

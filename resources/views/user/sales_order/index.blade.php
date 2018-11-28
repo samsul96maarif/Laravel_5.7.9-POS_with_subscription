@@ -19,7 +19,7 @@
     <div class="col-md-3 offset-md-5">
       <form class="" action="/sales_order/search" method="get">
         <div class="input-group mb-3">
-          <input autocomplete="off" type="search" name="q" class="form-control" placeholder="Search" aria-describedby="button-addon2" value="">
+          <input autocomplete="off" type="search" name="q" class="form-control" placeholder="Search Sales Order..." aria-describedby="button-addon2" value="">
           <div class="input-group-append">
             <button id="button-addon2" class="btn btn-primary" type="submit" name="submit"><i class="fas fa-search"></i></button>
           </div>

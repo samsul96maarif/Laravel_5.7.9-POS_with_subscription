@@ -40,6 +40,10 @@
     });
   </script>
 
+  @if (session()->has('success'))
+    <div class="alert alert-danger">{{ session('success') }}</div>
+  @endif
+
   @if (session('alert'))
     <div class="alert alert-success">
         {{ session('alert') }}
@@ -48,19 +52,15 @@
 
   <div class="row">
     <div class="col-md-4">
-      <form class="" action="/contact/create" method="get">
-        <input class="btn btn-primary" type="submit" name="submit" value="add contact">
-      </form>
+      <a href="/contact/create" class="btn btn-primary"><i class="fas fa-plus-circle"></i> New</a>
     </div>
 
-    <div class="col-md-4 offset-md-4">
+    <div class="col-md-3 offset-md-5">
       <form class="" action="/contact/search" method="get">
         <div class="input-group mb-3" style="margin-bottom:0!important;">
-          <span>
-            <input type="text" name="q" id="contact_name" class="form-control" aria-describedby="button-addon2" autocomplete="off" placeholder="Search Contact..." />
-          </span>
+          <input type="text" name="q" id="contact_name" class="form-control" aria-describedby="button-addon2" autocomplete="off" placeholder="Search Contact..." />
           <div class="input-group-append">
-            <input id="button-addon2" class="btn btn-primary" type="submit" name="submit" value="Search">
+            <button id="button-addon2" class="btn btn-primary" type="submit" name="submit"><i class="fas fa-search"></i></button>
           </div>
         </div>
         <span id="contact_list">
@@ -98,14 +98,12 @@
         <td>
           <div class="row">
             <div class="col text-right btn-kiri">
-              <form class="" action="/contact/{{ $contact->id }}/edit" method="edit">
-                  <input class="btn btn-outline-primary" type="submit" name="submit" value="edit">
-              </form>
+              <a href="/contact/{{ $contact->id }}/edit" class="btn btn-outline-primary"><i class="fas fa-edit"></i></a>
             </div>
             <div class="col text-left btn-kanan">
               <form class="" action="/contact/{{ $contact->id }}/delete" method="post">
                 {{ method_field('DELETE') }}
-                  <input onclick="return confirm('Do you wanna Delete {{ $contact->name }}')" class="btn btn-outline-danger" type="submit" name="submit" value="delete">
+                <button onclick="return confirm('Do You Wanna Delete {{ $contact->name }}')" class="btn btn-outline-danger" type="submit" name="submit"><i class="fas fa-trash-alt"></i></button>
                 {{ csrf_field() }}
               </form>
             </div>

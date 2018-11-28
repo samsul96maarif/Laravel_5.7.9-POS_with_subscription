@@ -56,7 +56,7 @@
     <div class="col-md-3 offset-md-5">
       <form class="" action="/item/search" method="get">
         <div class="input-group mb-3" style="margin-bottom:0!important;">
-          <input autocomplete="off" type="text" name="q" id="item_name" class="form-control" aria-describedby="button-addon2" placeholder="Search" />
+          <input autocomplete="off" type="text" name="q" id="item_name" class="form-control" aria-describedby="button-addon2" placeholder="Search Item..." />
           <div class="input-group-append">
             <button id="button-addon2" class="btn btn-primary" type="submit" name="submit"><i class="fas fa-search"></i></button>
           </div>
@@ -67,7 +67,6 @@
     </div>
     {{-- row --}}
   </div>
-
 
   <br>
 
@@ -96,9 +95,7 @@
         <td>
           <div class="row">
             <div class="col text-right btn-kiri">
-              <form class="" action="/item/{{ $item->id }}/edit" method="get">
-                <button class="btn btn-outline-primary" type="submit" name="submit"><i class="fas fa-edit"></i></button>
-              </form>
+              <a href="/item/{{ $item->id }}/edit" class="btn btn-outline-primary"><i class="fas fa-edit"></i></a>
             </div>
             <div class="col text-left btn-kanan">
               <form class="" action="/item/{{ $item->id }}/delete" method="post">

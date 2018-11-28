@@ -12,8 +12,8 @@
     <thead>
       <th>Package Name</th>
       <th>Price</th>
-      <th>Invoices quota</th>
-      <th>Contacts quota</th>
+      <th>Invoices Quota</th>
+      <th>Contacts Quota</th>
       {{-- action dialih fungsikan dari index --}}
       {{-- <th>Action</th> --}}
     </thead>
@@ -46,7 +46,29 @@
 
   <div class="row">
 
-    <div class="col-md-4">
+    <div class="col-md-3">
+      <div class="row btn-block">
+
+        <form class="col-md-12" action="/admin/subscription/{{ $subscription->id }}" method="post">
+          <div class="input-group mb-3" style="margin-bottom:0!important;">
+            <select class="form-control" aria-describedby="button-addon2" autocomplete="off" name="filter">
+              <option value="active">Active</option>
+              <option value="awaiting">Awaiting Payment</option>
+              {{-- <option value="all">All</option> --}}
+            </select>
+            <div class="input-group-append">
+              <button id="button-addon2" class="btn btn-primary" type="submit" name="submit">Filter</button>
+            </div>
+          </div>
+          {{ csrf_field() }}
+        </form>
+
+        {{-- div class="row text-right btn-block" --}}
+      </div>
+      {{-- col md 3 --}}
+    </div>
+
+    {{-- <div class="col-md-4">
       <div class="card md">
         <div class="card-body">
           <form class="" action="/admin/subscription/{{ $subscription->id }}" method="post">
@@ -66,7 +88,7 @@
           </form>
         </div>
       </div>
-    </div>
+    </div> --}}
     <div class="col">
       <div class="card">
         <div class="card-header text-center">
@@ -82,9 +104,9 @@
       <th>#</th>
       <th>Owner</th>
       <th>Company Name</th>
-      <th>Phone</th>
-      <th>Company Address</th>
-      <th>Zipcode</th>
+      {{-- <th>Phone</th> --}}
+      {{-- <th>Company Address</th> --}}
+      {{-- <th>Zipcode</th> --}}
       <th>Status</th>
       <th>Expiry Date</th>
       {{-- dialih fungsikan lewat payment --}}
@@ -103,17 +125,17 @@
             @endif
           @endforeach
           <td><a class="btn" href="/admin/store/{{ $store->id }}">{{ $store->name }}</a></td>
-          <td>{{ $store->phone }}</td>
-          <td>{{ $store->company_address}}</td>
-          <td>{{ $store->zipcode}}</td>
+          {{-- <td>{{ $store->phone }}</td> --}}
+          {{-- <td>{{ $store->company_address}}</td> --}}
+          {{-- <td>{{ $store->zipcode}}</td> --}}
           @if ($store->subscription_id > 0)
             @if ($store->status == 0)
               <td>
-                <a href="#" class="btn btn-outline-secondary">awaiting payment</a>
+                <a href="#" class="btn btn-outline-secondary">Awaiting Payment</a>
               </td>
             @else
               <td>
-                <a href="#" class="btn btn-outline-primary">active</a>
+                <a href="#" class="btn btn-outline-primary">Active</a>
               </td>
             @endif
             <td>{{ date('d-m-Y', strtotime($store->expire_date)) }}</td>

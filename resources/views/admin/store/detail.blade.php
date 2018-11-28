@@ -1,6 +1,6 @@
 @extends('layouts/adminMaster')
 
-@section('title', 'store '.$store->name)
+@section('title', 'Company '.$store->name)
 
 @section('headline', $store->name.' Detail')
 
@@ -33,7 +33,7 @@
             </div>
             @if ($store->subscription_id == null)
               <div class="col">
-                <span class="form-control text-center">Dont have yet</span>
+                <span class="form-control text-center">Dont Have Yet</span>
               </div>
             @else
               <div class="col">
@@ -62,7 +62,7 @@
           <br>
           <div class="row">
             <div class="col-md-4">
-              <label for="" class="col-form-label">Zipcode</label>
+              <label for="" class="col-form-label">ZipCode</label>
             </div>
             <div class="col">
               <span class="form-control text-center">{{ $store->zipcode}}</span>
@@ -72,7 +72,7 @@
           @if ($store->subscription_id == null)
             <div class="row">
               <div class="col-md-4">
-                <label for="" class="col-form-label">Invoices quota / Invoices</label>
+                <label for="" class="col-form-label">Invoices Quota / Invoices</label>
               </div>
               <div class="col">
                 <span class="form-control text-center">{{ $numSalesOrders }}</span>
@@ -80,7 +80,7 @@
             </div>
             <div class="row">
               <div class="col-md-4">
-                <label for="" class="col-form-label">Contacts quota / Contacts</label>
+                <label for="" class="col-form-label">Contacts Quota / Contacts</label>
               </div>
               <div class="col">
                 <span class="form-control text-center">{{ $numContacts }}</span>
@@ -98,7 +98,7 @@
           @else
             <div class="row">
               <div class="col-md-4">
-                <label for="" class="col-form-label">Invoices quota / Invoices</label>
+                <label for="" class="col-form-label">Invoices Quota / Invoices</label>
               </div>
               <div class="col">
                 <span class="form-control text-center">{{ $subscription->num_invoices }} / {{ $numSalesOrders }}</span>
@@ -106,7 +106,7 @@
             </div>
             <div class="row">
               <div class="col-md-4">
-                <label for="" class="col-form-label">Contacts quota / Contacts</label>
+                <label for="" class="col-form-label">Contacts Quota / Contacts</label>
               </div>
               <div class="col">
                 <span class="form-control text-center">{{ $subscription->num_users}} / {{ $numContacts }}</span>
@@ -129,11 +129,11 @@
             </div>
             <div class="col">
               @if ($store->status > 0)
-                <span class="form-control text-center">active</span>
+                <span class="form-control text-center">Active</span>
               @elseif ($store->status == 0)
-                <span class="form-control text-center">awaiting paymnet</span>
+                <span class="form-control text-center">Awaiting Paymnet</span>
               @else
-                <span class="form-control text-center">not subscribe</span>
+                <span class="form-control text-center">Not Subscribe</span>
               @endif
             </div>
           </div>

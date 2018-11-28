@@ -135,8 +135,7 @@ class ReportController extends Controller
       }
 
       $startDate->hour(0)->minute(0)->second(0);
-      $endDate->hour(0)->minute(0)->second(0);
-
+      $endDate->hour(24)->minute(60)->second(60);
 
       if ($request->by == 'year') {
         $by = 'in '.$year;

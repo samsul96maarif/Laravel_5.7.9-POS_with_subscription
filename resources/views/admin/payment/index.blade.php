@@ -8,7 +8,7 @@
 
   <div class="row">
     <div class="col-md-4">
-      <a class="btn btn-outline-primary" href="/admin/payment/paid">Just Show Who Has Proof</a>
+      <a class="btn btn-outline-primary" href="/admin/payment/paid"><i class="fas fa-arrow-circle-right"></i> Just Show Who Has Proof</a>
     </div>
     <div class="col-md-4 offset-md-4">
       <form class="" action="/admin/payment/search" method="get">

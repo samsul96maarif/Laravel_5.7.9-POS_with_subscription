@@ -12,8 +12,8 @@
     <thead>
       <th>Package Name</th>
       <th>Price</th>
-      <th>Invoices quota</th>
-      <th>Contacts quota</th>
+      <th>Invoices Quota</th>
+      <th>Contacts Quota</th>
     </thead>
     <tbody>
       <tr>
@@ -29,7 +29,7 @@
     <div class="col">
       <div class="card">
         <div class="card-header text-center">
-          <h4 class="my-0 font-weight-normal">payment</h4>
+          <h4 class="my-0 font-weight-normal">Payment</h4>
         </div>
       </div>
     </div>
@@ -40,8 +40,8 @@
     <thead>
       <th>#</th>
       <th>Date</th>
-      <th>Uniq Code</th>
-      <th>Store Name</th>
+      <th>Unique Code</th>
+      <th>Company Name</th>
       <th>Owner</th>
       <th>Period</th>
       <th>Amount</th>

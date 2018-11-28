@@ -34,7 +34,7 @@ class AdminSubscriptionController extends Controller
       $subscription = subscription::findOrFail($id);
       $users = user::all();
       $stores = store::all()->where('subscription_id', $id);
-      $filter = 'all';
+      $filter = 'All';
 
       return view('admin/subscription/detail',
       [
@@ -62,12 +62,14 @@ class AdminSubscriptionController extends Controller
         $stores = store::all()->where('subscription_id', $id);
       }
 
-      $filter = $request->filter;
       if ($request->filter == 'awaiting') {
-        $filter = 'awaiting paymnet';
+        $filter = 'Awaiting Paymnet';
       } elseif ($request->filter == 'not') {
-        $filter = 'not subscribe';
+        $filter = 'Not Subscribe';
+      }else {
+        $filter = 'Active';
       }
+
       $subscriptions = subscription::all();
       $users = user::all();
 
@@ -102,7 +104,10 @@ class AdminSubscriptionController extends Controller
       $subscription->num_invoices = $request->num_invoices;
       $subscription->num_users = $request->num_users;
       $subscription->save();
-      return redirect('/admin/subscription');
+
+      return redirect()
+      ->route('admin.subscription')
+      ->withSuccess('Succeed Add Package '.$subscription->name);
     }
 
     // update
@@ -130,7 +135,7 @@ class AdminSubscriptionController extends Controller
 
           return redirect()
           ->route('admin.subscription.edit', ['id' => $subscription->id])
-          ->withSuccess('Edit package '.$subscription->name.' succeed');
+          ->withSuccess('Succeed Edit Package '.$subscription->name);
         }
 
         // delete
@@ -151,8 +156,7 @@ class AdminSubscriptionController extends Controller
 
             return redirect()
             ->route('admin.subscription.detail', ['id' => $subscription->id])
-            ->withSuccess('Delete package '.$subscription->name.' Failed, package has been used');
-            // ->withSuccess('Delete package '.$subscription->name.' Failed, package has been used');
+            ->withSuccess('Delete package '.$subscription->name.' Failed, Package Has been Used');
         }
 
         $payments = payment::all()
@@ -175,6 +179,6 @@ class AdminSubscriptionController extends Controller
 
         return redirect()
         ->route('admin.subscription')
-        ->withSuccess('Delete package '.$subscription->name.' Succeed');
+        ->withSuccess('Succeed Deleted Package '.$subscription->name);
       }
 }

@@ -224,3 +224,11 @@ div.btn-atas {
 .dropdown-user {
   color: white;
 }
+
+.btn-report {
+  text-decoration: none;
+}
+
+.btn-report:hover {
+  background-color: #C0C0C0;
+}

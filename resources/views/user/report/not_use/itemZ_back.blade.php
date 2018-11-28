@@ -22,27 +22,31 @@
       <a class="btn btn-outline-primary" href="/report/customer"><i class="fas fa-arrow-circle-right"></i> Show Report By Customer</a>
     </div>
 
-    <div class="offset-md-5 col-md-3" style="padding-right:0!important;">
-      <div class="row text-right btn-block" style="margin-right:0!important;">
-
-        <form class="col-md-12" action="/report/item" method="post">
-          <div class="input-group mb-3" style="margin-bottom:0!important;">
-            <select class="form-control" aria-describedby="button-addon2" autocomplete="off" name="by">
-              <option value="week">This Week</option>
-              <option value="month">This Month</option>
-              <option value="year">This Year</option>
-              <option value="all">All Periode</option>
-            </select>
-            <div class="input-group-append">
-              <button id="button-addon2" class="btn btn-primary" type="submit" name="submit">Filter</button>
+    <div class="offset-md-4 col-md-4">
+      <div class="row text-right btn-atas btn-block">
+        <form class="" action="/report/item" method="post">
+          <div class="card col-md-12">
+            <div class="card-body">
+              <div class="row">
+                <div class="col-md-7" style="padding:0px;">
+                  <select class="form-control" class="" name="by">
+                    <option value="week">This Week</option>
+                    <option value="month">This Month</option>
+                    <option value="year">This Year</option>
+                    <option value="all">All Periode</option>
+                  </select>
+                </div>
+                <div class="col" style="padding-right:0px;">
+                  <input class="btn btn-primary" type="submit" name="submit" value="search">
+                </div>
+              </div>
             </div>
           </div>
           {{ csrf_field() }}
         </form>
-
-        {{-- div class="row text-right btn-block" --}}
       </div>
-      <div class="row text-right btn-block">
+
+      <div class="row">
         <div class="col-md-12 btn-atas">
           <button id="custome-search" class="btn btn-block btn-primary" type="button" name="button">Custome Search</button>
         </div>
@@ -50,7 +54,7 @@
         <div class="hidden-custome-search">
           <form class="" action="/report/item" method="post">
             <div class="card">
-              <div class="card-header text-justify">
+              <div class="card-header">
                 Custome Search
               </div>
               <div class="card-body">
@@ -82,7 +86,7 @@
         </div>
         {{-- row --}}
       </div>
-      {{-- offset md 5 col md 3 --}}
+      {{-- offset md 4 col md 4 --}}
     </div>
     {{-- row --}}
   </div>

@@ -33,7 +33,7 @@ class AdminStoreController extends Controller
       $stores = store::all();
       $subscriptions = subscription::all();
       $users = user::all();
-      $filter = 'all';
+      $filter = 'All';
 
       return view('admin/store/index',
       [
@@ -95,7 +95,10 @@ class AdminStoreController extends Controller
       }
 
       $store->save();
-      return redirect()->route('admin.store.detail', ['id' => $store->id])->withSuccess('activate package '.$subscription->name.' for '.$store->name.' succeed');
+
+      return redirect()
+      ->route('admin.store.detail', ['id' => $store->id])
+      ->withSuccess('Activate Package '.$subscription->name.' For '.$store->name.' Succeed');
     }
 
     // fungsi untuk menambah masa aktif package subscription
@@ -115,7 +118,10 @@ class AdminStoreController extends Controller
       $payment->save();
 
       $store->save();
-      return redirect('/admin/payment');
+
+      return redirect()
+      ->route('admin.store.detail', ['id' => $store->id])
+      ->withSuccess('Extend Package '.$subscription->name.' For '.$store->name.' Succeed');
     }
 
     public function filter(Request $request)
@@ -132,11 +138,12 @@ class AdminStoreController extends Controller
         $stores = store::all();
       }
 
-      $filter = $request->filter;
       if ($request->filter == 'awaiting') {
-        $filter = 'awaiting paymnet';
+        $filter = 'Awaiting Paymnet';
       } elseif ($request->filter == 'not') {
-        $filter = 'not subscribe';
+        $filter = 'Not Subscribe';
+      } else {
+        $filter = 'Active';
       }
 
       $subscriptions = subscription::all();
@@ -162,7 +169,7 @@ class AdminStoreController extends Controller
 
       $subscriptions = subscription::all();
       $users = user::all();
-      $filter = 'all';
+      $filter = 'All';
 
       return view('admin/store/index',
         [

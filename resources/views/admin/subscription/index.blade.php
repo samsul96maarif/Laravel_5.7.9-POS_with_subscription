@@ -19,13 +19,17 @@
     <div class="alert {{ $alert }}">{{ session('success') }}</div>
   @endif
 
+  <div class="btn-atas">
+    <a href="/admin/subscription/create" class="btn btn-primary"><i class="fas fa-plus-circle"></i> New</a>
+  </div>
+
   <table class="table">
     <thead>
       <th>#</th>
       <th>Package Name</th>
       <th>Price</th>
-      <th>Invoices quota</th>
-      <th>Contacts quota</th>
+      <th>Invoices Quota</th>
+      <th>Contacts Quota</th>
       <th>Action</th>
     </thead>
     <tbody>
@@ -42,14 +46,12 @@
           <td>
             <div class="row">
               <div class="col text-right btn-kiri">
-                <form class="" action="/admin/subscription/{{ $subscription->id }}/edit" method="get">
-                  <input class="btn btn-outline-primary" type="submit" name="submit" value="edit">
-                </form>
+                <a href="/admin/subscription/{{ $subscription->id }}/edit" class="btn btn-outline-primary"><i class="fas fa-edit"></i></a>
               </div>
               <div class="col text-left btn-kanan">
                 <form class="" action="/admin/subscription/{{ $subscription->id }}/delete" method="post">
                   {{ method_field('DELETE') }}
-                  <input onclick="return confirm('Are you sure wanna delete package {{ $subscription->name}}')" class="btn btn-outline-danger" type="submit" name="submit" value="delete">
+                  <button onclick="return confirm('Are You Sure Wanna Delete Package {{ $subscription->name }}')" class="btn btn-outline-danger" type="submit" name="submit"><i class="fas fa-trash-alt"></i></button>
                   {{ csrf_field() }}
                 </form>
               </div>
@@ -63,7 +65,4 @@
     </tbody>
   </table>
 
-  <form class="" action="/admin/subscription/create" method="get">
-    <input class="btn btn-primary" type="submit" name="submit" value="add subscription">
-  </form>
 @endsection
