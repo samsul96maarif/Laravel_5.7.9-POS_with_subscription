@@ -30,7 +30,7 @@
                 /* color: black; */
                 /* font-family: 'Nunito', sans-serif; */
                 font-weight: 200;
-                
+
                 /* height: 100vh; */
                 height: 100%;
                 margin: 0;
@@ -148,7 +148,7 @@
       </div>
 
       <div class="pricing-header px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
-        <h1 class="display-4">Subscription</h1>
+        <h1 class="display-4">Start Your Busniess From Here</h1>
       </div>
 
       <div class="container">
