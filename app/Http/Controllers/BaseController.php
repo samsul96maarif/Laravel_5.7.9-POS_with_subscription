@@ -89,7 +89,7 @@ class BaseController extends Controller
           <span class="btn item-list dropdown-item">'.$row->name.'</span>
           ';
         }
-        $output .= '</div>';
+        $output .= '</div> <br> <br>';
         echo $output;
       }
 

@@ -245,6 +245,21 @@ class InvoiceController extends Controller
       foreach ($invoiceDetails as $value) {
         $total = $value->total + $total;
       }
+
+      // bila total sama dengan 0 maka akan menghapus otomatis invoice dan sales order
+      if ($total == 0) {
+        // unutk merestore
+        $invoiceDetail = invoiceDetail::withTrashed()->findOrFail($invoiceDetail_id);
+        $invoiceDetail->restore();
+
+        // item
+        $item->stock = $item->stock - 1;
+        $item->save();
+
+        return redirect()->route('sales_order_bill', ['id' => $salesOrder_id])
+        ->withSuccess('Cannot delete item, you have no item on order');
+      }
+
 // perubahan total invoice
       $invoice->total = $total;
       $invoice->save();
