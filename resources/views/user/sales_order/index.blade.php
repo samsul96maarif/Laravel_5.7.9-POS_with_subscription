@@ -62,7 +62,8 @@
         <td>
           <form class="" action="/sales_order/{{ $salesOrder->id }}/delete" method="post">
             {{ method_field('DELETE') }}
-            <input onclick="return confirm('Do you Wanna Delete {{ $salesOrder->order_number}}')" type="submit" name="submit" value="delete" class="btn btn-outline-danger">
+            <button onclick="return confirm('Do you Wanna Delete {{ $salesOrder->order_number}}')" type="submit" name="submit" class="btn btn-outline-danger"><i class="fas fa-trash-alt"></i></button>
+            {{-- <input onclick="return confirm('Do you Wanna Delete {{ $salesOrder->order_number}}')" type="submit" name="submit" value="delete" class="btn btn-outline-danger"> --}}
             {{ csrf_field() }}
           </form>
         </td>

@@ -22,7 +22,7 @@
       <th>Item</th>
       <th>Price</th>
       <th>Qty</th>
-      <th>Total</th>
+      <th>Amount</th>
     </thead>
     <tbody>
       @php

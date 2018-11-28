@@ -29,10 +29,10 @@
           <br>
           <div class="row">
             <div class="col-md-2">
-              <p>Store Name</p>
+              <p>Company Name</p>
             </div>
             <div class="col-md-6">
-              <input class="form-control" type="text" name="name" value="{{ $store->name }}" placeholder="Store Name">
+              <input class="form-control" type="text" name="name" value="{{ $store->name }}" placeholder="Company Name">
               {{-- untuk mengeluarkan error pada value "name" --}}
               @if($errors->has('name'))
                 <p>{{ $errors->first('name') }}</p>
@@ -46,12 +46,12 @@
             </div>
             <div class="col-md-6">
               @if ($store->subscription_id == null)
-                <input class="form-control" type="text" name="name" value="dont have" readonly>
+                <input class="form-control" type="text" name="status" value="dont have" readonly>
               @else
                 @if ($store->status == 1)
                   <input class="form-control" type="text" name="status" value="{{ $subscription->name }}" readonly>
                 @else
-                  <input class="form-control" type="text" name="status" value="awaiting payment for '{{ $subscription->name }}'" readonly>
+                  <input class="form-control" type="text" name="status" value="Awaiting Payment For '{{ $subscription->name }}'" readonly>
                 @endif
               @endif
             </div>

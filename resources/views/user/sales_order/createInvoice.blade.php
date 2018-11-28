@@ -56,7 +56,7 @@
       $(document).on('click', '.item-list', function(){
         $('#item_name').val($(this).text());
         // menambahkan tag dan isi kedalam div yang telah disediakan
-        $('#tambah-item').append('<div class="row"><div class="col-md-5"><input class="form-control" type="text" name="item[]" value="" placeholder=""></div><div class="col-md-2"><input class="form-control" type="number" name="quantity[]" min="1" placeholder="Qty" value="1" min="1"></div><div class="col"><button class="btn btn-sm btn-danger" type="button" id="delete" name="delete">delete</button></div></div><br>');
+        $('#tambah-item').append('<div class="row"><div class="col-md-5"><input class="form-control" type="text" name="item[]" value="" placeholder=""></div><div class="col-md-2"><input class="form-control" type="number" name="quantity[]" min="1" placeholder="Qty" value="1" min="1"></div><div class="col"><button class="btn btn-sm btn-danger" type="button" id="delete" name="delete"><i class="fas fa-trash-alt"></i></button></div></div><br>');
         // mengambil nilai dari autocompleate kedalam tag yang baru saja dibuat
         $('input[name="item[]"]:last').val($(this).text());
         // membuat isi Search pada autocomplete kosong
@@ -111,7 +111,7 @@
               </div>
             </div>
             {{-- button unutk memunculkan form add contact --}}
-            <button class="btn btn-sm btn-secondory" type="button" name="button" id="add-contact">add new contact</button>
+            <button class="btn btn-sm btn-secondory" type="button" name="button" id="add-contact">Add New Contact</button>
             <br><br>
             {{-- form add contact --}}
             <div class="hidden">

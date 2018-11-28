@@ -172,6 +172,10 @@ body {
   max-width: 440px;
   }
 
+  .card-body {
+    /* opacity: 0.1; */
+  }
+
   .card-header {
     /* background-color:#00c6ff; */
     background-color: #B0BDC5;

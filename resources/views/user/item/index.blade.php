@@ -50,19 +50,15 @@
 
   <div class="row">
     <div class="col-md-4">
-      <form class="" action="/item/create" method="get">
-        <input class="btn btn-primary" type="submit" name="submit" value="add item">
-      </form>
+      <a href="/item/create" class="btn btn-primary"><i class="fas fa-plus-circle"></i> New</a>
     </div>
 
-    <div class="col-md-4 offset-md-4">
+    <div class="col-md-3 offset-md-5">
       <form class="" action="/item/search" method="get">
         <div class="input-group mb-3" style="margin-bottom:0!important;">
-          <span>
-            <input autocomplete="off" type="text" name="q" id="item_name" class="form-control" aria-describedby="button-addon2" placeholder="Search Contact..." />
-          </span>
+          <input autocomplete="off" type="text" name="q" id="item_name" class="form-control" aria-describedby="button-addon2" placeholder="Search" />
           <div class="input-group-append">
-            <input id="button-addon2" class="btn btn-primary" type="submit" name="submit" value="Search">
+            <button id="button-addon2" class="btn btn-primary" type="submit" name="submit"><i class="fas fa-search"></i></button>
           </div>
         </div>
         <span id="item_list">
@@ -101,13 +97,13 @@
           <div class="row">
             <div class="col text-right btn-kiri">
               <form class="" action="/item/{{ $item->id }}/edit" method="get">
-                <input class="btn btn-outline-primary" type="submit" name="submit" value="edit">
+                <button class="btn btn-outline-primary" type="submit" name="submit"><i class="fas fa-edit"></i></button>
               </form>
             </div>
             <div class="col text-left btn-kanan">
               <form class="" action="/item/{{ $item->id }}/delete" method="post">
                 {{ method_field('DELETE') }}
-                  <input onclick="return confirm('Do you wanna Delete {{ $item->name }}')" class="btn btn-outline-danger" type="submit" name="submit" value="delete">
+                <button onclick="return confirm('Do You Wanna Delete {{ $item->name }}')" class="btn btn-outline-danger" type="submit" name="submit"><i class="fas fa-trash-alt"></i></button>
                 {{ csrf_field() }}
               </form>
             </div>

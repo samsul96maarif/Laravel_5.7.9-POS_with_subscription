@@ -28,7 +28,7 @@
       <br>
       <div class="row">
         <div class="col-md-6">
-          <input type="text" name="name" value="{{ old('name') }}" placeholder="Store Name" class="form-control">
+          <input type="text" name="name" value="{{ old('name') }}" placeholder="Company Name" class="form-control">
           {{-- untuk mengeluarkan error pada value "name" --}}
           @if($errors->has('name'))
             <p>{{ $errors->first('name') }}</p>

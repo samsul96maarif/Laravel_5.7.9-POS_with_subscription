@@ -2,7 +2,7 @@
 
 @section('title', $subscription->name)
 
-@section('headline', 'Completed Payment')
+@section('headline', 'Complete Payment')
 
 @section('content')
 
@@ -16,9 +16,9 @@
       <br>
       <div class="row">
         <div class="col">
-          <p style="margin-bottom:0px;">bill to : </p>
+          <p style="margin-bottom:0px;">Bill to : </p>
           <h4 class="my-0 font-weight-normal">{{ $user->name }}</h4>
-          <p style="margin-bottom:0px;">store name : </p>
+          <p style="margin-bottom:0px;">Company Name : </p>
           <h4 class="my-0 font-weight-normal">{{ $store->name }}</h4>
         </div>
       </div>
@@ -32,20 +32,20 @@
       <ul class="list-unstyled mt-3 mb-4">
         {{-- unutk mengetahui sedang extend atau ingin membeli package --}}
         @if ($store->status == 1 && $store->subscription_id == $subscription->id)
-          <h4 class="my-0 font-weight-normal">Extend Periode for Package : </h4>
+          <h4 class="my-0 font-weight-normal">Extend Periode For Package : </h4>
         @else
-          <h4 class="my-0 font-weight-normal">Package subscription : </h4>
+          <h4 class="my-0 font-weight-normal">Package Subscription : </h4>
         @endif
         <h5 class="my-0 font-weight-normal">{{ $subscription->name }}</h5>
-        <li>- free space for items</li>
-        <li>- store up to {{ $subscription->num_invoices }} invoices</li>
-        <li>- store up to {{ $subscription->num_users }} contacts</li>
+        <li>- Free Space For Items</li>
+        <li>- Store Up to {{ $subscription->num_invoices }} Invoices</li>
+        <li>- Store Up to {{ $subscription->num_users }} Contacts</li>
         <hr>
         <h4 class="my-0 font-weight-normal">Please Transfer to :</h4>
         <li>Account Number : {{ $accountNumber }}</li>
         <li>Account holde Name : {{ $accountHolderName }}</li>
         <li>Price : Rp.{{ number_format($oriAmount,2,",",".") }} / {{ $payment->period }} Month</li>
-        <li style="color:green;">unique code : - Rp.{{ number_format($uniq,2,",",".") }}</li>
+        <li style="color:green;">Unique Code : - Rp.{{ number_format($uniq,2,",",".") }}</li>
         <li>Total Amount : Rp.{{ number_format($amount,2,",",".") }}</li>
         <hr>
         @if ($payment->proof != null)
@@ -61,7 +61,7 @@
               <form class="" action="/subscription/{{ $subscription->id }}/buy/proof" method="post" value="post" enctype="multipart/form-data">
                 <div class="row justify-content-center">
                   <div class="col text-center">
-                    <label for="" class="col-form-label">use anothere image : </label>
+                    <label for="" class="col-form-label">Use Anothere Image : </label>
                     <input class="" type="file" name="proof" value="{{ old('proof') }}">
                     @if($errors->has('proof'))
                       <p>{{ $errors->first('proof') }}</p>

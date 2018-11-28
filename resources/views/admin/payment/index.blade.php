@@ -8,18 +8,14 @@
 
   <div class="row">
     <div class="col-md-4">
-      <a class="btn btn-outline-primary" href="/admin/payment/paid">just show have proof</a>
-      {{-- <form class="" action="/admin/payment/paid" method="get">
-        {{ csrf_field() }}
-        <input class="btn btn-outline-primary" type="submit" name="submit" value="search proof true">
-      </form> --}}
+      <a class="btn btn-outline-primary" href="/admin/payment/paid">Just Show Who Has Proof</a>
     </div>
     <div class="col-md-4 offset-md-4">
       <form class="" action="/admin/payment/search" method="get">
         <div class="input-group mb-3">
-          <input type="search" name="q" class="form-control" autocomplete="off" placeholder="Type last 3 digit of amount" aria-describedby="button-addon2" value="">
+          <input type="search" name="q" class="form-control" autocomplete="off" placeholder="Type The Last 3 digits of Amount" aria-describedby="button-addon2" value="">
           <div class="input-group-append">
-            <input id="button-addon2" class="btn btn-primary" type="submit" name="submit" value="Search">
+            <button id="button-addon2" class="btn btn-primary" type="submit" name="submit"><i class="fas fa-search"></i></button>
           </div>
         </div>
       </form>
@@ -69,7 +65,7 @@
                       <form class="" action="/admin/store/{{ $store->id }}" method="post">
                         {{ method_field('PUT') }}
                         <input type="text" name="status" value="1" hidden>
-                        <input onclick="return confirm('Do you wanna activate package {{ $subscription->name }} for {{ $store->name }}')" class="btn btn-primary" type="submit" name="submit" value="activate">
+                        <input onclick="return confirm('Do You Wanna Activate Package {{ $subscription->name }} For {{ $store->name }}')" class="btn btn-primary" type="submit" name="submit" value="Activate">
                         {{ csrf_field() }}
                       </form>
                       {{-- unutk meng extend --}}
@@ -81,7 +77,7 @@
                             {{-- rencananya expire date bisa docustome ingin
                             menambah berapa bulan --}}
                             <input type="text" name="period" value="{{ $payment->period }}" hidden>
-                            <input onclick="return confirm('Do you wanna extend package {{ $subscription->name }} for {{ $store->name }}')" class="btn btn-warning" type="submit" name="submit" value="extend period">
+                            <input onclick="return confirm('Do You Wanna Extend Package {{ $subscription->name }} For {{ $store->name }}')" class="btn btn-warning" type="submit" name="submit" value="Extend Period">
                             {{ csrf_field() }}
                           </form>
                         </div>

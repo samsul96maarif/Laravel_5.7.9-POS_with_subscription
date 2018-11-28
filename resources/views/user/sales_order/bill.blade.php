@@ -73,7 +73,7 @@
       $(document).on('click', '.item-list', function(){
         $('#item_name').val($(this).text());
 
-        $('#tambah-item').append('<div class="row"><div class="col-md-5"><input class="form-control" type="text" name="item[]" value="" placeholder=""></div><div class="col-md-2"><input class="form-control" type="number" name="quantity[]" min="1" placeholder="Qty" value="1" min="1"></div><div class="col"><button class="btn btn-sm btn-danger" type="button" id="delete" name="delete">delete</button></div></div><br>');
+        $('#tambah-item').append('<div class="row"><div class="col-md-5"><input class="form-control" type="text" name="item[]" value="" placeholder=""></div><div class="col-md-2"><input class="form-control" type="number" name="quantity[]" min="1" placeholder="Qty" value="1" min="1"></div><div class="col"><button class="btn btn-sm btn-danger" type="button" id="delete" name="delete"><i class="fas fa-trash-alt"></i></button></div></div><br>');
 
         $('input[name="item[]"]:last').val($(this).text());
 
@@ -118,7 +118,7 @@
           <div class="row btn-atas">
             <div class="col">
               {{-- button unutk memunculkan form change contact --}}
-              <button type="button" name="button" class="btn btn-block btn-primary" id="change-contact">edit customer</button>
+              <button type="button" name="button" class="btn btn-block btn-primary" id="change-contact">Edit Customer</button>
             </div>
           </div>
           {{-- form change contact --}}
@@ -134,7 +134,7 @@
                 @endif
               </div>
               <div class="col">
-                <input class="btn btn-outline-primary" type="submit" name="submit" value="change customer">
+                <input class="btn btn-outline-primary" type="submit" name="submit" value="Change Customer">
               </div>
               {{ csrf_field() }}
               {{-- row hidden --}}
@@ -155,7 +155,7 @@
       <th>Item</th>
       <th>Price</th>
       <th>Qty</th>
-      <th>Total</th>
+      <th>Amount</th>
       <th>Action</th>
     </thead>
     <tbody>
@@ -195,7 +195,8 @@
                     {{-- button unutk menghapus item/invoiceDetail dari invoice --}}
                     <form class="" action="/sales_order/{{ $salesOrder->id }}/invoice/{{ $invoice->id }}/invoice_detail/{{ $invoiceDetail->id}}/delete" method="post">
                       {{ method_field('DELETE') }}
-                      <input onclick="return confirm('Do you wanna delete {{ $item->name }} from invoice?')" class="btn btn-outline-danger" type="submit" name="submit" value="delete">
+                      <button onclick="return confirm('Do You Wanna Delete {{ $item->name }} From Invoice?')" class="btn btn-outline-danger" type="submit" name="submit"><i class="fas fa-trash-alt"></i></button>
+                      {{-- <input onclick="return confirm('Do you wanna delete {{ $item->name }} from invoice?')" class="btn btn-outline-danger" type="submit" name="submit" value="delete"> --}}
                       {{ csrf_field() }}
                     </form>
 
@@ -220,7 +221,7 @@
     </tbody>
   </table>
 {{-- button unutk meminculkan form add item --}}
-  <button type="button" id="add-item" name="button" class="btn btn-outline-primary">add item</button>
+  <button type="button" id="add-item" name="button" class="btn btn-outline-primary">Add Item</button>
 {{-- form add item pada sales order --}}
   <div class="hidden-add-item">
     <div class="row justify-content-center">

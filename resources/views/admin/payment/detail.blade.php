@@ -60,7 +60,7 @@
                 <form class="" action="/admin/store/{{ $store->id }}/extend" method="post">
                   {{ method_field('PUT') }}
                   <input type="text" name="period" value="{{ $payment->period }}" hidden>
-                  <input onclick="return confirm('Do you wanna extend package {{ $subscription->name }} for {{ $store->name }}')" class="btn btn-primary" type="submit" name="submit" value="extend period">
+                  <input onclick="return confirm('Do You Wanna Extend Package {{ $subscription->name }} For {{ $store->name }}')" class="btn btn-primary" type="submit" name="submit" value="Extend Period">
                   {{ csrf_field() }}
                 </form>
               </div>
@@ -69,7 +69,7 @@
                 <form class="" action="/admin/store/{{ $store->id }}" method="post">
                   {{ method_field('PUT') }}
                   <input type="text" name="status" value="1" hidden>
-                  <input onclick="return confirm('Do you wanna activate package {{ $subscription->name }} for {{ $store->name }}')" class="btn btn-primary" type="submit" name="submit" value="activate">
+                  <input onclick="return confirm('Do You Wanna Activate Package {{ $subscription->name }} For {{ $store->name }}')" class="btn btn-primary" type="submit" name="submit" value="Activate">
                   {{ csrf_field() }}
                 </form>
               </div>

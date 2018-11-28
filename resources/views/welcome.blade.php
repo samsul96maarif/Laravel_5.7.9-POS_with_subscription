@@ -25,23 +25,22 @@
             html, body {
                 /* background-color: #fff; */
                 /* background-color: #0077ff; */
+
                 color: white;
                 /* color: black; */
                 /* font-family: 'Nunito', sans-serif; */
                 font-weight: 200;
+                
                 /* height: 100vh; */
                 height: 100%;
                 margin: 0;
                 font-size: 14px;
 
                 /* warna forest */
-                /* background-color: #486B00; */
-
-                /* background-image: linear-gradient(#A2C523,#62780F); */
             }
 
             body {
-              background-image: linear-gradient(#A2C523,#486B00);
+              background-image: linear-gradient(#A2C523, #486B00);
               /* background-repeat: no-repeat; */
               background-attachment: fixed;
             }

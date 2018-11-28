@@ -14,14 +14,14 @@
     @if ($payment->proof == null)
       <div class="row">
         <div class="col">
-          <a href="/subscription/cart">Waiting For Payment Proof</a>
+          <a class="btn btn-primary" href="/subscription/cart">Waiting For Payment Proof</a>
         </div>
       </div>
       <br>
     @else
       <div class="row">
         <div class="col">
-          <a href="/subscription/payment/proof">Waiting For Validation</a>
+          <a class="btn btn-primary" href="/subscription/payment/proof">Waiting For Validation</a>
         </div>
       </div>
       <br>
@@ -55,6 +55,7 @@
                 @if ($payment != null)
                   @if ($payment->store_id == $store->id && $payment->paid == 0)
                     @if ($store->status == 1)
+                      <hr>
                       <li><b>Awaiting Payment For Extend Period</b></li>
                     @endif
                     {{-- ($payment->store_id == $store->id) --}}

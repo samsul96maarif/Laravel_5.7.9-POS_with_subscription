@@ -47,7 +47,11 @@
   <body>
     <div id="app">
       <nav class="navbar navbar-dark fixed-top bg-dark flex-md-nowrap p-0 shadow navbar-expand-md" style="padding:10px;">
-        <div class="container-fluid" style="background-color: #00c6ff!important">
+        {{-- penambahan warna custome --}}
+        {{-- biru --}}
+        {{-- <div class="container-fluid" style="background-color: #00c6ff!important"> --}}
+          {{-- hijau --}}
+        <div class="container-fluid" style="background-color: #A2C523!important">
             <a class="navbar-brand" href="{{ url('/') }}">
                 Zuragan
             </a>
@@ -75,7 +79,7 @@
                         </li>
                     @else
                         <li class="nav-item dropdown">
-                            <a id="navbarDropdown" class="nav-link dropdown-toggle" style="color:white;" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                            <a id="navbarDropdown" class="btn dropdown-toggle" style="color:white;" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                                 {{ Auth::user()->name }} <span class="caret"></span>
                             </a>
 
