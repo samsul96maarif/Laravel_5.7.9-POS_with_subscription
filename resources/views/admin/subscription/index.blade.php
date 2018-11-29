@@ -38,8 +38,16 @@
           <th scope="row">{{ $i }}</th>
           <td><a class="btn" href="/admin/subscription/{{ $subscription->id }}">{{ $subscription->name }}</a></td>
           <td>Rp.{{ number_format($subscription->price,2,",",".") }}</td>
-          <td>{{ $subscription->num_invoices }}</td>
-          <td>{{ $subscription->num_users }}</td>
+          @if ($subscription->num_invoices == 0)
+            <td><i class="fas fa-infinity"></i></td>
+          @else
+            <td>{{ number_format($subscription->num_invoices, 0, ",", ".") }}</td>
+          @endif
+          @if ($subscription->num_users == 0)
+            <td><i class="fas fa-infinity"></i></td>
+          @else
+            <td>{{ number_format($subscription->num_users, 0, ",", ".") }}</td>
+          @endif
           <td>
             <div class="row">
               <div class="col text-right btn-kiri">

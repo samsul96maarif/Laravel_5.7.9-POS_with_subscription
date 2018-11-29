@@ -159,7 +159,8 @@
                 <h4 class="my-0 font-weight-normal">{{ $subscription->name }}</h4>
               </div>
               <div class="card-body">
-                <h3 class="card-title pricing-card-title">Rp.{{ number_format($subscription->price,2,",",".") }} <small class="text-muted">/ month</small></h3>
+                {{-- https://www.w3schools.com/php/func_string_number_format.asp --}}
+                <h3 class="card-title pricing-card-title">Rp.{{ number_format($subscription->price, 2, ",", ".") }} <small class="text-muted">/ month</small></h3>
                 <ul class="list-unstyled mt-3 mb-4">
                   <li>Free Space For Items</li>
                   <li>Store {{ $subscription->num_invoices }} Invoice</li>

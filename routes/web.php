@@ -218,3 +218,7 @@ Route::get('/autocomplete/fetch', 'BaseController@fetch')->name('autocomplete.fe
 Route::get('/autocomplete/fetch/item', 'BaseController@fetchItem')->name('autocomplete.fetch.item');
 Route::get('/autocomplete/fetch/store', 'BaseController@fetchStore')->name('autocomplete.fetch.store');
 Route::get('/autocomplete/fetch/user', 'BaseController@fetchUser')->name('autocomplete.fetch.user');
+
+Route::get('tes', function () {
+    return view('tes/number');
+});

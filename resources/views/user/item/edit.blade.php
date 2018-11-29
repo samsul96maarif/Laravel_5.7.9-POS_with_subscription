@@ -6,6 +6,44 @@
 
 @section('content')
 
+  <script type="text/javascript">
+  // menambahkan titik otomatis
+  // http://plnkr.co/edit/rsTCO8hmZUSEtrvpuWE6?p=preview
+    function reverseNumber(input) {
+     return [].map.call(input, function(x) {
+        return x;
+      }).reverse().join('');
+    }
+
+    function plainNumber(number) {
+       return number.split('.').join('');
+    }
+
+    function splitInDots(input) {
+
+      var value = input.value,
+          plain = plainNumber(value),
+          reversed = reverseNumber(plain),
+          reversedWithDots = reversed.match(/.{1,3}/g).join('.'),
+          normal = reverseNumber(reversedWithDots);
+
+      console.log(plain,reversed, reversedWithDots, normal);
+      input.value = normal;
+    }
+
+    function oneDot(input) {
+      var value = input.value,
+          value = plainNumber(value);
+
+      if (value.length > 3) {
+        value = value.substring(0, value.length - 3) + '.' + value.substring(value.length - 3, value.length);
+      }
+      console.log(value);
+      input.value = value;
+    }
+    // menambahkan titik otomatis
+  </script>
+
   <div class="row justify-content-center">
     <div class="col-md-6">
       <div class="card">
@@ -56,7 +94,7 @@
                 <p>Price</p>
               </div>
               <div class="col-md-6">
-                <input class="form-control" type="number" name="price" value="{{ $item->price }}" placeholder="price ex:1000" min="1">
+                <input class="form-control" type="text" onkeyup="splitInDots(this)" name="price" value="{{ number_format($item->price, 0, ",", ".") }}" placeholder="price ex:1000" min="1">
                 @if($errors->has('price'))
                   <p>{{ $errors->first('price') }}</p>
                 @endif
@@ -68,7 +106,7 @@
                 <p>Stock</p>
               </div>
               <div class="col-md-3">
-                <input class="form-control"type="number" name="stock" value="{{ $item->stock }}" placeholder="stock ex:15" min="1">
+                <input class="form-control"type="text" onkeyup="splitInDots(this)" name="stock" value="{{ number_format($item->stock, 0, ",", ".") }}" placeholder="stock ex:15" min="1">
                 @if($errors->has('stock'))
                   <p>{{ $errors->first('stock') }}</p>
                 @endif

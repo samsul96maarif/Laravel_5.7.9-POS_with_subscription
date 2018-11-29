@@ -22,23 +22,24 @@ class MaxContact
     public function handle($request, Closure $next)
     {
       $user_id = Auth::id();
-      // dd($user_id);
       $store = store::where('user_id', $user_id)->first();
       // mencari contacts melalui store id
       $contacts = contact::all()->where('store_id', $store->id);
       $i = 0;
-      // dd($contacts);
+
       foreach ($contacts as $contact) {
         $i++;
       }
-      // dd($i);
+
       $subscription_num_users = subscription::find($store->subscription_id)->num_users;
-      // dd($subscription_num_users);
-      if ($i <= $subscription_num_users) {
+
+      if ($i <= $subscription_num_users || $subscription_num_users == 0) {
         return $next($request);
       }
       // bila mau ditampilkan pesan error
-      return redirect('/home')->with('alert', 'Quota Contact Has Exceeded Capacity, Please Upgrade Your Package');
+      return redirect()
+      ->route('subscription')
+      ->with('alert', 'Quota Contact Has Exceeded Capacity, Please Upgrade Your Package');
       throw new \Exception("kuota contact telah melebihi kapasitas, silahkan upgrade paket");
     }
 }

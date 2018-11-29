@@ -47,37 +47,91 @@ class ItemController extends Controller
   public function store(Request $request)
   {
     // https://stackoverflow.com/questions/14558343/how-to-remove-dots-from-numbers
-    $strPrice = str_replace(".", "", $request->price);
-    $strStock = str_replace(".", "", $request->stock);
+    $tes = str_replace(".", "", $request->price);
     // convert to integer
-    $intPrice = (int)$strPrice;
-    $intStock = (int)$request->stock;
+    $int = (int)$tes;
 
-    $request->price = $intPrice;
-    $request->stock = $intStock;
-
-    $this->validate($request, [
-      'name' => 'required',
-      'description' => 'required',
-    ]);
+    $request->price = $int;
 
     if ($request->price > 1) {
-      // bila price lebih dari satu lanjut ke stock
+
+      $this->validate($request, [
+        'name' => 'required',
+        'description' => 'required',
+        'price' => 'required',
+      ]);
+
       if ($request->stock > 1) {
-        // bila stock lebih dari satu lewat
+        $this->validate($request, [
+          'name' => 'required',
+          'description' => 'required',
+          'stock' => 'required',
+        ]);
       } else {
         $this->validate($request, [
+          'name' => 'required',
+          'description' => 'required',
           'stock' => 'required|integer',
         ]);
       }
 
     } else {
-
       $this->validate($request, [
+        'name' => 'required',
+        'description' => 'required',
         'stock' => 'required',
         'price' => 'required|integer',
       ]);
     }
+
+    $user_id = Auth::id();
+    $store = store::where('user_id', $user_id)->first();
+
+    // mengecek agar tidak ada duplikasi nama item
+    $items = item::all()->where('store_id', $store->id);
+    foreach ($items as $value) {
+      if ($value->name == $request->name) {
+        return redirect()
+        ->route('item.create')
+        ->with('alert', 'Failed Add Item, Name '.$request->name.' Already Exist, In Your Inventory');
+      }
+    }
+
+    $item = new item;
+    $item->store_id = $store->id;
+    $item->name = $request->name;
+    $item->description = $request->description;
+    $item->price = $request->price;
+    $item->stock = $request->stock;
+    $item->save();
+
+    if ($request->file('image') == "") {
+      // code...
+    } else {
+      // menyimpan nilai image
+      $file = $request->file('image');
+      // mengambil nama file
+      $fileName = $file->getClientOriginalName();
+      // menyimpan file image kedalam folder "img"
+      $request->file('image')->move("img/",$fileName);
+      // menyimpan ke dalam database nama file dari image
+      $itemMedia = new itemMedias;
+      $itemMedia->item_id = $item->id;
+      $itemMedia->image = $fileName;
+      $itemMedia->save();
+    }
+
+    return redirect('/item')->withSuccess('Succeed Add Item');
+  }
+
+  public function store_back(Request $request)
+  {
+    $this->validate($request, [
+      'name' => 'required',
+      'description' => 'required',
+      'stock' => 'required|integer',
+      'price' => 'required|integer',
+    ]);
 
     $user_id = Auth::id();
     $store = store::where('user_id', $user_id)->first();
@@ -135,32 +189,38 @@ class ItemController extends Controller
       public function update(Request $request, $id){
 
         // https://stackoverflow.com/questions/14558343/how-to-remove-dots-from-numbers
-        $strPrice = str_replace(".", "", $request->price);
-        $strStock = str_replace(".", "", $request->stock);
+        $tes = str_replace(".", "", $request->price);
         // convert to integer
-        $intPrice = (int)$strPrice;
-        $intStock = (int)$strStock;
+        $int = (int)$tes;
 
-        $request->price = $intPrice;
-        $request->stock = $intStock;
-
-        $this->validate($request, [
-          'name' => 'required',
-          'description' => 'required',
-        ]);
+        $request->price = $int;
 
         if ($request->price > 1) {
 
-          if ($request->stock > 1) {
+          $this->validate($request, [
+            'name' => 'required',
+            'description' => 'required',
+            'price' => 'required',
+          ]);
 
+          if ($request->stock > 1) {
+            $this->validate($request, [
+              'name' => 'required',
+              'description' => 'required',
+              'stock' => 'required',
+            ]);
           } else {
             $this->validate($request, [
+              'name' => 'required',
+              'description' => 'required',
               'stock' => 'required|integer',
             ]);
           }
 
         } else {
           $this->validate($request, [
+            'name' => 'required',
+            'description' => 'required',
             'stock' => 'required',
             'price' => 'required|integer',
           ]);

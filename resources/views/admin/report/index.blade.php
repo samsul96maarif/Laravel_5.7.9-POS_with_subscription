@@ -103,12 +103,14 @@
   @foreach ($subscriptions as $subscription)
     <tr>
         <th scope="row">{{ $i }}</th>
-        @foreach ($packages as $package)
-          @if ($package->name == $subscription->name)
-            <td><a class="btn" href="/admin/report/{{ $package->id }}">{{ $subscription->name }}</a></td>
-          @endif
-        @endforeach
-        <td>{{ $subscription->count }}</td>
+        <td>
+          @foreach ($packages as $package)
+            @if ($package->name == $subscription->name)
+              <a class="btn" href="/admin/report/{{ $package->id }}">{{ $subscription->name }}</a>
+            @endif
+          @endforeach
+        </td>
+        <td>{{ number_format($subscription->count, 0, ",", ".") }}</td>
         <td>{{ $subscription->period }}</td>
         <td>Rp.{{ number_format($subscription->amount,2,",",".") }}</td>
         @php

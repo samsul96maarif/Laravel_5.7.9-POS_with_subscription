@@ -25,8 +25,16 @@
       <tr>
         <td>{{ $subscription->name }}</td>
         <td>Rp.{{ number_format($subscription->price,2,",",".") }}</td>
-        <td>{{ $subscription->num_invoices }}</td>
-        <td>{{ $subscription->num_users }}</td>
+        @if ($subscription->num_invoices == 0)
+          <td><i class="fas fa-infinity"></i></td>
+        @else
+          <td>{{ number_format($subscription->num_invoices, 0, ",", ".") }}</td>
+        @endif
+        @if ($subscription_num_users == 0)
+          <td><i class="fas fa-infinity"></i></td>
+        @else
+          <td>{{ $subscription->num_users }}</td>
+        @endif
       </tr>
     </tbody>
   </table>

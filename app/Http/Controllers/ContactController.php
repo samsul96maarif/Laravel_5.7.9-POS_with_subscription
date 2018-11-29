@@ -91,12 +91,16 @@ class ContactController extends Controller
         $i++;
       }
 
-      if ($i >= $subscription->num_users) {
-        return redirect()
-        ->route('contact')
-        ->with('alert', 'Quota Contact Has Exceeded Capacity, Please Upgrade Your Package');
-        // throw new \Exception("kuota sales order telah melebihi kapasitas, silahkan upgrade paket");
+      // klo bukan unlimeted
+      if ($subscription->num_users != 0) {
+        if ($i >= $subscription->num_users) {
+          return redirect()
+          ->route('contact')
+          ->with('alert', 'Quota Contact Has Exceeded Capacity, Please Upgrade Your Package');
+          // throw new \Exception("kuota sales order telah melebihi kapasitas, silahkan upgrade paket");
+        }
       }
+
 
       $contact = new contact;
       $contact->store_id = $store->id;

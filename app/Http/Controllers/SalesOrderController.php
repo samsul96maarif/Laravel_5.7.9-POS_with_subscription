@@ -50,6 +50,24 @@ class SalesOrderController extends Controller
       $store = store::where('user_id', $user_id)->first();
       $items = item::all()->where('store_id', $store->id);
       $contacts = contact::all()->where('store_id', $store->id)->where('deleted_at', null);
+      $subscription = subscription::findOrFail($store->subscription_id);
+      $salesOrders = salesOrder::all()->where('store_id', $store->id);
+
+      // menghitung jumlah sales order
+      $i = 0;
+      foreach ($salesOrders as $key) {
+        $i++;
+      }
+
+      // klo bukan unlimeted
+      if ($subscription->num_users != 0) {
+        if ($i >= $subscription->num_invoices) {
+          return redirect()->route('subscription')
+          ->with('alert', 'Quota Sales Order Has Exceeded Capacity, Please Upgrade Your Package');
+
+          throw new \Exception("kuota sales order telah melebihi kapasitas, silahkan upgrade paket");
+        }
+      }
 
       return view('user/sales_order/createInvoice',
       [
@@ -110,11 +128,14 @@ class SalesOrderController extends Controller
           $i++;
         }
 
-        if ($i >= $subscription->num_users) {
-          return redirect()->route('sales.order.create')
-          ->with('alert', 'Quota Contact Has Exceeded Capacity, Please Upgrade Your Package');
-
-          throw new \Exception("kuota sales order telah melebihi kapasitas, silahkan upgrade paket");
+        // klo bukan unlimeted
+        if ($subscription->num_users != 0) {
+          if ($i >= $subscription->num_users) {
+            return redirect()
+            ->route('sales.order.create')
+            ->with('alert', 'Quota Contact Has Exceeded Capacity, Cannot Add Contact or Please Upgrade Your Packag');
+            // throw new \Exception("kuota sales order telah melebihi kapasitas, silahkan upgrade paket");
+          }
         }
 
         $contact = new contact;
@@ -130,19 +151,6 @@ class SalesOrderController extends Controller
         'item' => 'required',
         'quantity' => 'required|min:1',
       ]);
-
-      // menghitung jumlah sales order
-      $i = 0;
-      foreach ($salesOrders as $key) {
-        $i++;
-      }
-
-      if ($i >= $subscription->num_invoices) {
-        return redirect()->route('sales.order.create')
-        ->with('alert', 'Quota Sales Order Has Exceeded Capacity, Please Upgrade Your Package');
-
-        throw new \Exception("kuota sales order telah melebihi kapasitas, silahkan upgrade paket");
-      }
 
     $count = count($request->item);
     $total = 0;
@@ -238,40 +246,6 @@ class SalesOrderController extends Controller
         'invoiceDetails' => $invoiceDetails
       ]);
     }
-
-    // mau mengubah langsung ke tampilan bill
-    // public function bill()
-    // {
-    //   $user_id = Auth::id();
-    //   $store = store::where('user_id', $user_id)->first();
-    //
-    //   $salesOrder = new salesOrder;
-    //   $salesOrder->store_id = $store->id;
-    //   $salesOrder->save();
-    //   // sales order
-    //   $salesOrder->order_number = 'SO-'.$salesOrder->id;
-    //   $salesOrder->save();
-    //
-    //   // invoice
-    //   $invoice = new invoice;
-    //   $invoice->store_id = $store->id;
-    //   $invoice->sales_order_id = $salesOrder->id;
-    //   $invoice->save();
-    //   // invoice
-    //   $invoice->number = 'INV-'.$invoice->id;
-    //   $invoice->save();
-    //
-    //   $items = item::all()->where('store_id', $store->id);
-    //   $contacts = contact::all()->where('store_id', $store->id)->where('deleted_at', null);
-    //
-    //   return view('tes/bill',
-    //   [
-    //     'items' => $items,
-    //     'contacts' =>$contacts,
-    //     'salesOrder' => $salesOrder,
-    //     'invoice' => $invoice
-    //   ]);
-    // }
 
     public function bill($id)
     {

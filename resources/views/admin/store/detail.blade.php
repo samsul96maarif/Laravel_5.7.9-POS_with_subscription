@@ -107,7 +107,11 @@
                 <label for="" class="col-form-label">Invoices Quota / Invoices</label>
               </div>
               <div class="col">
-                <span class="form-control text-center">{{ $subscription->num_invoices }} / {{ $numSalesOrders }}</span>
+                @if ($subscription->num_invoices == 0)
+                  <span class="form-control text-center"><i class="fas fa-infinity"></i></span>
+                @else
+                  <span class="form-control text-center">{{ $subscription->num_invoices }} / {{ $numSalesOrders }}</span>
+                @endif
               </div>
             </div>
             <div class="row">
@@ -115,7 +119,11 @@
                 <label for="" class="col-form-label">Contacts Quota / Contacts</label>
               </div>
               <div class="col">
-                <span class="form-control text-center">{{ $subscription->num_users}} / {{ $numContacts }}</span>
+                @if ($subscription->num_users == 0)
+                  <span class="form-control text-center"><i class="fas fa-infinity"></i></span>
+                @else
+                  <span class="form-control text-center">{{ $subscription->num_users}} / {{ $numContacts }}</span>
+                @endif
               </div>
             </div>
             <div class="row">

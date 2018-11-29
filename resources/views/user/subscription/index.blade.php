@@ -5,7 +5,7 @@
 @section('headline', 'Subscriptions')
 
 @section('content')
-  
+
   @if (session('alert'))
     <div class="alert alert-danger">
         {{ session('alert') }}
@@ -55,8 +55,19 @@
             <h3 class="card-title pricing-card-title">Rp.{{ number_format($subscription->price,2,",",".") }} <small class="text-muted">/ month</small></h3>
             <ul class="list-unstyled mt-3 mb-4">
               <li>Free Space For Items</li>
-              <li>Store {{ $subscription->num_invoices }} Invoice</li>
-              <li>Store {{ $subscription->num_users }} Contact</li>
+              {{-- num invoice --}}
+              @if ($subscription->num_invoices == 0)
+                <li>Free Space For Invoices</li>
+              @else
+                <li>Store Up to {{ number_format($subscription->num_invoices, 0, ",", ".") }} Invoices</li>
+              @endif
+              {{-- num contact --}}
+              @if ($subscription->num_users == 0)
+                <li>Free Space For Contacts</li>
+              @else
+                <li>Store Up to {{ number_format($subscription->num_users, 0, ",", ".") }} Contacts</li>
+              @endif
+              
               @if ($store->subscription_id == $subscription->id)
                 @if ($payment != null)
                   @if ($payment->store_id == $store->id && $payment->paid == 0)

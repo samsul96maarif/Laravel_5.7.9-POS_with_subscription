@@ -17,8 +17,19 @@
           <form class="" action="/subscription/{{ $subscription->id }}/cart" method="post">
           <ul class="list-unstyled mt-3 mb-4">
             <li>Free Space For Items</li>
-            <li>Store {{ $subscription->num_invoices }} Invoice</li>
-            <li>Store {{ $subscription->num_users }} Contact</li>
+            {{-- num invoice --}}
+            @if ($subscription->num_invoices == 0)
+              <li>Free Space For Invoices</li>
+            @else
+              <li>Store Up to {{ number_format($subscription->num_invoices, 0, ",", ".") }} Invoices</li>
+            @endif
+            {{-- num contact --}}
+            @if ($subscription->num_users == 0)
+              <li>Free Space For Contacts</li>
+            @else
+              <li>Store Up to {{ number_format($subscription->num_users, 0, ",", ".") }} Contacts</li>
+            @endif
+            
             <hr>
             @php
             $message = 'How Many Months Do You Want to Subscribe';

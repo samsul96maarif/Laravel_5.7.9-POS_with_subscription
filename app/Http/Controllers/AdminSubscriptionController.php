@@ -89,14 +89,61 @@ class AdminSubscriptionController extends Controller
     }
 // 2. store data create
     public function store(Request $request){
-      // contoh penggunaan validate dimana :
-      // 1. value name required
+
+      // https://stackoverflow.com/questions/14558343/how-to-remove-dots-from-numbers
+      $strPrice = str_replace(".", "", $request->price);
+      $strNumInvoices = str_replace(".", "", $request->num_invoices);
+      // dd($request->num_users);
+      $strNumUsers = str_replace(".", "", $request->num_users);
+      // convert to integer
+      $intPrice = (int)$strPrice;
+      $intNumInvoices = (int)$strNumInvoices;
+      $intNumUsers = (int)$strNumUsers;
+
+      $request->price = $intPrice;
+      $request->num_invoices = $intNumInvoices;
+      $request->num_users = $intNumUsers;
+
+
+
       $this->validate($request, [
         'name' => 'required',
-        'price' => 'required|integer',
-        'num_invoices' => 'required|integer',
-        'num_users' => 'required|integer',
       ]);
+
+      if ($request->price > 1) {
+
+        if ($request->num_invoices > 1) {
+
+          if ($request->num_users > 1) {
+
+          } else {
+            $this->validate($request, [
+              'num_users' => 'required|integer',
+            ]);
+          }
+
+        } else {
+          $this->validate($request, [
+            'num_invoices' => 'required|integer',
+            'num_users' => 'required',
+          ]);
+        }
+
+      } else {
+        $this->validate($request, [
+          'price' => 'required|integer',
+          'num_invoices' => 'required',
+          'num_users' => 'required',
+        ]);
+      }
+
+      $subscriptions = subscription::all();
+      foreach ($subscriptions as $value) {
+        if ($value->name == $request->name) {
+          return redirect()->route('admin.subscription.create')
+          ->with('alert', $request->name.' already exist');
+        }
+      }
 
       $subscription = new subscription;
       $subscription->name = $request->name;
@@ -119,14 +166,60 @@ class AdminSubscriptionController extends Controller
     // 2. store data update
         public function update(Request $request, $id){
 
+          // https://stackoverflow.com/questions/14558343/how-to-remove-dots-from-numbers
+          $strPrice = str_replace(".", "", $request->price);
+          $strNumInvoices = str_replace(".", "", $request->num_invoices);
+          $strNumUsers = str_replace(".", "", $request->num_users);
+          // convert to integer
+          $intPrice = (int)$strPrice;
+          $intNumInvoices = (int)$strNumInvoices;
+          $intNumUsers = (int)$strNumUsers;
+
+          $request->price = $intPrice;
+          $request->num_invoices = $intNumInvoices;
+          $request->num_users = $intNumUsers;
+
           $this->validate($request, [
             'name' => 'required',
-            'price' => 'required|integer',
-            'num_invoices' => 'required|integer',
-            'num_users' => 'required|integer',
           ]);
 
+          if ($request->price > 1) {
+
+            if ($request->num_invoices > 1) {
+
+              if ($request->num_users > 1) {
+
+              }else {
+                $this->validate($request, [
+                  'num_users' => 'required|integer',
+                ]);
+              }
+
+            } else {
+              $this->validate($request, [
+                'num_invoices' => 'required|integer',
+                'num_users' => 'required',
+              ]);
+            }
+
+          } else {
+            $this->validate($request, [
+              'price' => 'required|integer',
+              'num_invoices' => 'required',
+              'num_users' => 'required',
+            ]);
+          }
+
           $subscription = subscription::find($id);
+
+          $subscriptions = subscription::all();
+          foreach ($subscriptions as $value) {
+            if ($value->name == $request->name && $request->name != $subscription->name) {
+              return redirect()->route('admin.subscription.edit')
+              ->with('alert', $request->name.' already exist');
+            }
+          }
+
           $subscription->name = $request->name;
           $subscription->price = $request->price;
           $subscription->num_invoices = $request->num_invoices;

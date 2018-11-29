@@ -34,11 +34,13 @@ class MaxOrder
       // dd($i);
       $subscription_num_invoices = subscription::find($store->subscription_id)->num_invoices;
       // dd($subscription_num_invoices);
-      if ($i <= $subscription_num_invoices) {
+      if ($i <= $subscription_num_invoices || $subscription_num_invoices == 0) {
         return $next($request);
       }
       // bila mau ditampilkan pesan error
-      return redirect('/home')->with('alert', 'Quota Sales Order Has Exceeded Capacity, Please Upgrade Your Package');
+      return redirect()
+      ->route('subscription')
+      ->with('alert', 'Quota Sales Order Has Exceeded Capacity, Please Upgrade Your Package');
       throw new \Exception("kuota sales order telah melebihi kapasitas, silahkan upgrade paket");
     }
 }

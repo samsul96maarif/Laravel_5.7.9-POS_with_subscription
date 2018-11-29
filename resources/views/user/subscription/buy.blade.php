@@ -44,8 +44,16 @@
         @endif
         <h5 class="my-0 font-weight-normal">{{ $subscription->name }}</h5>
         <li>- Free Space For Items</li>
-        <li>- Store Up to {{ $subscription->num_invoices }} Invoices</li>
-        <li>- Store Up to {{ $subscription->num_users }} Contacts</li>
+        @if ($subscription->num_invoices == 0)
+          <li>- Free Space For Invoices</li>
+        @else
+          <li>- Store Up to {{ number_format($subscription->num_invoices, 0, ",", ".") }} Invoices</li>
+        @endif
+        @if ($subscription->num_users == 0)
+          <li>- Free Space For Contacts</li>
+        @else
+          <li>- Store Up to {{ number_format($subscription->num_users, 0, ",", ".") }} Contacts</li>
+        @endif
         <hr>
         <h4 class="my-0 font-weight-normal">Please Transfer to :</h4>
         <li>Account Number : {{ $accountNumber }}</li>
