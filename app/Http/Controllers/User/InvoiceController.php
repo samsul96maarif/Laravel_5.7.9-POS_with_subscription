@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\User;
 
 use Illuminate\Http\Request;
 
@@ -22,24 +22,6 @@ class InvoiceController extends Controller
       // getSubscription : unutk mengecek subscription store
       // maxOrder : untuk mengcek quote invoice subscription
         $this->middleware(['auth', 'gate', 'get.subscription', 'max.order']);
-    }
-
-    public function create($salesOrder_id, $invoice_id)
-    {
-      $salesOrder = salesOrder::findOrFail($salesOrder_id);
-      $invoice = invoice::findOrFail($invoice_id);
-      $invoiceDetails = invoiceDetail::all()->where('invoice_id', $invoice_id);
-      $user_id = Auth::id();
-      $store = store::where('user_id', $user_id)->first();
-      $items = item::all()->where('store_id', $store->id);
-
-      return view('user/sales_order/addItem',
-      [
-        'items' => $items,
-        'invoiceDetails' => $invoiceDetails,
-        'salesOrder' => $salesOrder,
-        'invoice' => $invoice
-      ]);
     }
 
     public function store(Request $request, $salesOrder_id, $invoice_id)
@@ -64,7 +46,7 @@ class InvoiceController extends Controller
         // mengetahui apakah quantity order lebih dari stcok barang
         if ($request->quantity[$i] > $item->stock) {
           return redirect()->route('sales.order.bill', ['id' => $salesOrder->id])
-          ->withSuccess($request->item[$i].' Out Of Stock');
+          ->with('alert', $request->item[$i].' Out Of Stock');
 
           throw new \Exception("quantity lebih banyak dari stock barang");
         }
@@ -111,82 +93,8 @@ class InvoiceController extends Controller
       $salesOrder->total = $total;
       $salesOrder->save();
 
-      return redirect()->route('sales.order.bill', ['id' => $salesOrder->id])->with('alert', $message);
+      return redirect()->route('sales.order.bill', ['id' => $salesOrder->id]);
   }
-
-    public function edit($salesOrder_id, $invoice_id, $invoiceDetail_id)
-    {
-      $salesOrder = salesOrder::findOrFail($salesOrder_id);
-      $invoice = invoice::findOrFail($invoice_id);
-      $invoiceDetail = invoiceDetail::findOrFail($invoiceDetail_id);
-      $user_id = Auth::id();
-      $store = store::where('user_id', $user_id)->first();
-      $items = item::all()->where('store_id', $store->id);
-
-      return view('user/sales_order/editInvoice',
-      [
-        'salesOrder' => $salesOrder,
-        'invoice' => $invoice,
-        'invoiceDetail' => $invoiceDetail,
-        'items' => $items
-      ]);
-    }
-
-    public function update(Request $request, $invoice_id, $invoiceDetail_id)
-    {
-      $this->validate($request, [
-        'item_id' => 'required',
-        'quantity' => 'required|integer|min:1',
-      ]);
-
-      $item = item::find($request->item_id);
-// mengecek bila quantity lebih sedikit dari sebelumnya
-// maka quantity item ditambah dengan selisih
-      if ($request->quantity_old > $request->quantity) {
-        $addStock = $request->quantity_old - $request->quantity;
-        $item->stock = $item->stock + $addStock;
-        $item->save();
-        // bila lebih sedikit maka akan dikurang dengan selisihnya
-      } else {
-        $minStock = $request->quantity-$request->quantity_old;
-        $item->stock = $item->stock - $minStock;
-        // mengecek bila hasil selisih kurang dari 0 maka tidak bisa
-        if ($item->stock < 0) {
-          throw new \Exception("quantity lebih banyak dari stock barang");
-          return redirect('/sales_order');
-        }
-        $item->save();
-      }
-
-      $user_id = Auth::id();
-      $store = store::where('user_id', $user_id)->first();
-
-      $price = $item->price;
-      $total = $item->price*$request->quantity;
-
-      $invoiceDetail = invoiceDetail::findOrFail($invoiceDetail_id);
-      $invoiceDetail->item_id = $request->item_id;
-      $invoiceDetail->item_price = $price;
-      $invoiceDetail->item_quantity = $request->quantity;
-      $invoiceDetail->total = $total;
-      $invoiceDetail->save();
-
-      $total = 0;
-      $invoiceDetails = invoiceDetail::all()->where('invoice_id', $invoice_id);
-      foreach ($invoiceDetails as $invoice_detail) {
-        $total = $invoice_detail->total + $total;
-      }
-
-      $invoice = invoice::findOrFail($invoice_id);
-      $invoice->total = $total;
-      $invoice->save();
-
-      $salesOrder = salesOrder::findOrFail($request->salesOrder_id);
-      $salesOrder->total = $total;
-      $salesOrder->save();
-
-      return redirect('/sales_order')->with('alert', 'Succeed Updated Invoice');
-    }
 
     public function delete($salesOrder_id, $invoice_id, $invoiceDetail_id)
     {
@@ -207,8 +115,8 @@ class InvoiceController extends Controller
         $invoiceDetail = invoiceDetail::withTrashed()->findOrFail($invoiceDetail_id);
         $invoiceDetail->restore();
 
-        return redirect()->route('sales_order_bill', ['id' => $salesOrder_id])
-        ->withSuccess('Cannot delete item, you have no item on order');
+        return redirect()->route('sales.order.bill', ['id' => $salesOrder_id])
+        ->with('alert', 'Cannot Delete Item, You Have No Item In Order');
       }
 
       $invoice = invoice::findOrFail($invoice_id);
@@ -219,8 +127,7 @@ class InvoiceController extends Controller
       $salesOrder->total = $total;
       $salesOrder->save();
 
-      return redirect()->route('sales_order_bill', ['id' => $salesOrder_id]);
-      return redirect('/sales_order')->with('alert', 'Succeed Updated Invoice');
+      return redirect()->route('sales.order.bill', ['id' => $salesOrder_id]);
     }
 
     public function decrease($salesOrder_id, $invoice_id, $invoiceDetail_id)
@@ -258,8 +165,8 @@ class InvoiceController extends Controller
         $item->stock = $item->stock - 1;
         $item->save();
 
-        return redirect()->route('sales_order_bill', ['id' => $salesOrder_id])
-        ->withSuccess('Cannot delete item, you have no item on order');
+        return redirect()->route('sales.order.bill', ['id' => $salesOrder_id])
+        ->with('alert', 'Cannot Delete Item, You Have No Item In Order');
       }
 
 // perubahan total invoice
@@ -269,7 +176,7 @@ class InvoiceController extends Controller
       $salesOrder->total = $total;
       $salesOrder->save();
 
-      return redirect()->route('sales_order_bill', ['id' => $salesOrder_id]);
+      return redirect()->route('sales.order.bill', ['id' => $salesOrder_id]);
     }
 
     public function increase($salesOrder_id, $invoice_id, $invoiceDetail_id)
@@ -281,8 +188,10 @@ class InvoiceController extends Controller
       $item = item::findOrFail($invoiceDetail->item_id);
       // mengetahui apakah quantity order lebih dari stcok barang
       if ($item->stock < 1) {
+        return redirect()->route('sales.order.bill', ['id' => $salesOrder->id])
+        ->with('alert', $item->name.' Out Of Stock');
+
         throw new \Exception("stock barang telah habis");
-        return redirect('/sales_order/create');
       }
 
       $invoiceDetail->item_quantity = $invoiceDetail->item_quantity + 1;
@@ -304,6 +213,6 @@ class InvoiceController extends Controller
       $salesOrder->total = $total;
       $salesOrder->save();
 
-      return redirect()->route('sales_order_bill', ['id' => $salesOrder_id]);
+      return redirect()->route('sales.order.bill', ['id' => $salesOrder_id]);
     }
 }
