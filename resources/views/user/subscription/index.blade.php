@@ -67,23 +67,23 @@
               @else
                 <li>Store Up to {{ number_format($subscription->num_users, 0, ",", ".") }} Contacts</li>
               @endif
-              
-              @if ($store->subscription_id == $subscription->id)
+
+              @if ($organization->subscription_id == $subscription->id)
                 @if ($payment != null)
-                  @if ($payment->store_id == $store->id && $payment->paid == 0)
-                    @if ($store->status == 1)
+                  @if ($payment->organization_id == $organization->id && $payment->paid == 0)
+                    @if ($organization->status == 1)
                       <hr>
                       <li><b>Awaiting Payment For Extend Period</b></li>
                     @endif
-                    {{-- ($payment->store_id == $store->id) --}}
+                    {{-- ($payment->organization_id == $organization->id) --}}
                   @endif
                   {{-- ($payment != null) --}}
                 @endif
-                {{-- ($store->subscription_id == $subscription->id) --}}
+                {{-- ($organization->subscription_id == $subscription->id) --}}
               @endif
             </ul>
-            @if ($store->subscription_id == $subscription->id)
-              @if ($store->status == 1)
+            @if ($organization->subscription_id == $subscription->id)
+              @if ($organization->status == 1)
                 <div class="row">
                   <div class="col btn-atas">
                     <button type="button" name="" class="btn btn-lg btn-block btn-success">Activated</button>
@@ -98,15 +98,15 @@
                     @endif
                   </div>
                 </div>
-                {{-- $store->status == 1 --}}
+                {{-- $organization->status == 1 --}}
               @else
                 <button type="button" name="" class="btn btn-lg btn-block btn-secondary">Awaiting Payment</button>
               @endif
 
-              {{-- $store->subscription_id == $subscription->id --}}
+              {{-- $organization->subscription_id == $subscription->id --}}
             @else
               {{-- bila sudah memiliki subscription maka akan muncul alert --}}
-              @if ($store->subscription_id != null)
+              @if ($organization->subscription_id != null)
                 <a onclick="return myFunction()" class="btn btn-lg btn-block btn-outline-primary" href="/subscription/{{ $subscription->id }}/detail">Buy</a>
               @else
                 <a class="btn btn-lg btn-block btn-outline-primary" href="/subscription/{{ $subscription->id }}/detail">Buy</a>

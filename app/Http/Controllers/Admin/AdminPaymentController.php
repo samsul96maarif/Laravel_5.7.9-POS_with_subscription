@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
 use App\Models\Payment;
-use App\Models\Store;
+use App\Models\Organization;
 use App\Models\Subscription;
 use App\Models\User;
 // unutk menggunakan db builder
@@ -25,14 +26,14 @@ class AdminPaymentController extends Controller
     public function index()
     {
       $payments = payment::all()->where('paid', 0);
-      $stores = store::all();
+      $organizations = organization::all();
       $subscriptions = subscription::all();
       $users = user::all();
 
       return view('admin/payment/index',
       [
         'payments' => $payments,
-        'stores' => $stores,
+        'organizations' => $organizations,
         'subscriptions' => $subscriptions,
         'users' => $users
       ]);
@@ -41,13 +42,13 @@ class AdminPaymentController extends Controller
     public function show($id)
     {
       $payment = payment::findOrFail($id);
-      $store = store::where('id', $payment->store_id)->first();
-      $subscription = subscription::where('id', $store->subscription_id)->first();
+      $organization = organization::where('id', $payment->organization_id)->first();
+      $subscription = subscription::where('id', $organization->subscription_id)->first();
 
       return view('admin/payment/detail',
       [
         'payment' => $payment,
-        'store' => $store,
+        'organization' => $organization,
         'subscription' => $subscription
       ]);
     }
@@ -60,14 +61,14 @@ class AdminPaymentController extends Controller
                       ->where('deleted_at', null)
                       ->get();
 
-      $stores = store::all();
+      $organizations = organization::all();
       $subscriptions = subscription::all();
       $users = user::all();
 
       return view('admin/payment/index',
       [
         'payments' => $payments,
-        'stores' => $stores,
+        'organizations' => $organizations,
         'subscriptions' => $subscriptions,
         'users' => $users
       ]);
@@ -75,7 +76,7 @@ class AdminPaymentController extends Controller
 
     public function paid($value='')
     {
-      $stores = store::all();
+      $organizations = organization::all();
       $subscriptions = subscription::all();
       $users = user::all();
       $payments = payment::all()
@@ -85,7 +86,7 @@ class AdminPaymentController extends Controller
       return view('admin/payment/index',
       [
         'payments' => $payments,
-        'stores' => $stores,
+        'organizations' => $organizations,
         'subscriptions' => $subscriptions,
         'users' => $users
       ]);

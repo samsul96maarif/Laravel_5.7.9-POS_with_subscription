@@ -4,7 +4,7 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Auth;
-use App\Models\Store;
+use App\Models\Organization;
 
 class Gate
 {
@@ -19,11 +19,11 @@ class Gate
     {
       $user_id = Auth::id();
 
-      // mencari store yang milik user
-      $store = store::where('user_id', $user_id)->first();
+      // mencari organization yang milik user
+      $organization = organization::where('user_id', $user_id)->first();
 
-      // bila belum memiliki store diarahkan ke halaman create
-      if ($store == null) {
+      // bila belum memiliki organization diarahkan ke halaman create
+      if ($organization == null) {
 
         return redirect('/create')->withSuccess('Please Fill Company Profile First.');
       }

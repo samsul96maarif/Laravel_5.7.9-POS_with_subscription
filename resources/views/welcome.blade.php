@@ -162,9 +162,23 @@
                 {{-- https://www.w3schools.com/php/func_string_number_format.asp --}}
                 <h3 class="card-title pricing-card-title">Rp.{{ number_format($subscription->price, 2, ",", ".") }} <small class="text-muted">/ month</small></h3>
                 <ul class="list-unstyled mt-3 mb-4">
-                  <li>Free Space For Items</li>
-                  <li>Store {{ $subscription->num_invoices }} Invoice</li>
-                  <li>Store {{ $subscription->num_users }} Contact</li>
+                  @if ($subscription->num_items == 0)
+                    <li>Unlimited Space For Items</li>
+                  @else
+                    <li>Store Up to {{ number_format($subscription->num_items, 0, ",", ".") }} Items</li>
+                  @endif
+
+                  @if ($subscription->num_invoices == 0)
+                    <li>Unlimited Space For Invoice</li>
+                  @else
+                    <li>Store Up to {{ number_format($subscription->num_invoices, 0, ",", ".") }} Invoice</li>
+                  @endif
+
+                  @if ($subscription->num_users == 0)
+                    <li>Unlimited Users</li>
+                  @else
+                    <li>{{ number_format($subscription->num_users, 0, ",", ".") }} Users</li>
+                  @endif
                 </ul>
                 <a class="btn btn-lg btn-block btn-primary" href="/subscription/{{ $subscription->id }}/detail">Buy</a>
               </div>

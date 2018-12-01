@@ -16,11 +16,11 @@
     <div class="alert alert-success">{{ session('success') }}</div>
   @endif
 
-    <form class="" action="/store/{{ $store->id }}" method="post" value="post" enctype="multipart/form-data">
+    <form class="" action="/organization/{{ $organization->id }}" method="post" value="post" enctype="multipart/form-data">
       {{ method_field('PUT') }}
           <div class="row">
             <div class="col-md-2">
-              <img src="{{ asset('logo/'.$store->logo) }}" alt="Logo" class="img-thumbnail">
+              <img src="{{ asset('logo/'.$organization->logo) }}" alt="Logo" class="img-thumbnail">
             </div>
             <div class="col-md-6 text-left">
               <p class="logo">This logo will appear on the documents such as sales order and purchase order that you created.</p>
@@ -38,7 +38,7 @@
               <p>Company Name</p>
             </div>
             <div class="col-md-6">
-              <input class="form-control" type="text" name="name" value="{{ $store->name }}" placeholder="Company Name">
+              <input class="form-control" type="text" name="name" value="{{ $organization->name }}" placeholder="Company Name">
               {{-- untuk mengeluarkan error pada value "name" --}}
               @if($errors->has('name'))
                 <p>{{ $errors->first('name') }}</p>
@@ -51,10 +51,10 @@
               <p>Package Subscription</p>
             </div>
             <div class="col-md-6">
-              @if ($store->subscription_id == null)
+              @if ($organization->subscription_id == null)
                 <input class="form-control" type="text" name="status" value="dont have" readonly>
               @else
-                @if ($store->status == 1)
+                @if ($organization->status == 1)
                   <input class="form-control" type="text" name="status" value="{{ $subscription->name }}" readonly>
                 @else
                   <input class="form-control" type="text" name="status" value="Awaiting Payment For '{{ $subscription->name }}'" readonly>
@@ -63,13 +63,13 @@
             </div>
           </div>
           <br>
-          @if ($store->subscription_id != null)
+          @if ($organization->subscription_id != null)
             <div class="row">
               <div class="col-md-2">
                 <p>Expire Date</p>
               </div>
               <div class="col-md-6">
-                <input class="form-control" type="text" name="expire_date" value="{{ date('d-m-Y', strtotime($store->expire_date)) }}" readonly>
+                <input class="form-control" type="text" name="expire_date" value="{{ date('d-m-Y', strtotime($organization->expire_date)) }}" readonly>
               </div>
             </div>
             <br>
@@ -79,7 +79,7 @@
               <p>Phone</p>
             </div>
             <div class="col-md-6">
-              <input class="form-control" type="tel" name="phone" value="{{ $store->phone }}" placeholder="Phone">
+              <input class="form-control" type="tel" name="phone" value="{{ $organization->phone }}" placeholder="Phone">
               @if($errors->has('phone'))
                 <p>{{ $errors->first('phone') }}</p>
               @endif
@@ -91,7 +91,7 @@
               <p>Address</p>
             </div>
             <div class="col-md-6">
-              <textarea class="form-control" name="company_address" rows="8" cols="80" placeholder="Company Address">{{ $store->company_address }}</textarea>
+              <textarea class="form-control" name="company_address" rows="8" cols="80" placeholder="Company Address">{{ $organization->company_address }}</textarea>
               @if($errors->has('company_address'))
                 <p>{{ $errors->first('company_address') }}</p>
               @endif
@@ -103,7 +103,7 @@
               <p>ZipCode</p>
             </div>
             <div class="col-md-6">
-              <input class="form-control" type="number" name="zipcode" value="{{ $store->zipcode }}" placeholder="zipcode">
+              <input class="form-control" type="number" name="zipcode" value="{{ $organization->zipcode }}" placeholder="zipcode">
               @if($errors->has('zipcode'))
                 <p>{{ $errors->first('zipcode') }}</p>
               @endif
@@ -119,7 +119,7 @@
     </form>
     {{-- unutk delere --}}
       {{-- </form><br>
-      <form class="" action="/store/{{ $store->id }}/delete" method="post">
+      <form class="" action="/organization/{{ $organization->id }}/delete" method="post">
         {{ method_field('DELETE') }}
         <input type="submit" name="submit" value="delete">
         {{ csrf_field() }}

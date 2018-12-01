@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\User;
-use App\Models\Store;
+use App\Models\Organization;
 use App\Models\Contact;
 use Auth;
 
@@ -40,14 +40,14 @@ class BaseController extends Controller
     function fetch(Request $request)
     {
       $user = Auth::user();
-      $store = store::where('user_id', $user->id)->first();
+      $organization = organization::where('user_id', $user->id)->first();
 
       if($request->get('query'))
       {
         $query = $request->get('query');
         $data = DB::table('contacts')
           ->where('name', 'LIKE', "%{$query}%")
-          ->where('store_id', $store->id)
+          ->where('organization_id', $organization->id)
           ->where('deleted_at', null)
           ->get();
 
@@ -67,14 +67,14 @@ class BaseController extends Controller
     function fetchItem(Request $request)
     {
       $user = Auth::user();
-      $store = store::where('user_id', $user->id)->first();
+      $organization = organization::where('user_id', $user->id)->first();
 
       if($request->get('query'))
       {
         $query = $request->get('query');
         $data = DB::table('items')
         ->where('name', 'LIKE', "%{$query}%")
-        ->where('store_id', $store->id)
+        ->where('organization_id', $organization->id)
         ->where('deleted_at', null)
         ->get();
 
@@ -95,13 +95,13 @@ class BaseController extends Controller
 
     }
 
-    function fetchStore(Request $request)
+    function fetchOrganization(Request $request)
     {
 
       if($request->get('query'))
       {
         $query = $request->get('query');
-        $data = DB::table('stores')
+        $data = DB::table('organizations')
         ->where('name', 'LIKE', "%{$query}%")
         ->where('deleted_at', null)
         ->get();

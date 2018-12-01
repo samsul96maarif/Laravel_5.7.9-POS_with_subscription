@@ -5,7 +5,7 @@ namespace App\Http\Middleware;
 use Closure;
 
 use App\Models\Subscription;
-use App\Models\Store;
+use App\Models\Organization;
 
 use Auth;
 use Carbon\Carbon;
@@ -22,24 +22,24 @@ class GetSubscription
     public function handle($request, Closure $next)
     {
         $user_id = Auth::id();
-        $store = store::where('user_id', $user_id)->first();
+        $organization = organization::where('user_id', $user_id)->first();
         // memeriksa apakah sudah memiliki subsription Package
-        if ($store->subscription_id == null) {
-          return redirect('/subscription')->withSuccess('Please Subscribe First.');
+        if ($organization->subscription_id == null) {
+          return redirect('/subscriptions')->withSuccess('Please Subscribe First.');
         }
         else {
           // memeriksa apakah statusnya 'true'
           // bila false maka akan diarahkan ke compleate a payment
-            if ($store->status == false) {
+            if ($organization->status == false) {
               return redirect('/subscription/cart')->withSuccess('Please Compleate a Payment.');
               throw new \Exception("masih menunggu konfirmasi pembayaran");
             } else {
               // memeriksa apakah package belum expied
               $now = carbon::now();
-              if ($store->expire_date > $now) {
+              if ($organization->expire_date > $now) {
                 return $next($request);
               }
-              return redirect('/subscription')->with('alert', 'Your Package Was Expired, Please Subscribe Again.');
+              return redirect('/subscriptions')->with('alert', 'Your Package Was Expired, Please Subscribe Again.');
               throw new \Exception("subscription expired");
 
             }

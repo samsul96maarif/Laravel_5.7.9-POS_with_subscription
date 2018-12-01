@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers\User;
 
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
 use App\Models\Contact;
-use App\Models\Store;
+use App\Models\Organization;
 use App\Models\Subscription;
 use App\Models\Invoice;
 // unutk menggunakan db builder
@@ -19,8 +20,8 @@ class ContactController extends Controller
   public function __construct()
   {
     // auth : unutk mengecek auth
-    // gate : unutk mengecek apakah sudah membuat store
-    // getSubscription : unutk mengecek subscription store
+    // gate : unutk mengecek apakah sudah membuat Organization
+    // getSubscription : unutk mengecek subscription Organization
     // maxContact : unutk mengecek quota user subscription
       $this->middleware(['auth', 'gate', 'get.subscription', 'max.contact']);
   }
@@ -28,9 +29,9 @@ class ContactController extends Controller
     public function index()
     {
       $user_id = Auth::id();
-      $store = store::where('user_id', $user_id)->first();
+      $organization = organization::where('user_id', $user_id)->first();
       $data = contact::all()
-      ->where('store_id', $store->id)
+      ->where('organization_id', $organization->id)
       ->where('deleted_at', null);
 
       if(count($data) > 0){ //mengecek apakah data kosong atau tidak
@@ -56,8 +57,8 @@ class ContactController extends Controller
     public function store(Request $request)
     {
       $user_id = Auth::id();
-      $store = store::where('user_id', $user_id)->first();
-      $subscription = subscription::findOrFail($store->subscription_id);
+      $organization = organization::where('user_id', $user_id)->first();
+      $subscription = subscription::findOrFail($organization->subscription_id);
 
       $this->validate($request, [
         'name' => 'required',
@@ -75,11 +76,11 @@ class ContactController extends Controller
         ]);
       }
 
-      $contacts = contact::all()->where('store_id', $store->id);
+      $contacts = contact::all()->where('organization_id', $organization->id);
 
       // mengecek apakan contact dengan nama yang dimasukkan sudah ada
       foreach ($contacts as $value) {
-        if ($request->name == $value->name) {
+        if ($request->name === $value->name) {
           return redirect()
           ->route('contact.create')
           ->with('alert', 'Failed Add Contact, Name '.$request->name.' Already Exist, In Your Contact');
@@ -103,7 +104,7 @@ class ContactController extends Controller
 
 
       $contact = new contact;
-      $contact->store_id = $store->id;
+      $contact->organization_id = $organization->id;
       $contact->name = $request->name;
       $contact->phone = $request->phone;
       $contact->company_name = $request->company_name;
@@ -143,10 +144,10 @@ class ContactController extends Controller
 
     // mengecek apakan contact dengan nama yang dimasukkan sudah ada
       $user = Auth::user();
-      $store = store::where('user_id', $user->id)->first();
-      $contacts = contact::all()->where('store_id', $store->id);
+      $organization = organization::where('user_id', $user->id)->first();
+      $contacts = contact::all()->where('organization_id', $organization->id);
       foreach ($contacts as $value) {
-        if ($request->name == $value->name && $request->name != $contact->name) {
+        if ($request->name === $value->name && $request->name != $contact->name) {
 
           return redirect()
           ->route('contact.edit', ['id' => $id])
@@ -175,10 +176,10 @@ class ContactController extends Controller
 
         if ($invoice == null) {
           $contact->delete();
-          return redirect('/contact')->withSuccess($contact->name.' Deleted!');
+          return redirect('/contacts')->withSuccess($contact->name.' Deleted!');
         }
         // mengarahkan kembali ke contact
-        return redirect()->route('contact')
+        return redirect()->route('contacts')
         ->with('alert', 'Failed, Contact '.$contact->name.' Already Used In Invoice, Please Delete Invoice First');
         throw new \Exception("contact telah digunakan pada invoice, silahkan hapus invoice terlebih dahulu");
       }
@@ -186,11 +187,11 @@ class ContactController extends Controller
       public function search(Request $request)
       {
         $id = Auth::id();
-        $store = store::where('user_id', $id)->first();
+        $organization = organization::where('user_id', $id)->first();
 
         $contacts = DB::table('contacts')
                         ->where('name', 'like', '%'.$request->q.'%')
-                        ->where('store_id', $store->id)
+                        ->where('organization_id', $organization->id)
                         ->where('deleted_at', null)
                         ->get();
 

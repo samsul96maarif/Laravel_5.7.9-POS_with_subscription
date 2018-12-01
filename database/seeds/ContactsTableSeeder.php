@@ -17,7 +17,7 @@ class ContactsTableSeeder extends Seeder
       for ($i=0; $i < 7; $i++) {
         DB::table('contacts')->insert([
             'name' => $faker->name,
-            'store_id' => 4,
+            'organization_id' => 4,
             'email' => str_random(10).'@gmail.com',
             'company_name' => str_random(10),
             'phone' => $faker->randomNumber,

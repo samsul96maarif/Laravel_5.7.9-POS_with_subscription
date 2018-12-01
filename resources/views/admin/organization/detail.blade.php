@@ -1,8 +1,8 @@
 @extends('layouts/adminMaster')
 
-@section('title', 'Company '.$store->name)
+@section('title', 'Company '.$organization->name)
 
-@section('headline', $store->name.' Detail')
+@section('headline', $organization->name.' Detail')
 
 @section('content')
 
@@ -20,7 +20,7 @@
     <div class="col-md-6">
       <div class="card">
         <div class="card-header text-center">
-          <h4 class="my-0 font-weight-normal">{{ $store->name }}</h4>
+          <h4 class="my-0 font-weight-normal">{{ $organization->name }}</h4>
         </div>
         <div class="card-body">
 
@@ -29,7 +29,7 @@
               <label for="" class="col-form-label">Owner</label>
             </div>
             <div class="col">
-              <a class="col btn btn-outline-link" href="/admin/user/{{ $store->user_id }}">{{ $user->name }}</a>
+              <a class="col btn btn-outline-link" href="/admin/user/{{ $organization->user_id }}">{{ $user->name }}</a>
             </div>
           </div>
           <br>
@@ -37,7 +37,7 @@
             <div class="col-md-4">
               <label for="" class="col-form-label">Package Subscription</label>
             </div>
-            @if ($store->subscription_id == null)
+            @if ($organization->subscription_id == null)
               <div class="col">
                 <span class="form-control text-center">Dont Have Yet</span>
               </div>
@@ -53,7 +53,7 @@
               <label for="" class="col-form-label">Phone</label>
             </div>
             <div class="col">
-              <span class="form-control text-center">{{ $store->phone }}</span>
+              <span class="form-control text-center">{{ $organization->phone }}</span>
             </div>
           </div>
           <br>
@@ -62,7 +62,7 @@
               <label for="" class="col-form-label">Comapany Address</label>
             </div>
             <div class="col">
-              <textarea name="name" class="form-control" rows="8" cols="80">{{ $store->company_address}}</textarea>
+              <textarea name="name" class="form-control" rows="8" cols="80">{{ $organization->company_address}}</textarea>
             </div>
           </div>
           <br>
@@ -71,11 +71,11 @@
               <label for="" class="col-form-label">ZipCode</label>
             </div>
             <div class="col">
-              <span class="form-control text-center">{{ $store->zipcode}}</span>
+              <span class="form-control text-center">{{ $organization->zipcode}}</span>
             </div>
           </div>
           <br>
-          @if ($store->subscription_id == null)
+          @if ($organization->subscription_id == null)
             <div class="row">
               <div class="col-md-4">
                 <label for="" class="col-form-label">Invoices Quota / Invoices</label>
@@ -86,7 +86,7 @@
             </div>
             <div class="row">
               <div class="col-md-4">
-                <label for="" class="col-form-label">Contacts Quota / Contacts</label>
+                <label for="" class="col-form-label">Users Quota / Users</label>
               </div>
               <div class="col">
                 <span class="form-control text-center">{{ $numContacts }}</span>
@@ -94,7 +94,7 @@
             </div>
             <div class="row">
               <div class="col-md-4">
-                <label for="" class="col-form-label">Items</label>
+                <label for="" class="col-form-label">Items Quota / Items</label>
               </div>
               <div class="col">
                 <span class="form-control text-center">{{ $numItems }}</span>
@@ -107,8 +107,9 @@
                 <label for="" class="col-form-label">Invoices Quota / Invoices</label>
               </div>
               <div class="col">
-                @if ($subscription->num_invoices == 0)
-                  <span class="form-control text-center"><i class="fas fa-infinity"></i></span>
+                @if ($subscription->num_invoices === null)
+                  <span class="form-control text-center">{{ $numSalesOrders }}</span>
+                  {{-- <span class="form-control text-center"><i class="fas fa-infinity"></i></span> --}}
                 @else
                   <span class="form-control text-center">{{ $subscription->num_invoices }} / {{ $numSalesOrders }}</span>
                 @endif
@@ -116,11 +117,12 @@
             </div>
             <div class="row">
               <div class="col-md-4">
-                <label for="" class="col-form-label">Contacts Quota / Contacts</label>
+                <label for="" class="col-form-label">Users Quota / Users</label>
               </div>
               <div class="col">
-                @if ($subscription->num_users == 0)
-                  <span class="form-control text-center"><i class="fas fa-infinity"></i></span>
+                @if ($subscription->num_users === null)
+                  <span class="form-control text-center">{{ $numContacts}}</span>
+                  {{-- <span class="form-control text-center"><i class="fas fa-infinity"></i></span> --}}
                 @else
                   <span class="form-control text-center">{{ $subscription->num_users}} / {{ $numContacts }}</span>
                 @endif
@@ -128,10 +130,15 @@
             </div>
             <div class="row">
               <div class="col-md-4">
-                <label for="" class="col-form-label">Items</label>
+                <label for="" class="col-form-label">Quota Items / Items</label>
               </div>
               <div class="col">
-                <span class="form-control text-center">{{ $numItems }}</span>
+                @if ($subscription->num_items == null)
+                  <span class="form-control text-center">{{ $numItems }}</span>
+                  {{-- <span class="form-control text-center"><i class="fas fa-infinity"></i></span> --}}
+                @else
+                  <span class="form-control text-center">{{ $subscription->num_items }} / {{ $numItems}}</span>
+                @endif
               </div>
             </div>
             <br>
@@ -142,9 +149,9 @@
               <label for="" class="col-form-label">Status</label>
             </div>
             <div class="col">
-              @if ($store->status > 0)
+              @if ($organization->status > 0)
                 <span class="form-control text-center">Active</span>
-              @elseif ($store->status == 0)
+              @elseif ($organization->status == 0)
                 <span class="form-control text-center">Awaiting Paymnet</span>
               @else
                 <span class="form-control text-center">Not Subscribe</span>
@@ -156,22 +163,22 @@
             <div class="col-md-4">
               <label for="" class="col-form-label">Expiry Date</label>
             </div>
-            @if ($store->expire_date == null)
+            @if ($organization->expire_date == null)
               <div class="col">
                 <span class="form-control text-center"></span>
               </div>
             @else
               <div class="col">
-                <span class="form-control text-center">{{ date('d-m-Y', strtotime($store->expire_date)) }}</span>
+                <span class="form-control text-center">{{ date('d-m-Y', strtotime($organization->expire_date)) }}</span>
               </div>
             @endif
           </div>
           <br>
           {{-- tombol ini disembunyikan fungsi dialihkan ke page payment --}}
           {{-- <div class="row">
-            @if ($store->status > 0)
+            @if ($organization->status > 0)
               <div class="col text-right">
-                <form class="" action="/admin/store/{{ $store->id }}/extend" method="post">
+                <form class="" action="/admin/organization/{{ $organization->id }}/extend" method="post">
                   {{ method_field('PUT') }}
                   <input type="text" name="expire_date" value="30" hidden>
                   <input class="btn btn-primary" type="submit" name="submit" value="extend period">
@@ -179,16 +186,16 @@
                 </form>
               </div>
               <div class="col text-left">
-                <form class="" action="/admin/store/{{ $store->id }}" method="post">
+                <form class="" action="/admin/organization/{{ $organization->id }}" method="post">
                   {{ method_field('PUT') }}
                   <input type="text" name="status" value="0" hidden>
                   <input class="btn btn-danger" type="submit" name="submit" value="deactivate">
                   {{ csrf_field() }}
                 </form>
               </div>
-            @elseif ($store->status == 0)
+            @elseif ($organization->status == 0)
               <div class="col text-center">
-                <form class="" action="/admin/store/{{ $store->id }}" method="post">
+                <form class="" action="/admin/organization/{{ $organization->id }}" method="post">
                   {{ method_field('PUT') }}
                   <input type="text" name="status" value="1" hidden>
                   <input class="btn btn-primary" type="submit" name="submit" value="activate">

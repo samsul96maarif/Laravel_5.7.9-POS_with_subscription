@@ -76,6 +76,19 @@
             <br>
             <div class="row">
               <div class="col-md-10">
+                {{-- kolom untuk isi tabel "num_users" --}}
+                {{-- old('nama variable') = untuk menyimpan nilai lama, jadi bila tidak valid hanya tabel yang tidak valid
+                yang nilainya akan terhapus --}}
+                <input class="form-control" type="text" name="num_items" onkeyup="splitInDots(this)" value="{{ old('num_items') }}" placeholder="Items Quota">
+                {{-- untuk mengeluarkan error pada value "name" --}}
+                @if($errors->has('num_items'))
+                  <p>{{ $errors->first('num_items') }}</p>
+                @endif
+              </div>
+            </div>
+            <br>
+            <div class="row">
+              <div class="col-md-10">
                 {{-- kolom untuk isi tabel "num_invoices" --}}
                 {{-- old('nama variable') = untuk menyimpan nilai lama, jadi bila tidak valid hanya tabel yang tidak valid
                 yang nilainya akan terhapus --}}
@@ -92,7 +105,7 @@
                 {{-- kolom untuk isi tabel "num_users" --}}
                 {{-- old('nama variable') = untuk menyimpan nilai lama, jadi bila tidak valid hanya tabel yang tidak valid
                 yang nilainya akan terhapus --}}
-                <input class="form-control" type="text" name="num_users" onkeyup="splitInDots(this)" value="{{ old('num_users') }}" placeholder="Contacts Quota">
+                <input class="form-control" type="text" name="num_users" onkeyup="splitInDots(this)" value="{{ old('num_users') }}" placeholder="Users Quota">
                 {{-- untuk mengeluarkan error pada value "name" --}}
                 @if($errors->has('num_users'))
                   <p>{{ $errors->first('num_users') }}</p>

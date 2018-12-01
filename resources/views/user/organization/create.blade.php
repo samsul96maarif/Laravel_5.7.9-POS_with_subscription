@@ -1,6 +1,6 @@
 @extends('layouts/userMaster')
 
-@section('title', 'Create Store')
+@section('title', 'Create Company Profile')
 
 @section('headline', 'Company Profile')
 
@@ -16,7 +16,7 @@
     <div class="alert alert-info">{{ session('success') }}</div>
   @endif
 
-  <form class="" action="/store" method="post" value="post" enctype="multipart/form-data">
+  <form class="" action="/organization" method="post" value="post" enctype="multipart/form-data">
       <div class="row">
         <div class="col-md-2">
           <img src="{{ asset('logo/anonim.png') }}" alt="Logo" class="img-thumbnail">

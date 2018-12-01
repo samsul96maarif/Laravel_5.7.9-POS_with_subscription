@@ -2,14 +2,15 @@
 
 namespace App\Http\Controllers\User;
 
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
-use App\Models\Store;
+use App\Models\Organization;
 use App\Models\Subscription;
 // unutk menggunakan auth
 use Auth;
 
-class StoreController extends Controller
+class OrganizationController extends Controller
 {
 
   public function __construct()
@@ -21,12 +22,12 @@ class StoreController extends Controller
   public function index()
     {
       $user_id = Auth::id();
-      $store = store::where('user_id', $user_id)->first();
-      $subscription = subscription::where('id', $store->subscription_id)->first();
+      $organization = organization::where('user_id', $user_id)->first();
+      $subscription = subscription::where('id', $organization->subscription_id)->first();
 
-      return view('user/store/index',
+      return view('user/organization/index',
       [
-        'store' => $store,
+        'organization' => $organization,
         'subscription' => $subscription
       ]);
     }
@@ -39,7 +40,7 @@ class StoreController extends Controller
     if (Auth::user()->isAdmin()) {
       return redirect('/admin');
     }
-    return view('user/store/create');
+    return view('user/organization/create');
   }
   // 2.store data
   public function store(Request $request)
@@ -55,7 +56,7 @@ class StoreController extends Controller
       'zipcode' => 'required|numeric',
     ]);
 
-    $store = new store;
+    $organization = new organization;
 
     if ($request->file('logo') == "") {
         // code...
@@ -67,15 +68,15 @@ class StoreController extends Controller
         // menyimpan file image kedalam folder "img"
         $request->file('logo')->move("logo/",$fileName);
         // menyimpan ke dalam database nama file dari image
-        $store->logo = $fileName;
+        $organization->logo = $fileName;
       }
 
-    $store->user_id = $user_id;
-    $store->name = $request->name;
-    $store->phone = $request->phone;
-    $store->company_address = $request->company_address;
-    $store->zipcode = $request->zipcode;
-    $store->save();
+    $organization->user_id = $user_id;
+    $organization->name = $request->name;
+    $organization->phone = $request->phone;
+    $organization->company_address = $request->company_address;
+    $organization->zipcode = $request->zipcode;
+    $organization->save();
 
     return redirect('/home')->withSuccess('Company Profile Has been Created.');
   }
@@ -84,7 +85,7 @@ class StoreController extends Controller
         public function update(Request $request, $id)
         {
 
-          $store = store::find($id);
+          $organization = organization::find($id);
 
           $this->validate($request, [
             'name' => 'required',
@@ -104,14 +105,14 @@ class StoreController extends Controller
               // menyimpan file image kedalam folder "img"
               $request->file('logo')->move("logo/",$fileName);
               // menyimpan ke dalam database nama file dari image
-              $store->logo = $fileName;
+              $organization->logo = $fileName;
             }
 
-          $store->name = $request->name;
-          $store->phone = $request->phone;
-          $store->company_address = $request->company_address;
-          $store->zipcode = $request->zipcode;
-          $store->save();
+          $organization->name = $request->name;
+          $organization->phone = $request->phone;
+          $organization->company_address = $request->company_address;
+          $organization->zipcode = $request->zipcode;
+          $organization->save();
 
           return redirect('/home')->withSuccess('Company Profile Has been Updated.');
         }
@@ -119,8 +120,8 @@ class StoreController extends Controller
         // delete
         public function delete($id)
         {
-          $store = store::find($id);
-          $store->delete();
+          $organization = organization::find($id);
+          $organization->delete();
 
           return redirect('/home');
         }

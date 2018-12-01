@@ -18,6 +18,7 @@
     <thead>
       <th>Package Name</th>
       <th>Price</th>
+      <th>Items Quota</th>
       <th>Invoices Quota</th>
       <th>Contacts Quota</th>
       {{-- action dialih fungsikan dari index --}}
@@ -27,15 +28,22 @@
       <tr>
         <td>{{ $subscription->name }}</td>
         <td>Rp.{{ number_format($subscription->price,2,",",".") }}</td>
-        @if ($subscription->num_invoices == 0)
+        @if ($subscription->num_items === null)
           <td><i class="fas fa-infinity"></i></td>
         @else
-          <td>{{ $subscription->num_invoices }}</td>
+          <td>{{ number_format($subscription->num_items, 0, ",", ".") }}</td>
         @endif
-        @if ($subscription->num_users == 0)
+
+        @if ($subscription->num_invoices === null)
           <td><i class="fas fa-infinity"></i></td>
         @else
-          <td>{{ $subscription->num_users }}</td>
+          <td>{{ number_format($subscription->num_invoices, 0, ",", ".") }}</td>
+        @endif
+
+        @if ($subscription->num_users === null)
+          <td><i class="fas fa-infinity"></i></td>
+        @else
+          <td>{{ number_format($subscription->num_users, 0, ",", ".") }}</td>
         @endif
         {{-- action dialih fungsikan hanya dari index --}}
         {{-- <td>
@@ -130,20 +138,20 @@
       @php
         $i=1;
       @endphp
-      @foreach ($stores as $store)
+      @foreach ($organizations as $organization)
         <tr>
           <th scope="row">{{ $i }}</th>
           @foreach ($users as $user)
-            @if ($store->user_id == $user->id)
-              <td><a class="btn" href="/admin/user/{{ $store->user_id }}">{{ $user->name }}</a></td>
+            @if ($organization->user_id == $user->id)
+              <td><a class="btn" href="/admin/user/{{ $organization->user_id }}">{{ $user->name }}</a></td>
             @endif
           @endforeach
-          <td><a class="btn" href="/admin/store/{{ $store->id }}">{{ $store->name }}</a></td>
-          {{-- <td>{{ $store->phone }}</td> --}}
-          {{-- <td>{{ $store->company_address}}</td> --}}
-          {{-- <td>{{ $store->zipcode}}</td> --}}
-          @if ($store->subscription_id > 0)
-            @if ($store->status == 0)
+          <td><a class="btn" href="/admin/organization/{{ $organization->id }}">{{ $organization->name }}</a></td>
+          {{-- <td>{{ $organization->phone }}</td> --}}
+          {{-- <td>{{ $organization->company_address}}</td> --}}
+          {{-- <td>{{ $organization->zipcode}}</td> --}}
+          @if ($organization->subscription_id > 0)
+            @if ($organization->status == 0)
               <td>
                 <a href="#" class="btn btn-outline-secondary">Awaiting Payment</a>
               </td>
@@ -152,13 +160,13 @@
                 <a href="#" class="btn btn-outline-primary">Active</a>
               </td>
             @endif
-            <td>{{ date('d-m-Y', strtotime($store->expire_date)) }}</td>
+            <td>{{ date('d-m-Y', strtotime($organization->expire_date)) }}</td>
             {{-- fungsi ini dialihkan ke payment --}}
             {{-- <td>
-              @if ($store->status == 0)
+              @if ($organization->status == 0)
               <div class="row">
                 <div class="col">
-                  <form class="" action="/admin/store/{{ $store->id }}" method="post">
+                  <form class="" action="/admin/organization/{{ $organization->id }}" method="post">
                     {{ method_field('PUT') }}
                     <input type="text" name="status" value="1" hidden>
                     <input class="btn btn-primary" type="submit" name="submit" value="activate">
@@ -169,7 +177,7 @@
               @else
                 <div class="row btn-atas">
                   <div class="col">
-                    <form class="" action="/admin/store/{{ $store->id }}/extend" method="post">
+                    <form class="" action="/admin/organization/{{ $organization->id }}/extend" method="post">
                       {{ method_field('PUT') }}
                       <input type="text" name="expire_date" value="30" hidden>
                       <input class="btn btn-warning" type="submit" name="submit" value="extend period">
@@ -180,7 +188,7 @@
                 </form>
                 <div class="row">
                   <div class="col">
-                    <form class="" action="/admin/store/{{ $store->id }}" method="post">
+                    <form class="" action="/admin/organization/{{ $organization->id }}" method="post">
                       {{ method_field('PUT') }}
                       <input type="text" name="status" value="0" hidden>
                       <input class="btn btn-danger" type="submit" name="submit" value="deactivate">

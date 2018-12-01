@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
 use App\Models\Payment;
 use App\Models\User;
-use App\Models\Store;
+use App\Models\Organization;
 use App\Models\Subscription;
 // unutk menggunakn db builder
 use Illuminate\Support\Facades\DB;
@@ -179,7 +180,7 @@ class AdminReportController extends Controller
     {
         $subscription = subscription::findOrFail($id);
         $users = user::all();
-        $stores = store::all();
+        $organizations = organization::all();
         $payments = payment::all()
         ->where('subscription_id', $id)
         ->where('paid', 1);
@@ -187,7 +188,7 @@ class AdminReportController extends Controller
         return view('admin/report/detail',
         [
           'subscription' => $subscription,
-          'stores' => $stores,
+          'organizations' => $organizations,
           'users' => $users,
           'payments' => $payments
         ]);

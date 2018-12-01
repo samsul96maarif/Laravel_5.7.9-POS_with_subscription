@@ -15,12 +15,12 @@ class CreateContactsTable extends Migration
     {
         Schema::create('contacts', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('store_id')->unsigned();
-            $table->foreign('store_id')->references('id')->on('stores')->onDelete('cascade');
+            $table->integer('organization_id')->unsigned();
+            $table->foreign('organization_id')->references('id')->on('organizations')->onDelete('cascade');
             $table->string('name', 20);
-            $table->string('phone', 12)->nullable($value = true);
-            $table->string('company_name')->nullable($value = true);
-            $table->string('email')->nullable($value = true);
+            $table->string('phone', 12)->nullable();
+            $table->string('company_name')->nullable();
+            $table->string('email')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

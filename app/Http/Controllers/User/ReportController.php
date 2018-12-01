@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers\User;
 
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
 use App\Models\SalesOrder;
-use App\Models\Store;
+use App\Models\Organization;
 use App\Models\Invoice;
 use App\Models\Contact;
 // unutk menggunakn db builder
@@ -21,8 +22,8 @@ class ReportController extends Controller
     public function __construct()
     {
       // auth : unutk mengecek auth
-      // gate : unutk mengecek apakah sudah membuat store
-      // getSubscription : unutk mengecek subscription store
+      // gate : unutk mengecek apakah sudah membuat Organization
+      // getSubscription : unutk mengecek subscription Organization
         $this->middleware(['auth', 'gate', 'get.subscription']);
     }
 
@@ -32,14 +33,14 @@ class ReportController extends Controller
       $year = $now->year;
       $month = $now->month;
       $user_id = Auth::id();
-      $store = store::where('user_id', $user_id)->first();
+      $organization = organization::where('user_id', $user_id)->first();
 
       $by = 'On '.$now->englishMonth;
       // ex : "October"
       $customers = DB::table('sales_orders')
       ->join('contacts', 'contacts.id','=','sales_orders.contact_id')
       ->select('contacts.name', DB::raw("SUM(sales_orders.total) as total"))
-      ->where('sales_orders.store_id', $store->id)
+      ->where('sales_orders.organization_id', $organization->id)
       ->where('sales_orders.deleted_at', null)
       ->whereYear('sales_orders.created_at', '=', $year)
       ->whereMonth('sales_orders.created_at', '=', $month)
@@ -64,7 +65,7 @@ class ReportController extends Controller
     public function salesByItemMonth()
     {
       $user_id = Auth::id();
-      $store = store::where('user_id', $user_id)->first();
+      $organization = organization::where('user_id', $user_id)->first();
       $now = Carbon::now();
       $year = $now->year;
       $month = $now->month;
@@ -75,7 +76,7 @@ class ReportController extends Controller
       $items = DB::table('invoice_details')
       ->join('items', 'items.id','=','invoice_details.item_id')
       ->select('items.name', DB::raw("SUM(invoice_details.total) as total"), DB::raw("SUM(invoice_details.item_quantity) as count"))
-      ->where('invoice_details.store_id', $store->id)
+      ->where('invoice_details.organization_id', $organization->id)
       ->where('invoice_details.deleted_at', null)
       ->whereYear('invoice_details.created_at', '=', $year)
       ->whereMonth('invoice_details.created_at', '=', $month)
@@ -94,7 +95,7 @@ class ReportController extends Controller
     public function Item(Request $request)
     {
       $user_id = Auth::id();
-      $store = store::where('user_id', $user_id)->first();
+      $organization = organization::where('user_id', $user_id)->first();
       $now = Carbon::now();
       $startDate = Carbon::now();
       $endDate = Carbon::now();
@@ -142,7 +143,7 @@ class ReportController extends Controller
         $items = DB::table('invoice_details')
                 ->join('items', 'items.id','=','invoice_details.item_id')
                 ->select('items.name', DB::raw("SUM(invoice_details.total) as total"), DB::raw("SUM(invoice_details.item_quantity) as count"))
-                ->where('invoice_details.store_id', $store->id)
+                ->where('invoice_details.organization_id', $organization->id)
                 ->where('invoice_details.deleted_at', null)
                 ->whereYear('invoice_details.created_at', '=', $year)
                 ->groupBy('invoice_details.item_id', 'items.name')
@@ -158,7 +159,7 @@ class ReportController extends Controller
         $items = DB::table('invoice_details')
                 ->join('items', 'items.id','=','invoice_details.item_id')
                 ->select('items.name', DB::raw("SUM(invoice_details.total) as total"), DB::raw("SUM(invoice_details.item_quantity) as count"))
-                ->where('invoice_details.store_id', $store->id)
+                ->where('invoice_details.organization_id', $organization->id)
                 ->where('invoice_details.deleted_at', null)
                 ->whereBetween('invoice_details.created_at', [$startDate, $endDate])
                 ->groupBy('invoice_details.item_id', 'items.name')
@@ -168,7 +169,7 @@ class ReportController extends Controller
         $items = DB::table('invoice_details')
                 ->join('items', 'items.id','=','invoice_details.item_id')
                 ->select('items.name', DB::raw("SUM(invoice_details.total) as total"), DB::raw("SUM(invoice_details.item_quantity) as count"))
-                ->where('invoice_details.store_id', $store->id)
+                ->where('invoice_details.organization_id', $organization->id)
                 ->where('invoice_details.deleted_at', null)
                 ->groupBy('invoice_details.item_id', 'items.name')
                 ->get();
@@ -180,7 +181,7 @@ class ReportController extends Controller
         $items = DB::table('invoice_details')
                 ->join('items', 'items.id','=','invoice_details.item_id')
                 ->select('items.name', DB::raw("SUM(invoice_details.total) as total"), DB::raw("SUM(invoice_details.item_quantity) as count"))
-                ->where('invoice_details.store_id', $store->id)
+                ->where('invoice_details.organization_id', $organization->id)
                 ->where('invoice_details.deleted_at', null)
                 ->whereBetween('invoice_details.created_at', [$request->start_date, $request->end_date])
                 ->groupBy('invoice_details.item_id', 'items.name')
@@ -198,7 +199,7 @@ class ReportController extends Controller
     public function Customer(Request $request)
     {
       $user_id = Auth::id();
-      $store = store::where('user_id', $user_id)->first();
+      $organization = organization::where('user_id', $user_id)->first();
       $now = Carbon::now();
       $startDate = Carbon::now();
       $endDate = Carbon::now();
@@ -246,7 +247,7 @@ class ReportController extends Controller
         $customers = DB::table('sales_orders')
                 ->join('contacts', 'contacts.id','=','sales_orders.contact_id')
                 ->select('contacts.name', DB::raw("SUM(sales_orders.total) as total"))
-                ->where('sales_orders.store_id', $store->id)
+                ->where('sales_orders.organization_id', $organization->id)
                 ->where('sales_orders.deleted_at', null)
                 ->whereYear('sales_orders.created_at', '=', $year)
                 ->groupBy('sales_orders.contact_id', 'contacts.name')
@@ -260,7 +261,7 @@ class ReportController extends Controller
         $customers = DB::table('sales_orders')
                 ->join('contacts', 'contacts.id','=','sales_orders.contact_id')
                 ->select('contacts.name', DB::raw("SUM(sales_orders.total) as total"))
-                ->where('sales_orders.store_id', $store->id)
+                ->where('sales_orders.organization_id', $organization->id)
                 ->where('sales_orders.deleted_at', null)
                 ->whereBetween('sales_orders.created_at', [$startDate, $endDate])
                 ->groupBy('sales_orders.contact_id', 'contacts.name')
@@ -271,7 +272,7 @@ class ReportController extends Controller
         $customers = DB::table('sales_orders')
                 ->join('contacts', 'contacts.id','=','sales_orders.contact_id')
                 ->select('contacts.name', DB::raw("SUM(sales_orders.total) as total"), DB::raw("count(sales_orders.total) as count"))
-                ->where('sales_orders.store_id', $store->id)
+                ->where('sales_orders.organization_id', $organization->id)
                 ->where('sales_orders.deleted_at', null)
                 ->groupBy('sales_orders.contact_id', 'contacts.name')
                 ->get();
@@ -283,7 +284,7 @@ class ReportController extends Controller
         $customers = DB::table('sales_orders')
                 ->join('contacts', 'contacts.id','=','sales_orders.contact_id')
                 ->select('contacts.name', DB::raw("SUM(sales_orders.total) as total"))
-                ->where('sales_orders.store_id', $store->id)
+                ->where('sales_orders.organization_id', $organization->id)
                 ->where('sales_orders.deleted_at', null)
                 ->whereBetween('sales_orders.created_at', [$request->start_date, $request->end_date])
                 ->groupBy('sales_orders.contact_id', 'contacts.name')

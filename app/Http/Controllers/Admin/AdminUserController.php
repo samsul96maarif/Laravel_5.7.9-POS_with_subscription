@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
 use App\Models\User;
-use App\Models\Store;
+use App\Models\Organization;
 // menggunakan db builder
 use Illuminate\Support\Facades\DB;
 
@@ -22,25 +23,26 @@ class AdminUserController extends Controller
   public function index()
   {
     // memanggil user biasa(role = false)
-    $users = user::all()->where('role', false);
-    $stores = store::all();
+    $users = user::all()->where('admin', false);
+
+    $organizations = organization::all();
 
     return view('admin/user/index',
     [
       'users' => $users,
-      'stores' => $stores
+      'organizations' => $organizations
     ]);
   }
 
   public function show($id)
   {
     $user = user::findOrFail($id);
-    $store = store::where('user_id', $id)->first();
+    $organization = organization::where('user_id', $id)->first();
 
     return view('admin/user/detail',
     [
       'user' => $user,
-      'store' => $store
+      'organization' => $organization
     ]);
   }
 
@@ -49,17 +51,17 @@ class AdminUserController extends Controller
 
     $users = DB::table('users')
                     ->where('name', 'like', '%'.$request->q.'%')
-                    ->where('role', false)
+                    ->where('role', true)
                     ->orWhere('username', 'like', '%'.$request->q.'%')
-                    ->where('role', false)
+                    ->where('role', true)
                     ->get();
 
-    $stores = store::all();
+    $organizations = organization::all();
 
     return view('admin/user/index',
       [
         'users' => $users,
-        'stores' => $stores
+        'organizations' => $organizations
       ]);
   }
 }

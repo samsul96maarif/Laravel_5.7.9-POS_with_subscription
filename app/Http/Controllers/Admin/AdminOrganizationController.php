@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
-use App\Models\Store;
+use App\Models\Organization;
 use App\Models\Subscription;
 use App\Models\User;
 use App\Models\SalesOrder;
@@ -18,7 +19,7 @@ use Auth;
 // untuk menggunakan date
 use Carbon\Carbon;
 
-class AdminStoreController extends Controller
+class AdminOrganizationController extends Controller
 {
     public function __construct()
     {
@@ -30,14 +31,14 @@ class AdminStoreController extends Controller
 
     public function index()
     {
-      $stores = store::all();
+      $organizations = organization::all();
       $subscriptions = subscription::all();
       $users = user::all();
       $filter = 'All';
 
-      return view('admin/store/index',
+      return view('admin/organization/index',
       [
-        'stores' => $stores,
+        'organizations' => $organizations,
         'filter' => $filter,
         'subscriptions' => $subscriptions,
         'users' => $users
@@ -46,22 +47,22 @@ class AdminStoreController extends Controller
 
     public function show($id)
     {
-      $store = store::findOrFail($id);
-      $subscription = subscription::where('id', $store->subscription_id)->first();
-      $user = user::where('id', $store->user_id)->first();
-      $contacts = contact::all()->where('store_id', $id);
-      $salesOrders = salesOrder::all()->where('store_id', $id);
-      $items = item::all()->where('store_id', $id);
-      // mengetahui jumlah sales order dari store
+      $organization = organization::findOrFail($id);
+      $subscription = subscription::where('id', $organization->subscription_id)->first();
+      $user = user::where('id', $organization->user_id)->first();
+      $contacts = contact::all()->where('organization_id', $id);
+      $salesOrders = salesOrder::all()->where('organization_id', $id);
+      $items = item::all()->where('organization_id', $id);
+      // mengetahui jumlah sales order dari organization
       $numSalesOrders = count($salesOrders);
-      // mengetahui jumlah contact dari store
+      // mengetahui jumlah contact dari organization
       $numContacts = count($contacts);
-      // unutk mengetahui item dari store
+      // unutk mengetahui item dari organization
       $numItems = count($items);
 
-      return view('admin/store/detail',
+      return view('admin/organization/detail',
       [
-        'store' => $store,
+        'organization' => $organization,
         'subscription' => $subscription,
         'user' => $user,
         'numSalesOrders' => $numSalesOrders,
@@ -70,72 +71,72 @@ class AdminStoreController extends Controller
       ]);
     }
 
-    // fungsi untuk mengaktifkan package subscription pada store
+    // fungsi untuk mengaktifkan package subscription pada organization
     public function active(Request $request, $id)
     {
       $now = carbon::now();
-      $store = store::find($id);
-      $store->status = $request->status;
+      $organization = organization::find($id);
+      $organization->status = $request->status;
 
-      if ($store->status == 1) {
-        $payment = payment::where('store_id', $store->id)
+      if ($organization->status == 1) {
+        $payment = payment::where('organization_id', $organization->id)
           ->where('paid', 0)->first();
 
         $subscription = subscription::findOrFail($payment->subscription_id);
 
         $addDays = $payment->period * 30;
-        $store->expire_date = Carbon::now()->addDays($addDays);
+        $organization->expire_date = Carbon::now()->addDays($addDays);
         $payment->paid = 1;
         $payment->save();
       } else {
         // unutk menonaktifkan package subscription
         // sekarang fungsi ini masih dinonaktofkan
-        $store->expire_date = null;
-        $store->subscription_id = null;
+        $organization->expire_date = null;
+        $organization->subscription_id = null;
       }
 
-      $store->save();
+      $organization->save();
 
       return redirect()
-      ->route('admin.store.detail', ['id' => $store->id])
-      ->withSuccess('Activate Package '.$subscription->name.' For '.$store->name.' Succeed');
+      ->route('admin.organization.detail', ['id' => $organization->id])
+      ->withSuccess('Activate Package '.$subscription->name.' For '.$organization->name.' Succeed');
     }
 
     // fungsi untuk menambah masa aktif package subscription
     public function extend(Request $request, $id)
     {
-      $store = store::find($id);
-      $now = $store->expire_date;
+      $organization = organization::find($id);
+      $now = $organization->expire_date;
 
-      if ($store->status == 1) {
+      if ($organization->status == 1) {
         $addDays = $request->period * 30;
-        $store->expire_date = $now->addDays($addDays);
+        $organization->expire_date = $now->addDays($addDays);
       }
 
-      $payment = payment::where('store_id', $store->id)
+      $payment = payment::where('organization_id', $organization->id)
       ->where('paid', 0)->first();
       $payment->paid = 1;
       $payment->save();
 
-      $store->save();
+      $organization->save();
 
       return redirect()
-      ->route('admin.store.detail', ['id' => $store->id])
-      ->withSuccess('Extend Package '.$subscription->name.' For '.$store->name.' Succeed');
+      ->route('admin.organization.detail', ['id' => $organization->id])
+      ->withSuccess('Extend Package '.$subscription->name.' For '.$organization->name.' Succeed');
     }
 
     public function filter(Request $request)
     {
       if ($request->filter == 'active') {
-        $stores = Store::all()->where('status', 1);
+        $organizations = organization::all()->where('status', 1);
       } elseif ($request->filter == 'awaiting') {
-        $stores = Store::all()
+        $organizations = organization::all()
         ->where('status', 0)
         ->where('subscription_id', '!=', null);
       } elseif ($request->filter == 'not') {
-        $stores = Store::all()->where('subscription_id', null);
+        $organizations = organization::all()->where('subscription_id', null);
       } else {
-        $stores = store::all();
+        $organizations = organization::all();
       }
 
       if ($request->filter == 'awaiting') {
@@ -149,9 +150,9 @@ class AdminStoreController extends Controller
       $subscriptions = subscription::all();
       $users = user::all();
 
-      return view('admin/store/index',
+      return view('admin/organization/index',
       [
-        'stores' => $stores,
+        'organizations' => $organizations,
         'filter' => $filter,
         'subscriptions' => $subscriptions,
         'users' => $users
@@ -162,7 +163,7 @@ class AdminStoreController extends Controller
     {
       $id = Auth::id();
 
-      $stores = DB::table('stores')
+      $organizations = DB::table('organizations')
                       ->where('name', 'like', '%'.$request->q.'%')
                       ->where('deleted_at', null)
                       ->get();
@@ -171,9 +172,9 @@ class AdminStoreController extends Controller
       $users = user::all();
       $filter = 'All';
 
-      return view('admin/store/index',
+      return view('admin/organization/index',
         [
-          'stores' => $stores,
+          'organizations' => $organizations,
           'filter' => $filter,
           'subscriptions' => $subscriptions,
           'users' => $users

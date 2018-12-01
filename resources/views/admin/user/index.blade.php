@@ -76,9 +76,9 @@
           <td><a class="btn" href="/admin/user/{{ $user->id }}">{{ $user->name }}</a></td>
           <td>{{ $user->username }}</td>
           <td>{{ $user->email }}</td>
-          @foreach ($stores as $store)
-            @if ($user->id == $store->user_id)
-              <td><a class="btn" href="/admin/store/{{ $store->id }}">{{ $store->name }}</a></td>
+          @foreach ($organizations as $organization)
+            @if ($user->id == $organization->user_id)
+              <td><a class="btn" href="/admin/organization/{{ $organization->id }}">{{ $organization->name }}</a></td>
             @endif
           @endforeach
         </tr>

@@ -36,16 +36,16 @@
             $confirm = 'Do You Wanna Buy Package '.$subscription->name;
             $action = 'Buy';
             @endphp
-            {{-- percabangan untuk mengetahui store extend atau ingin membeli --}}
-            @if ($store->status == 1 && $store->subscription_id == $subscription->id)
-              <li>Expire Date : {{ date('d-m-Y', strtotime($store->expire_date)) }}</li>
+            {{-- percabangan untuk mengetahui organization extend atau ingin membeli --}}
+            @if ($organization->status == 1 && $organization->subscription_id == $subscription->id)
+              <li>Expire Date : {{ date('d-m-Y', strtotime($organization->expire_date)) }}</li>
               @php
               $message = 'How Many Months Do You Want To Extend The Package';
               $confirm = 'Do You Wanna Extend Package '.$subscription->name;
               $action = 'Extend Period';
               @endphp
             @endif
-            {{-- percabangan untuk mengetahui store extend atau ingin membeli --}}
+            {{-- percabangan untuk mengetahui organization extend atau ingin membeli --}}
             <li><b>{{ $message }} : </b></li>
             {{-- unutk mengambil ingin berapa bulan user ingin langsung berlangganan --}}
               {{ csrf_field() }}

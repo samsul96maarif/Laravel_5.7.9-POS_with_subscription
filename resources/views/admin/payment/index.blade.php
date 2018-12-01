@@ -52,32 +52,32 @@
 
           <td>Rp.{{ number_format($payment->amount,2,",",".") }}</td>
 
-          @foreach ($stores as $store)
-            @if ($payment->store_id == $store->id)
-              <td><a class="btn" href="/admin/store/{{ $store->id }}">{{ $store->name }}</a></td>
+          @foreach ($organizations as $organization)
+            @if ($payment->organization_id == $organization->id)
+              <td><a class="btn" href="/admin/organization/{{ $organization->id }}">{{ $organization->name }}</a></td>
 
               @foreach ($subscriptions as $subscription)
-                @if ($subscription->id == $store->subscription_id)
-                  <td><a class="btn" href="/admin/subscription/{{ $store->subscription_id }}">{{ $subscription->name }}</a></td>
+                @if ($subscription->id == $organization->subscription_id)
+                  <td><a class="btn" href="/admin/subscription/{{ $organization->subscription_id }}">{{ $subscription->name }}</a></td>
                   <td>
                     {{-- unutk mengaktifkan --}}
-                    @if ($store->status == 0)
-                      <form class="" action="/admin/store/{{ $store->id }}" method="post">
+                    @if ($organization->status == 0)
+                      <form class="" action="/admin/organization/{{ $organization->id }}" method="post">
                         {{ method_field('PUT') }}
                         <input type="text" name="status" value="1" hidden>
-                        <input onclick="return confirm('Do You Wanna Activate Package {{ $subscription->name }} For {{ $store->name }}')" class="btn btn-primary" type="submit" name="submit" value="Activate">
+                        <input onclick="return confirm('Do You Wanna Activate Package {{ $subscription->name }} For {{ $organization->name }}')" class="btn btn-primary" type="submit" name="submit" value="Activate">
                         {{ csrf_field() }}
                       </form>
                       {{-- unutk meng extend --}}
                     @else
                       <div class="row btn-atas">
                         <div class="col">
-                          <form class="" action="/admin/store/{{ $store->id }}/extend" method="post">
+                          <form class="" action="/admin/organization/{{ $organization->id }}/extend" method="post">
                             {{ method_field('PUT') }}
                             {{-- rencananya expire date bisa docustome ingin
                             menambah berapa bulan --}}
                             <input type="text" name="period" value="{{ $payment->period }}" hidden>
-                            <input onclick="return confirm('Do You Wanna Extend Package {{ $subscription->name }} For {{ $store->name }}')" class="btn btn-warning" type="submit" name="submit" value="Extend Period">
+                            <input onclick="return confirm('Do You Wanna Extend Package {{ $subscription->name }} For {{ $organization->name }}')" class="btn btn-warning" type="submit" name="submit" value="Extend Period">
                             {{ csrf_field() }}
                           </form>
                         </div>
@@ -85,7 +85,7 @@
                       {{-- unutk menonaktifkan --}}
                       {{-- <div class="row">
                         <div class="col">
-                          <form class="" action="/admin/store/{{ $store->id }}" method="post">
+                          <form class="" action="/admin/organization/{{ $organization->id }}" method="post">
                             {{ method_field('PUT') }}
                             <input type="text" name="status" value="0" hidden>
                             <input class="btn btn-sm btn-danger"type="submit" name="submit" value="deactivate">
@@ -100,7 +100,7 @@
               @endforeach
 
             @endif
-            {{-- foreach stores --}}
+            {{-- foreach organizations --}}
           @endforeach
         </tr>
         @php

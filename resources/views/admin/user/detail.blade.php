@@ -34,10 +34,10 @@
               <label for="" class="col-form-label">Company Name</label>
             </div>
             <div class="col">
-              @if ($store == null)
+              @if ($organization == null)
                 <p class="form-control text-center">dont have yet</p>
               @else
-                <a class="col btn btn-outline-link" href="/admin/store/{{ $store->id }}">{{ $store->name }}</a>
+                <a class="col btn btn-outline-link" href="/admin/organization/{{ $organization->id }}">{{ $organization->name }}</a>
               @endif
             </div>
           </div>

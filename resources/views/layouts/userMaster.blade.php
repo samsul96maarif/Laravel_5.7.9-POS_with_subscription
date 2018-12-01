@@ -125,7 +125,14 @@
                     </a>
                   </li>
                   <li class="nav-item nav-pills nav-kiri">
-                    <a class="nav-item nav-link" href="/subscription">
+                    <a class="nav-link" href="/employes">
+                      <span data-feather="home"></span>
+                      <i class="fas fa-user-alt"></i>
+                      Employes <span class="sr-only">(current)</span>
+                    </a>
+                  </li>
+                  <li class="nav-item nav-pills nav-kiri">
+                    <a class="nav-item nav-link" href="/subscriptions">
                       <span data-feather="home"></span>
                       {{-- <i src='icon/subscription.png' class="glyphicon"></i> --}}
                       {{-- <img src="{{ asset('icon/subscription.png') }}" alt="Logo"> --}}
@@ -134,21 +141,21 @@
                     </a>
                   </li>
                   <li class="nav-item nav-kiri">
-                    <a class="nav-link" href="/sales_order">
+                    <a class="nav-link" href="/sales_orders">
                       <span data-feather="home"></span>
                       <i class="fas fa-shopping-cart"></i>
                       Sales Order <span class="sr-only">(current)</span>
                     </a>
                   </li>
                   <li class="nav-item nav-kiri">
-                    <a class="nav-link" href="/contact">
+                    <a class="nav-link" href="/contacts">
                       <span data-feather="home"></span>
                       <i class="fas fa-address-book"></i>
                       Contact <span class="sr-only">(current)</span>
                     </a>
                   </li>
                   <li class="nav-item nav-kiri">
-                    <a class="nav-link" href="/item">
+                    <a class="nav-link" href="/items">
                       <span data-feather="home"></span>
                       <i class="fas fa-cubes"></i>
                       Item <span class="sr-only">(current)</span>

@@ -15,10 +15,11 @@ class CreateSubscriptionsTable extends Migration
     {
         Schema::create('subscriptions', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('name');
+            $table->string('name', 20);
             $table->integer('price');
-            $table->integer('num_invoices');
-            $table->integer('num_users');
+            $table->integer('num_invoices')->nullable();
+            $table->integer('num_users')->nullable();
+            $table->integer('num_items')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

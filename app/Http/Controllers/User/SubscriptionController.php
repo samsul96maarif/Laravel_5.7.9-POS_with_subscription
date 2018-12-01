@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers\User;
 
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
 use App\Models\Subscription;
-use App\Models\Store;
+use App\Models\Organization;
 use App\Models\Payment;
 // untuk menggunakan resize
 use Illuminate\Support\Facades\Storage;
@@ -47,16 +48,16 @@ class SubscriptionController extends Controller
   public function index()
   {
     $user_id = Auth::id();
-    $store = store::where('user_id', $user_id)->first();
+    $organization = organization::where('user_id', $user_id)->first();
     $subscriptions = subscription::all()->where('deleted_at', null);
-    $payment = payment::where('store_id', $store->id)
+    $payment = payment::where('organization_id', $organization->id)
     ->where('paid', 0)->first();
 
     return view('user/subscription/index',
     [
       'subscriptions' => $subscriptions,
       'payment' => $payment,
-      'store' => $store
+      'organization' => $organization
     ]);
   }
 
@@ -64,20 +65,20 @@ class SubscriptionController extends Controller
   public function show($id)
   {
     $user = Auth::user();
-    $store = store::where('user_id', $user->id)->first();
+    $organization = organization::where('user_id', $user->id)->first();
     $subscription = subscription::findOrFail($id);
 
     return view('user/subscription/show',
     [
       'subscription' => $subscription,
-      'store' => $store
+      'organization' => $organization
     ]);
   }
 
   public function buy(Request $request, $id)
   {
     $user = Auth::user();
-    $store = store::where('user_id', $user->id)->first();
+    $organization = organization::where('user_id', $user->id)->first();
     $subscription = subscription::findOrFail($id);
 
     $uniq = rand(1,999);
@@ -85,16 +86,16 @@ class SubscriptionController extends Controller
     $oriAmount = $subscription->price * $request->period;
 
     // mengecek apakah ini sedang extend atau ingin membeli
-    if ($store->subscription_id == $id && $store->status == 1 ) {
+    if ($organization->subscription_id == $id && $organization->status == 1 ) {
       // extend
     } else {
-      $store->subscription_id = $subscription->id;
-      $store->status = 0;
-      $store->expire_date = null;
-      $store->save();
+      $organization->subscription_id = $subscription->id;
+      $organization->status = 0;
+      $organization->expire_date = null;
+      $organization->save();
     }
 
-    $payment = payment::where('store_id', $store->id)
+    $payment = payment::where('organization_id', $organization->id)
     ->where('paid', 0)->first();
 
     if ($payment == null) {
@@ -110,7 +111,7 @@ class SubscriptionController extends Controller
         }
         // end batas perulangn pengecekan yang sama
         $payment = new payment;
-        $payment->store_id = $store->id;
+        $payment->organization_id = $organization->id;
       } else {
         // pengecekan apakah uniq code sudah ada
         $cariPayment = payment::where('uniq_code', $uniq)
@@ -125,6 +126,7 @@ class SubscriptionController extends Controller
       }
 
       $payment->proof = null;
+      $payment->subscription_name = $subscription->name;
       $payment->uniq_code = $uniq;
       $payment->amount = $amount;
       $payment->subscription_id = $id;
@@ -135,7 +137,7 @@ class SubscriptionController extends Controller
       [
         'subscription' => $subscription,
         'user' => $user,
-        'store' => $store,
+        'organization' => $organization,
         'uniq' => $uniq,
         'amount' => $amount,
         'payment' => $payment,
@@ -155,8 +157,8 @@ class SubscriptionController extends Controller
     ]);
 
     $user_id = Auth::id();
-    $store = store::where('user_id', $user_id)->first();
-    $payment = payment::where('store_id', $store->id)
+    $organization = organization::where('user_id', $user_id)->first();
+    $payment = payment::where('organization_id', $organization->id)
     ->where('paid', 0)->first();
 
     // menyimpan nilai image
@@ -172,7 +174,7 @@ class SubscriptionController extends Controller
     $payment->proof = $fileName;
     $payment->save();
 
-    return redirect('/subscription')
+    return redirect('/subscriptions')
         ->withSuccess('a payment proof has been uploaded.
         wait for confirmation');
 
@@ -182,8 +184,8 @@ class SubscriptionController extends Controller
   {
 
     $user = Auth::user();
-    $store = store::where('user_id', $user->id)->first();
-    $payment = payment::where('store_id', $store->id)
+    $organization = organization::where('user_id', $user->id)->first();
+    $payment = payment::where('organization_id', $organization->id)
       ->where('paid', 0)->first();
     $subscription = subscription::findOrFail($payment->subscription_id);
     $oriAmount = $subscription->price * $payment->period;
@@ -192,7 +194,7 @@ class SubscriptionController extends Controller
     [
       'subscription' => $subscription,
       'user' => $user,
-      'store' => $store,
+      'organization' => $organization,
       'uniq' => $payment->uniq_code,
       'amount' => $payment->amount,
       'payment' => $payment,

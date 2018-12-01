@@ -119,26 +119,26 @@
                     </a>
                   </li>
                   <li class="nav-item nav-kiri">
-                    <a class="nav-link" href="/admin/payment">
+                    <a class="nav-link" href="/admin/payments">
                       <span data-feather="home"></span>
                       <i class="fas fa-shopping-cart"></i>
                       Payment <span class="sr-only">(current)</span>
                     </a>
                   </li>
                   <li class="nav-item nav-kiri">
-                    <a class="nav-link" href="/admin/user">
+                    <a class="nav-link" href="/admin/users">
                       <span data-feather="home" class="fas fa-users"></span>
                       Users <span class="sr-only">(current)</span>
                     </a>
                   </li>
                   <li class="nav-item nav-kiri">
-                    <a class="nav-link" href="/admin/store">
+                    <a class="nav-link" href="/admin/organizations">
                       <i class="fas fa-building"></i>
                       Companies <span class="sr-only">(current)</span>
                     </a>
                   </li>
                   <li class="nav-item nav-kiri">
-                    <a class="nav-link" href="/admin/subscription">
+                    <a class="nav-link" href="/admin/subscriptions">
                       <span data-feather="home"></span>
                       <i class="fas fa-receipt"></i>
                       Subscription <span class="sr-only">(current)</span>

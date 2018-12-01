@@ -272,7 +272,7 @@
   <div class="row">
     {{-- tombol unutk mengarahkan ke sales order dan berarti sudah membayar --}}
     <div class="col text-right btn-kiri">
-      <a class="btn btn-primary" href="/sales_order">pay</a>
+      <a class="btn btn-primary" href="/sales_orders">pay</a>
     </div>
     {{-- tombol unutk cancel/ hapus sales order --}}
     <div class="col text-left btn-kanan">

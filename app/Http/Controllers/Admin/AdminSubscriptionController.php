@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
 use App\Models\Subscription;
 use App\Models\User;
-use App\Models\Store;
+use App\Models\Organization;
 use App\Models\Payment;
 
 class AdminSubscriptionController extends Controller
@@ -33,7 +34,7 @@ class AdminSubscriptionController extends Controller
     {
       $subscription = subscription::findOrFail($id);
       $users = user::all();
-      $stores = store::all()->where('subscription_id', $id);
+      $organizations = organization::all()->where('subscription_id', $id);
       $filter = 'All';
 
       return view('admin/subscription/detail',
@@ -41,7 +42,7 @@ class AdminSubscriptionController extends Controller
         'subscription' => $subscription,
         'filter' => $filter,
         'users' => $users,
-        'stores' => $stores
+        'organizations' => $organizations
       ]);
     }
 
@@ -50,16 +51,16 @@ class AdminSubscriptionController extends Controller
       $subscription = subscription::findOrFail($id);
 
       if ($request->filter == 'active') {
-        $stores = Store::all()
+        $organizations = organization::all()
         ->where('subscription_id', $id)
         ->where('status', 1);
       } elseif ($request->filter == 'awaiting') {
-        $stores = Store::all()
+        $organizations = organization::all()
         ->where('subscription_id', $id)
         ->where('status', 0)
         ->where('subscription_id', '!=', null);
       } else {
-        $stores = store::all()->where('subscription_id', $id);
+        $organizations = organization::all()->where('subscription_id', $id);
       }
 
       if ($request->filter == 'awaiting') {
@@ -75,7 +76,7 @@ class AdminSubscriptionController extends Controller
 
       return view('admin/subscription/detail',
       [
-        'stores' => $stores,
+        'organizations' => $organizations,
         'filter' => $filter,
         'subscription' => $subscription,
         'users' => $users
@@ -92,18 +93,35 @@ class AdminSubscriptionController extends Controller
 
       // https://stackoverflow.com/questions/14558343/how-to-remove-dots-from-numbers
       $strPrice = str_replace(".", "", $request->price);
-      $strNumInvoices = str_replace(".", "", $request->num_invoices);
-      // dd($request->num_users);
-      $strNumUsers = str_replace(".", "", $request->num_users);
+
+      if ($request->num_items == null) {
+
+      } else {
+        $strNumItems = str_replace(".", "", $request->num_items);
+        $intNumitems = (int)$strNumitems;
+        $request->num_items = $intNumitems;
+      }
+
+      if ($request->num_invoices == null) {
+        // code...
+      } else {
+        $strNumInvoices = str_replace(".", "", $request->num_invoices);
+        $intNumInvoices = (int)$strNumInvoices;
+        $request->num_invoices = $intNumInvoices;
+      }
+
+      if ($request->num_users == null) {
+        // code...
+      } else {
+        $strNumUsers = str_replace(".", "", $request->num_users);
+        $intNumUsers = (int)$strNumUsers;
+        $request->num_users = $intNumUsers;
+      }
+
       // convert to integer
       $intPrice = (int)$strPrice;
-      $intNumInvoices = (int)$strNumInvoices;
-      $intNumUsers = (int)$strNumUsers;
 
       $request->price = $intPrice;
-      $request->num_invoices = $intNumInvoices;
-      $request->num_users = $intNumUsers;
-
 
 
       $this->validate($request, [
@@ -112,19 +130,29 @@ class AdminSubscriptionController extends Controller
 
       if ($request->price > 1) {
 
-        if ($request->num_invoices > 1) {
+        if ($request->num_items > 1 || $request->num_items == null) {
 
-          if ($request->num_users > 1) {
+          if ($request->num_invoices > 1 || $request->num_invoices == null) {
+
+            if ($request->num_users > 1 || $request->num_users == null) {
+
+            } else {
+              $this->validate($request, [
+                'num_users' => 'required|integer',
+              ]);
+            }
 
           } else {
             $this->validate($request, [
-              'num_users' => 'required|integer',
+              'num_invoices' => 'required|integer',
+              'num_users' => 'required',
             ]);
           }
 
         } else {
           $this->validate($request, [
-            'num_invoices' => 'required|integer',
+            'num_items' => 'required|integer',
+            'num_invoices' => 'required',
             'num_users' => 'required',
           ]);
         }
@@ -132,6 +160,7 @@ class AdminSubscriptionController extends Controller
       } else {
         $this->validate($request, [
           'price' => 'required|integer',
+          'num_items' => 'required',
           'num_invoices' => 'required',
           'num_users' => 'required',
         ]);
@@ -148,12 +177,13 @@ class AdminSubscriptionController extends Controller
       $subscription = new subscription;
       $subscription->name = $request->name;
       $subscription->price = $request->price;
+      $subscription->num_items = $request->num_items;
       $subscription->num_invoices = $request->num_invoices;
       $subscription->num_users = $request->num_users;
       $subscription->save();
 
       return redirect()
-      ->route('admin.subscription')
+      ->route('admin.subscriptions')
       ->withSuccess('Succeed Add Package '.$subscription->name);
     }
 
@@ -168,16 +198,36 @@ class AdminSubscriptionController extends Controller
 
           // https://stackoverflow.com/questions/14558343/how-to-remove-dots-from-numbers
           $strPrice = str_replace(".", "", $request->price);
-          $strNumInvoices = str_replace(".", "", $request->num_invoices);
-          $strNumUsers = str_replace(".", "", $request->num_users);
+
+          if ($request->num_items == null) {
+
+          } else {
+            $strNumItems = str_replace(".", "", $request->num_items);
+            $intNumitems = (int)$strNumitems;
+            $request->num_items = $intNumitems;
+          }
+
+          if ($request->num_invoices == null) {
+            // code...
+          } else {
+            $strNumInvoices = str_replace(".", "", $request->num_invoices);
+            $intNumInvoices = (int)$strNumInvoices;
+            $request->num_invoices = $intNumInvoices;
+          }
+
+          if ($request->num_users == null) {
+            // code...
+          } else {
+            $strNumUsers = str_replace(".", "", $request->num_users);
+            $intNumUsers = (int)$strNumUsers;
+            $request->num_users = $intNumUsers;
+          }
+
           // convert to integer
           $intPrice = (int)$strPrice;
-          $intNumInvoices = (int)$strNumInvoices;
-          $intNumUsers = (int)$strNumUsers;
 
           $request->price = $intPrice;
-          $request->num_invoices = $intNumInvoices;
-          $request->num_users = $intNumUsers;
+
 
           $this->validate($request, [
             'name' => 'required',
@@ -185,19 +235,29 @@ class AdminSubscriptionController extends Controller
 
           if ($request->price > 1) {
 
-            if ($request->num_invoices > 1) {
+            if ($request->num_items > 1 || $request->num_items == null) {
 
-              if ($request->num_users > 1) {
+              if ($request->num_invoices > 1 || $request->num_invoices == null) {
 
-              }else {
+                if ($request->num_users > 1 || $request->num_users == null) {
+
+                } else {
+                  $this->validate($request, [
+                    'num_users' => 'required|integer',
+                  ]);
+                }
+
+              } else {
                 $this->validate($request, [
-                  'num_users' => 'required|integer',
+                  'num_invoices' => 'required|integer',
+                  'num_users' => 'required',
                 ]);
               }
 
             } else {
               $this->validate($request, [
-                'num_invoices' => 'required|integer',
+                'num_items' => 'required|integer',
+                'num_invoices' => 'required',
                 'num_users' => 'required',
               ]);
             }
@@ -205,6 +265,7 @@ class AdminSubscriptionController extends Controller
           } else {
             $this->validate($request, [
               'price' => 'required|integer',
+              'num_items' => 'required',
               'num_invoices' => 'required',
               'num_users' => 'required',
             ]);
@@ -235,7 +296,7 @@ class AdminSubscriptionController extends Controller
       public function delete($id)
       {
         $subscription = subscription::find($id);
-        $store = store::where('subscription_id', $subscription->id)
+        $organization = organization::where('subscription_id', $subscription->id)
         ->where('status', 1)->first();
 
         $payment = payment::where('subscription_id', $subscription->id)
@@ -244,7 +305,7 @@ class AdminSubscriptionController extends Controller
 
         $alert = 'alert-success';
 
-        if ($store != null || $payment != null) {
+        if ($organization != null || $payment != null) {
           $alert = 'alert-danger';
 
             return redirect()
@@ -256,16 +317,16 @@ class AdminSubscriptionController extends Controller
         ->where('subscription_id', $subscription->id)
         ->where('paid', 0);
 
-        $stores = store::all()
+        $organizations = organization::all()
         ->where('subscription_id', $subscription->id);
 
         foreach ($payments as $payment) {
           $payment->delete();
         }
 
-        foreach ($stores as $store) {
-          $store->subscription_id = null;
-          $store->save();
+        foreach ($organizations as $organization) {
+          $organization->subscription_id = null;
+          $organization->save();
         }
 
         $subscription->delete();

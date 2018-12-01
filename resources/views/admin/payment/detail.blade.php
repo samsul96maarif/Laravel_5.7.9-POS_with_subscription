@@ -1,8 +1,8 @@
 @extends('layouts/adminMaster')
 
-@section('title', 'store '.$store->name)
+@section('title', 'Company '.$organization->name)
 
-@section('headline', $store->name.' Detail')
+@section('headline', $organization->name.' Detail')
 
 @section('content')
 
@@ -10,7 +10,7 @@
     <div class="col-md-6">
       <div class="card">
         <div class="card-header text-center">
-          <h4 class="my-0 font-weight-normal">{{ $store->name }}</h4>
+          <h4 class="my-0 font-weight-normal">{{ $organization->name }}</h4>
         </div>
         <div class="card-body">
 
@@ -42,7 +42,7 @@
               <label for="" class="col-form-label">Company Name</label>
             </div>
             <div class="col-md-6">
-              <a onclick="return confirm('Do you wanna leave this page')" class="btn btn-lg" href="/admin/store/{{ $store->id }}">{{ $store->name }}</a>
+              <a onclick="return confirm('Do you wanna leave this page')" class="btn btn-lg" href="/admin/organization/{{ $organization->id }}">{{ $organization->name }}</a>
             </div>
           </div>
           <div class="row justify-content-center">
@@ -55,21 +55,21 @@
           </div>
           <br>
           <div class="row">
-            @if ($store->status > 0)
+            @if ($organization->status > 0)
               <div class="col text-center">
-                <form class="" action="/admin/store/{{ $store->id }}/extend" method="post">
+                <form class="" action="/admin/organization/{{ $organization->id }}/extend" method="post">
                   {{ method_field('PUT') }}
                   <input type="text" name="period" value="{{ $payment->period }}" hidden>
-                  <input onclick="return confirm('Do You Wanna Extend Package {{ $subscription->name }} For {{ $store->name }}')" class="btn btn-primary" type="submit" name="submit" value="Extend Period">
+                  <input onclick="return confirm('Do You Wanna Extend Package {{ $subscription->name }} For {{ $organization->name }}')" class="btn btn-primary" type="submit" name="submit" value="Extend Period">
                   {{ csrf_field() }}
                 </form>
               </div>
             @else
               <div class="col text-center">
-                <form class="" action="/admin/store/{{ $store->id }}" method="post">
+                <form class="" action="/admin/organization/{{ $organization->id }}" method="post">
                   {{ method_field('PUT') }}
                   <input type="text" name="status" value="1" hidden>
-                  <input onclick="return confirm('Do You Wanna Activate Package {{ $subscription->name }} For {{ $store->name }}')" class="btn btn-primary" type="submit" name="submit" value="Activate">
+                  <input onclick="return confirm('Do You Wanna Activate Package {{ $subscription->name }} For {{ $organization->name }}')" class="btn btn-primary" type="submit" name="submit" value="Activate">
                   {{ csrf_field() }}
                 </form>
               </div>

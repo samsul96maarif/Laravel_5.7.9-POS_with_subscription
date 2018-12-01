@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers\User;
 
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
 use Auth;
 use App\Models\User;
-use App\Models\Store;
+use App\Models\Organization;
 use App\Models\Item;
 use App\Models\ItemMedias;
 use App\Models\InvoiceDetail;
@@ -21,16 +22,16 @@ class ItemController extends Controller
   public function __construct()
   {
     // auth : unutk mengecek auth
-    // gate : unutk mengecek apakah sudah membuat store
-    // getSubscription : unutk mengecek subscription store
+    // gate : unutk mengecek apakah sudah membuat Organization
+    // getSubscription : unutk mengecek subscription Organization
       $this->middleware(['auth', 'gate', 'get.subscription']);
   }
 
   public function index()
   {
     $user_id = Auth::id();
-    $store = store::where('user_id', $user_id)->first();
-    $items = item::all()->where('store_id', $store->id);
+    $organization = organization::where('user_id', $user_id)->first();
+    $items = item::all()->where('organization_id', $organization->id);
 
     return view('user/item/index', ['items' => $items]);
     // return $this->json(Response::HTTP_OK, "Fetch Item", $items);
@@ -80,10 +81,10 @@ class ItemController extends Controller
     }
 
     $user_id = Auth::id();
-    $store = store::where('user_id', $user_id)->first();
+    $organization = organization::where('user_id', $user_id)->first();
 
     // mengecek agar tidak ada duplikasi nama item
-    $items = item::all()->where('store_id', $store->id);
+    $items = item::all()->where('organization_id', $organization->id);
     foreach ($items as $value) {
       if ($value->name == $request->name) {
         return redirect()
@@ -93,7 +94,7 @@ class ItemController extends Controller
     }
 
     $item = new item;
-    $item->store_id = $store->id;
+    $item->organization_id = $organization->id;
     $item->name = $request->name;
     $item->description = $request->description;
     $item->price = $request->price;
@@ -116,7 +117,7 @@ class ItemController extends Controller
       $itemMedia->save();
     }
 
-    return redirect('/item')->withSuccess('Succeed Add Item');
+    return redirect('/items')->withSuccess('Succeed Add Item');
   }
 
   // update
@@ -169,8 +170,8 @@ class ItemController extends Controller
         $item = item::find($id);
         // pengecekan agar tidak ada nama yang sama pada item
         $user = Auth::user();
-        $store = store::where('user_id', $user->id)->first();
-        $items = item::all()->where('store_id', $store->id);
+        $organization = organization::where('user_id', $user->id)->first();
+        $items = item::all()->where('organization_id', $organization->id);
         foreach ($items as $value) {
           if ($request->name == $value->name && $request->name != $item->name) {
 
@@ -212,7 +213,7 @@ class ItemController extends Controller
           }
 
         }
-        return redirect('/item')->withSuccess('Succeed Updated '.$nameBefore);
+        return redirect('/items')->withSuccess('Succeed Updated '.$nameBefore);
       }
 
       // delete
@@ -224,11 +225,11 @@ class ItemController extends Controller
 
       if ($invoiceDetail == null) {
         $item->delete();
-        return redirect('/item')->withSuccess($item->name.' Deleted!');
+        return redirect('/items')->withSuccess($item->name.' Deleted!');
       }
 
       // mengarahkan kembali ke item
-      return redirect()->route('item')
+      return redirect()->route('items')
       ->with('alert', 'Failed, Item '.$item->name.' Already Used In Invoice, Please Delete Invoice First');
       throw new \Exception("contact telah digunakan pada invoice, silahkan hapus invoice terlebih dahulu");
     }
@@ -236,11 +237,11 @@ class ItemController extends Controller
     public function search(Request $request)
     {
       $id = Auth::id();
-      $store = store::where('user_id', $id)->first();
+      $organization = organization::where('user_id', $id)->first();
 
       $items = DB::table('items')
                       ->where('name', 'like', '%'.$request->q.'%')
-                      ->where('store_id', $store->id)
+                      ->where('organization_id', $organization->id)
                       ->where('deleted_at', null)
                       ->get();
 

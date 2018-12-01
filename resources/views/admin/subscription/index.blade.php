@@ -25,6 +25,7 @@
       <th>#</th>
       <th>Package Name</th>
       <th>Price</th>
+      <th>Items Quota</th>
       <th>Invoices Quota</th>
       <th>Contacts Quota</th>
       <th>Action</th>
@@ -38,12 +39,19 @@
           <th scope="row">{{ $i }}</th>
           <td><a class="btn" href="/admin/subscription/{{ $subscription->id }}">{{ $subscription->name }}</a></td>
           <td>Rp.{{ number_format($subscription->price,2,",",".") }}</td>
-          @if ($subscription->num_invoices == 0)
+          @if ($subscription->num_items === null)
+            <td><i class="fas fa-infinity"></i></td>
+          @else
+            <td>{{ number_format($subscription->num_items, 0, ",", ".") }}</td>
+          @endif
+
+          @if ($subscription->num_invoices === null)
             <td><i class="fas fa-infinity"></i></td>
           @else
             <td>{{ number_format($subscription->num_invoices, 0, ",", ".") }}</td>
           @endif
-          @if ($subscription->num_users == 0)
+
+          @if ($subscription->num_users === null)
             <td><i class="fas fa-infinity"></i></td>
           @else
             <td>{{ number_format($subscription->num_users, 0, ",", ".") }}</td>

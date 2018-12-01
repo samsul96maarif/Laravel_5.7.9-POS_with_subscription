@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Store extends Model
+class Organization extends Model
 {
   use SoftDeletes;
   protected $dates = ['deleted_at', 'expire_date'];

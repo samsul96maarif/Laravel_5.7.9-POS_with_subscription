@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers\User;
 
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
 use App\Models\SalesOrder;
 use App\Models\Invoice;
-use App\Models\Store;
+use App\Models\Organization;
 use App\Models\Item;
 use App\Models\Contact;
 use App\Models\InvoiceDetail;
@@ -18,8 +19,8 @@ class InvoiceController extends Controller
     public function __construct()
     {
       // auth : unutk mengecek auth
-      // gate : unutk mengecek apakah sudah membuat store
-      // getSubscription : unutk mengecek subscription store
+      // gate : unutk mengecek apakah sudah membuat Organization
+      // getSubscription : unutk mengecek subscription Organization
       // maxOrder : untuk mengcek quote invoice subscription
         $this->middleware(['auth', 'gate', 'get.subscription', 'max.order']);
     }
@@ -27,7 +28,7 @@ class InvoiceController extends Controller
     public function store(Request $request, $salesOrder_id, $invoice_id)
     {
       $user_id = Auth::id();
-      $store = store::where('user_id', $user_id)->first();
+      $organization = organization::where('user_id', $user_id)->first();
       $salesOrder = salesOrder::findOrFail($salesOrder_id);
       $invoice = invoice::findOrFail($invoice_id);
 
@@ -40,7 +41,7 @@ class InvoiceController extends Controller
       // pembuatan invoice detail
       for ($i=0; $i < $count; $i++) {
         $item = item::where('name', $request->item[$i])
-        ->where('store_id', $store->id)
+        ->where('organization_id', $organization->id)
         ->first();
 
         // mengetahui apakah quantity order lebih dari stcok barang
@@ -66,7 +67,7 @@ class InvoiceController extends Controller
         } else {
           // invoice detail
           $invoiceDetail = new invoiceDetail;
-          $invoiceDetail->store_id = $store->id;
+          $invoiceDetail->organization_id = $organization->id;
           $invoiceDetail->invoice_id = $invoice_id;
           $invoiceDetail->item_id = $item->id;
           $invoiceDetail->item_price = $item->price;

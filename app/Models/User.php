@@ -32,6 +32,6 @@ class User extends Authenticatable
     public function isAdmin()
     {
       // mengecek bila kondisi role "1" berarti true berarti dia admin
-      return $this->role;
+      return $this->admin;
     }
 }

@@ -4,7 +4,7 @@ namespace App\Http\Middleware;
 
 use App\Models\Subscription;
 use App\Models\Item;
-use App\Models\Store;
+use App\Models\Organization;
 
 use Auth;
 
@@ -22,9 +22,9 @@ class CheckItem
     public function handle($request, Closure $next)
     {
         $user_id = Auth::id();
-        $store = store::where('user_id', $user_id)->first();
+        $organization = organization::where('user_id', $user_id)->first();
         $i = 0;
-        $items = item::all()->where('store_id', $store->id);
+        $items = item::all()->where('organization_id', $organization->id);
         foreach ($items as $item) {
           $i++;
         }

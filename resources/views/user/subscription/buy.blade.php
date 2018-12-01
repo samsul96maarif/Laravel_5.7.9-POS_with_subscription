@@ -25,7 +25,7 @@
           <p style="margin-bottom:0px;">Bill to : </p>
           <h4 class="my-0 font-weight-normal">{{ $user->name }}</h4>
           <p style="margin-bottom:0px;">Company Name : </p>
-          <h4 class="my-0 font-weight-normal">{{ $store->name }}</h4>
+          <h4 class="my-0 font-weight-normal">{{ $organization->name }}</h4>
         </div>
       </div>
       <div class="row">
@@ -37,7 +37,7 @@
     <div class="card-body">
       <ul class="list-unstyled mt-3 mb-4">
         {{-- unutk mengetahui sedang extend atau ingin membeli package --}}
-        @if ($store->status == 1 && $store->subscription_id == $subscription->id)
+        @if ($organization->status == 1 && $organization->subscription_id == $subscription->id)
           <h4 class="my-0 font-weight-normal">Extend Periode For Package : </h4>
         @else
           <h4 class="my-0 font-weight-normal">Package Subscription : </h4>

@@ -18,6 +18,7 @@
     <thead>
       <th>Package Name</th>
       <th>Price</th>
+      <th>Items Quota</th>
       <th>Invoices Quota</th>
       <th>Contacts Quota</th>
     </thead>
@@ -25,12 +26,19 @@
       <tr>
         <td>{{ $subscription->name }}</td>
         <td>Rp.{{ number_format($subscription->price,2,",",".") }}</td>
-        @if ($subscription->num_invoices == 0)
+        @if ($subscription->num_items === null)
+          <td><i class="fas fa-infinity"></i></td>
+        @else
+          <td>{{ number_format($subscription->num_items, 0, ",", ".") }}</td>
+        @endif
+
+        @if ($subscription->num_invoices === null)
           <td><i class="fas fa-infinity"></i></td>
         @else
           <td>{{ number_format($subscription->num_invoices, 0, ",", ".") }}</td>
+
         @endif
-        @if ($subscription_num_users == 0)
+        @if ($subscription->num_users === null)
           <td><i class="fas fa-infinity"></i></td>
         @else
           <td>{{ $subscription->num_users }}</td>
@@ -70,19 +78,19 @@
           <th scope="row">{{ $i }}</th>
             <td>{{ date('d-m-Y', strtotime($payment->updated_at)) }}</td>
             <td>{{ $payment->uniq_code}}</td>
-            {{-- mencari store name --}}
-            @foreach ($stores as $store)
-              @if ($store->id == $payment->store_id)
-                <td><a class="btn" href="/admin/store/{{ $store->id }}">{{ $store->name }}</a></td>
-                {{-- mencari user yang memiliki store --}}
+            {{-- mencari organization name --}}
+            @foreach ($organizations as $organization)
+              @if ($organization->id == $payment->organization_id)
+                <td><a class="btn" href="/admin/organization/{{ $organization->id }}">{{ $organization->name }}</a></td>
+                {{-- mencari user yang memiliki organization --}}
                 @foreach ($users as $user)
-                    @if ($store->user_id == $user->id)
-                      <td><a class="btn" href="/admin/user/{{ $store->user_id }}">{{ $user->name }}</a></td>
+                    @if ($organization->user_id == $user->id)
+                      <td><a class="btn" href="/admin/user/{{ $organization->user_id }}">{{ $user->name }}</a></td>
                     @endif
                 @endforeach
 
               @endif
-              {{-- mencari store --}}
+              {{-- mencari organization --}}
             @endforeach
             <td>{{ $payment->period }}</td>
             <td>Rp.{{ number_format($payment->amount,2,",",".") }}</td>
