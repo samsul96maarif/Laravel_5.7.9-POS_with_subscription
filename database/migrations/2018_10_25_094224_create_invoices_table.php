@@ -24,6 +24,8 @@ class CreateInvoicesTable extends Migration
           $table->string('contact_name', 20);
           $table->string('number', 20)->unique()->nullable();
           $table->integer('total')->nullable();
+          $table->integer('writer_id')->unsigned();
+          $table->foreign('writer_id')->references('id')->on('users')->onDelete('cascade');
           $table->timestamps();
           $table->softDeletes();
       });

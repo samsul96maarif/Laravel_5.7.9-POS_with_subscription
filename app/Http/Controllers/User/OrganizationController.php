@@ -21,8 +21,14 @@ class OrganizationController extends Controller
 
   public function index()
     {
-      $user_id = Auth::id();
-      $organization = organization::where('user_id', $user_id)->first();
+      $user = Auth::user();
+
+      if ($user->role == 0) {
+        // return redirect()->route('employe.sales.orders', ['id' => $user->id]);
+        return redirect()->route('sales.orders');
+      }
+
+      $organization = organization::where('user_id', $user->id)->first();
       $subscription = subscription::where('id', $organization->subscription_id)->first();
 
       return view('user/organization/index',

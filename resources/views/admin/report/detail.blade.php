@@ -62,6 +62,7 @@
     <thead>
       <th>#</th>
       <th>Date</th>
+      <th>Time</th>
       <th>Unique Code</th>
       <th>Company Name</th>
       <th>Owner</th>
@@ -77,6 +78,7 @@
         <tr>
           <th scope="row">{{ $i }}</th>
             <td>{{ date('d-m-Y', strtotime($payment->updated_at)) }}</td>
+            <td>{{ date('H:i', strtotime($payment->updated_at)) }}</td>
             <td>{{ $payment->uniq_code}}</td>
             {{-- mencari organization name --}}
             @foreach ($organizations as $organization)
@@ -103,6 +105,7 @@
       @endforeach
       <tr>
         <th>Total</th>
+        <td></td>
         <td></td>
         <td></td>
         <td></td>

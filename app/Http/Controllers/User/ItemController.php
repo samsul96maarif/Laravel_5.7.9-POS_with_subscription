@@ -29,20 +29,44 @@ class ItemController extends Controller
 
   public function index()
   {
-    $user_id = Auth::id();
-    $organization = organization::where('user_id', $user_id)->first();
+    $user = Auth::user();
+    if ($user->role == 0) {
+      $organization = organization::findOrFail($user->organization_id);
+      $extend = 'employeMaster';
+    } else {
+      // code...
+      $organization = organization::where('user_id', $user->id)->first();
+      $extend = 'userMaster';
+    }
+
     $items = item::all()->where('organization_id', $organization->id);
 
-    return view('user/item/index', ['items' => $items]);
+    return view('user/item/index',
+    [
+      'items' => $items,
+      'extend' => $extend,
+      'organization' => $organization
+    ]);
     // return $this->json(Response::HTTP_OK, "Fetch Item", $items);
   }
 
   public function create()
   {
-    // tes
-    // return view('tes/item/create');
+    $user = Auth::user();
+    if ($user->role == 0) {
+      $organization = organization::findOrFail($user->organization_id);
+      $extend = 'employeMaster';
+    } else {
+      // code...
+      $organization = organization::where('user_id', $user->id)->first();
+      $extend = 'userMaster';
+    }
 
-    return view('user/item/create');
+    return view('user/item/create',
+    [
+      'extend' => $extend,
+      'organization' => $organization
+    ]);
   }
 
   public function store(Request $request)
@@ -80,9 +104,15 @@ class ItemController extends Controller
       ]);
     }
 
-    $user_id = Auth::id();
-    $organization = organization::where('user_id', $user_id)->first();
-
+    $user = Auth::user();
+    if ($user->role == 0) {
+      $organization = organization::findOrFail($user->organization_id);
+      $extend = 'employeMaster';
+    } else {
+      // code...
+      $organization = organization::where('user_id', $user->id)->first();
+      $extend = 'userMaster';
+    }
     // mengecek agar tidak ada duplikasi nama item
     $items = item::all()->where('organization_id', $organization->id);
     foreach ($items as $value) {
@@ -94,6 +124,8 @@ class ItemController extends Controller
     }
 
     $item = new item;
+    // $item->writer_id = $user->id;
+    // $item->action = 'create';
     $item->organization_id = $organization->id;
     $item->name = $request->name;
     $item->description = $request->description;
@@ -112,24 +144,41 @@ class ItemController extends Controller
       $request->file('image')->move("img/",$fileName);
       // menyimpan ke dalam database nama file dari image
       $itemMedia = new itemMedias;
+      // $itemMedia->writer_id = $user->id;
+      // $itemMedia->action = 'create';
       $itemMedia->item_id = $item->id;
       $itemMedia->image = $fileName;
       $itemMedia->save();
     }
 
-    return redirect('/items')->withSuccess('Succeed Add Item');
+    return redirect()
+    ->route('items')
+    ->withSuccess('Succeed Add Item');
   }
 
   // update
   // 1. get data melalui id-nya
       public function edit($id){
+
+        $user = Auth::user();
+        if ($user->role == 0) {
+          $organization = organization::findOrFail($user->organization_id);
+          $extend = 'employeMaster';
+        } else {
+          // code...
+          $organization = organization::where('user_id', $user->id)->first();
+          $extend = 'userMaster';
+        }
+
         $item = item::find($id);
         $itemMedias = itemMedias::where('item_id', $id)->get();
 
         return view('user/item/edit',
         [
           'item' => $item,
-          'itemMedias' => $itemMedias
+          'itemMedias' => $itemMedias,
+          'organization' => $organization,
+          'extend' => $extend
         ]);
       }
   // 2. store data update
@@ -168,15 +217,27 @@ class ItemController extends Controller
         }
 
         $item = item::find($id);
-        // pengecekan agar tidak ada nama yang sama pada item
+
         $user = Auth::user();
-        $organization = organization::where('user_id', $user->id)->first();
+        if ($user->role == 0) {
+          $organization = organization::findOrFail($user->organization_id);
+          $extend = 'employeMaster';
+        } else {
+          // code...
+          $organization = organization::where('user_id', $user->id)->first();
+          $extend = 'userMaster';
+        }
+
+        // pengecekan agar tidak ada nama yang sama pada item
         $items = item::all()->where('organization_id', $organization->id);
         foreach ($items as $value) {
           if ($request->name == $value->name && $request->name != $item->name) {
 
             return redirect()
-            ->route('item.edit', ['id' => $id])
+            ->route('item.edit',
+            [
+              'id' => $id
+            ])
             ->with('alert', 'Failed Update Item, Name '.$request->name.' Already Exist, In Your Inventory');
           }
         }
@@ -184,6 +245,8 @@ class ItemController extends Controller
         $nameBefore = $item->name;
 
         $item->name = $request->name;
+        // $item->writer_id = $user->id;
+        // $item->action = 'update';
         $item->description = $request->description;
         $item->price = $request->price;
         $item->stock = $request->stock;
@@ -206,13 +269,15 @@ class ItemController extends Controller
             $itemMedia = new itemMedias;
             $itemMedia->item_id = $id;
             $itemMedia->image = $fileName;
-            $itemMedia->save();
           } else {
             $itemMedia->image = $fileName;
-            $itemMedia->save();
           }
 
+          // $itemMedia->writer_id = $user->id;
+          // $itemMedia->action = 'update';
+          $itemMedia->save();
         }
+
         return redirect('/items')->withSuccess('Succeed Updated '.$nameBefore);
       }
 
@@ -236,8 +301,15 @@ class ItemController extends Controller
 
     public function search(Request $request)
     {
-      $id = Auth::id();
-      $organization = organization::where('user_id', $id)->first();
+      $user = Auth::user();
+      if ($user->role == 0) {
+        $organization = organization::findOrFail($user->organization_id);
+        $extend = 'employeMaster';
+      } else {
+        // code...
+        $organization = organization::where('user_id', $user->id)->first();
+        $extend = 'userMaster';
+      }
 
       $items = DB::table('items')
                       ->where('name', 'like', '%'.$request->q.'%')
@@ -245,6 +317,12 @@ class ItemController extends Controller
                       ->where('deleted_at', null)
                       ->get();
 
-      return view('user/item/index', ['items' => $items]);
+      return view('user/item/index',
+      [
+        'items' => $items,
+        'extend' => $extend,
+        'organization' => $organization
+      ]);
     }
+
 }

@@ -1,4 +1,4 @@
-@extends('layouts/userMaster')
+@extends('layouts/'.$extend)
 
 @section('title', 'Contacts')
 
@@ -97,16 +97,22 @@
         <td>{{ $contact->email }}</td>
         <td>
           <div class="row">
-            <div class="col text-right btn-kiri">
-              <a href="/contact/{{ $contact->id }}/edit" class="btn btn-outline-primary"><i class="fas fa-edit"></i></a>
-            </div>
-            <div class="col text-left btn-kanan">
-              <form class="" action="/contact/{{ $contact->id }}/delete" method="post">
-                {{ method_field('DELETE') }}
-                <button onclick="return confirm('Do You Wanna Delete {{ $contact->name }}')" class="btn btn-outline-danger" type="submit" name="submit"><i class="fas fa-trash-alt"></i></button>
-                {{ csrf_field() }}
-              </form>
-            </div>
+            @if ($extend == 'userMaster')
+              <div class="col text-right btn-kiri">
+                <a href="/contact/{{ $contact->id }}/edit" class="btn btn-outline-primary"><i class="fas fa-edit"></i></a>
+              </div>
+              <div class="col text-left btn-kanan">
+                <form class="" action="/contact/{{ $contact->id }}/delete" method="post">
+                  {{ method_field('DELETE') }}
+                  <button onclick="return confirm('Do You Wanna Delete {{ $contact->name }}')" class="btn btn-outline-danger" type="submit" name="submit"><i class="fas fa-trash-alt"></i></button>
+                  {{ csrf_field() }}
+                </form>
+              </div>
+            @else
+              <div class="col">
+                <a href="/contact/{{ $contact->id }}/edit" class="btn btn-outline-primary"><i class="fas fa-edit"></i></a>
+              </div>
+            @endif
           </div>
         </td>
         @php

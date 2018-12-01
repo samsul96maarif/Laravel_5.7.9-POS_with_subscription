@@ -32,20 +32,39 @@ class ReportController extends Controller
       $now = Carbon::now();
       $year = $now->year;
       $month = $now->month;
-      $user_id = Auth::id();
-      $organization = organization::where('user_id', $user_id)->first();
 
       $by = 'On '.$now->englishMonth;
       // ex : "October"
-      $customers = DB::table('sales_orders')
-      ->join('contacts', 'contacts.id','=','sales_orders.contact_id')
-      ->select('contacts.name', DB::raw("SUM(sales_orders.total) as total"))
-      ->where('sales_orders.organization_id', $organization->id)
-      ->where('sales_orders.deleted_at', null)
-      ->whereYear('sales_orders.created_at', '=', $year)
-      ->whereMonth('sales_orders.created_at', '=', $month)
-      ->groupBy('sales_orders.contact_id', 'contacts.name')
-      ->get();
+      $user = Auth::user();
+      if ($user->role == 0) {
+        $organization = organization::findOrFail($user->organization_id);
+        $extend = 'employeMaster';
+
+        $customers = DB::table('sales_orders')
+        ->join('contacts', 'contacts.id','=','sales_orders.contact_id')
+        ->select('contacts.name', DB::raw("SUM(sales_orders.total) as total"))
+        ->where('sales_orders.organization_id', $organization->id)
+        ->where('sales_orders.writer_id', $user->id)
+        ->where('sales_orders.deleted_at', null)
+        ->whereYear('sales_orders.created_at', '=', $year)
+        ->whereMonth('sales_orders.created_at', '=', $month)
+        ->groupBy('sales_orders.contact_id', 'contacts.name')
+        ->get();
+      } else {
+        // code...
+        $organization = organization::where('user_id', $user->id)->first();
+        $extend = 'userMaster';
+
+        $customers = DB::table('sales_orders')
+        ->join('contacts', 'contacts.id','=','sales_orders.contact_id')
+        ->select('contacts.name', DB::raw("SUM(sales_orders.total) as total"))
+        ->where('sales_orders.organization_id', $organization->id)
+        ->where('sales_orders.deleted_at', null)
+        ->whereYear('sales_orders.created_at', '=', $year)
+        ->whereMonth('sales_orders.created_at', '=', $month)
+        ->groupBy('sales_orders.contact_id', 'contacts.name')
+        ->get();
+      }
 
       // $users = DB::table('invoices')
       // ->join('contacts', 'contacts.id','=','invoices.contact_id')
@@ -56,6 +75,7 @@ class ReportController extends Controller
         return view('user/report/customer',
         [
           'customers' => $customers,
+          'extend' => $extend,
           'by' => $by,
           'now' => $now
         ]);
@@ -64,28 +84,46 @@ class ReportController extends Controller
 
     public function salesByItemMonth()
     {
-      $user_id = Auth::id();
-      $organization = organization::where('user_id', $user_id)->first();
       $now = Carbon::now();
       $year = $now->year;
       $month = $now->month;
       $sekarang = $now->format('m/d/Y');
       $by = 'on '.$now->englishMonth;
       // ex : "October"
+      $user = Auth::user();
+      if ($user->role == 0) {
+        $organization = organization::findOrFail($user->organization_id);
+        $extend = 'employeMaster';
+        $items = DB::table('invoice_details')
+        ->join('items', 'items.id','=','invoice_details.item_id')
+        ->select('items.name', DB::raw("SUM(invoice_details.total) as total"), DB::raw("SUM(invoice_details.item_quantity) as count"))
+        ->where('invoice_details.organization_id', $organization->id)
+        ->where('invoice_details.writer_id', $user->id)
+        ->where('invoice_details.deleted_at', null)
+        ->whereYear('invoice_details.created_at', '=', $year)
+        ->whereMonth('invoice_details.created_at', '=', $month)
+        ->groupBy('invoice_details.item_id', 'items.name')
+        ->get();
+      } else {
+        // code...
+        $organization = organization::where('user_id', $user->id)->first();
+        $extend = 'userMaster';
+        $items = DB::table('invoice_details')
+        ->join('items', 'items.id','=','invoice_details.item_id')
+        ->select('items.name', DB::raw("SUM(invoice_details.total) as total"), DB::raw("SUM(invoice_details.item_quantity) as count"))
+        ->where('invoice_details.organization_id', $organization->id)
+        ->where('invoice_details.deleted_at', null)
+        ->whereYear('invoice_details.created_at', '=', $year)
+        ->whereMonth('invoice_details.created_at', '=', $month)
+        ->groupBy('invoice_details.item_id', 'items.name')
+        ->get();
+      }
 
-      $items = DB::table('invoice_details')
-      ->join('items', 'items.id','=','invoice_details.item_id')
-      ->select('items.name', DB::raw("SUM(invoice_details.total) as total"), DB::raw("SUM(invoice_details.item_quantity) as count"))
-      ->where('invoice_details.organization_id', $organization->id)
-      ->where('invoice_details.deleted_at', null)
-      ->whereYear('invoice_details.created_at', '=', $year)
-      ->whereMonth('invoice_details.created_at', '=', $month)
-      ->groupBy('invoice_details.item_id', 'items.name')
-      ->get();
 
         return view('user/report/item',
         [
           'items' => $items,
+          'extend' => $extend,
           'by' => $by,
           'now' => $sekarang
         ]);
@@ -94,8 +132,16 @@ class ReportController extends Controller
 
     public function Item(Request $request)
     {
-      $user_id = Auth::id();
-      $organization = organization::where('user_id', $user_id)->first();
+      $user = Auth::user();
+      if ($user->role == 0) {
+        $organization = organization::findOrFail($user->organization_id);
+        $extend = 'employeMaster';
+      } else {
+        // code...
+        $organization = organization::where('user_id', $user->id)->first();
+        $extend = 'userMaster';
+      }
+
       $now = Carbon::now();
       $startDate = Carbon::now();
       $endDate = Carbon::now();
@@ -140,14 +186,28 @@ class ReportController extends Controller
       if ($request->by == 'year') {
         $by = 'in '.$year;
 
-        $items = DB::table('invoice_details')
-                ->join('items', 'items.id','=','invoice_details.item_id')
-                ->select('items.name', DB::raw("SUM(invoice_details.total) as total"), DB::raw("SUM(invoice_details.item_quantity) as count"))
-                ->where('invoice_details.organization_id', $organization->id)
-                ->where('invoice_details.deleted_at', null)
-                ->whereYear('invoice_details.created_at', '=', $year)
-                ->groupBy('invoice_details.item_id', 'items.name')
-                ->get();
+        if ($user->role == 0) {
+          $items = DB::table('invoice_details')
+          ->join('items', 'items.id','=','invoice_details.item_id')
+          ->select('items.name', DB::raw("SUM(invoice_details.total) as total"), DB::raw("SUM(invoice_details.item_quantity) as count"))
+          ->where('invoice_details.organization_id', $organization->id)
+          ->where('invoice_details.writer_id', $user->id)
+          ->where('invoice_details.deleted_at', null)
+          ->whereYear('invoice_details.created_at', '=', $year)
+          ->groupBy('invoice_details.item_id', 'items.name')
+          ->get();
+        } else {
+          // code...
+          $items = DB::table('invoice_details')
+          ->join('items', 'items.id','=','invoice_details.item_id')
+          ->select('items.name', DB::raw("SUM(invoice_details.total) as total"), DB::raw("SUM(invoice_details.item_quantity) as count"))
+          ->where('invoice_details.organization_id', $organization->id)
+          ->where('invoice_details.deleted_at', null)
+          ->whereYear('invoice_details.created_at', '=', $year)
+          ->groupBy('invoice_details.item_id', 'items.name')
+          ->get();
+        }
+
       } elseif ($request->by == 'month') {
 
         return redirect()->route('report.item');
@@ -156,41 +216,85 @@ class ReportController extends Controller
         // $by = 'This Week From '.$startDate->toFormattedDateString().' To '.$endDate->toFormattedDateString();
         $by = 'This Week';
 
-        $items = DB::table('invoice_details')
-                ->join('items', 'items.id','=','invoice_details.item_id')
-                ->select('items.name', DB::raw("SUM(invoice_details.total) as total"), DB::raw("SUM(invoice_details.item_quantity) as count"))
-                ->where('invoice_details.organization_id', $organization->id)
-                ->where('invoice_details.deleted_at', null)
-                ->whereBetween('invoice_details.created_at', [$startDate, $endDate])
-                ->groupBy('invoice_details.item_id', 'items.name')
-                ->get();
+        if ($user->role == 0) {
+          // code...
+          $items = DB::table('invoice_details')
+                  ->join('items', 'items.id','=','invoice_details.item_id')
+                  ->select('items.name', DB::raw("SUM(invoice_details.total) as total"), DB::raw("SUM(invoice_details.item_quantity) as count"))
+                  ->where('invoice_details.organization_id', $organization->id)
+                  ->where('invoice_details.writer_id', $user->id)
+                  ->where('invoice_details.deleted_at', null)
+                  ->whereBetween('invoice_details.created_at', [$startDate, $endDate])
+                  ->groupBy('invoice_details.item_id', 'items.name')
+                  ->get();
+        } else {
+          // code...
+          $items = DB::table('invoice_details')
+          ->join('items', 'items.id','=','invoice_details.item_id')
+          ->select('items.name', DB::raw("SUM(invoice_details.total) as total"), DB::raw("SUM(invoice_details.item_quantity) as count"))
+          ->where('invoice_details.organization_id', $organization->id)
+          ->where('invoice_details.deleted_at', null)
+          ->whereBetween('invoice_details.created_at', [$startDate, $endDate])
+          ->groupBy('invoice_details.item_id', 'items.name')
+          ->get();
+        }
+
       } elseif ($request->by == 'all') {
         $by = 'All Period';
-        $items = DB::table('invoice_details')
-                ->join('items', 'items.id','=','invoice_details.item_id')
-                ->select('items.name', DB::raw("SUM(invoice_details.total) as total"), DB::raw("SUM(invoice_details.item_quantity) as count"))
-                ->where('invoice_details.organization_id', $organization->id)
-                ->where('invoice_details.deleted_at', null)
-                ->groupBy('invoice_details.item_id', 'items.name')
-                ->get();
+        if ($user->role == 0) {
+          $items = DB::table('invoice_details')
+                  ->join('items', 'items.id','=','invoice_details.item_id')
+                  ->select('items.name', DB::raw("SUM(invoice_details.total) as total"), DB::raw("SUM(invoice_details.item_quantity) as count"))
+                  ->where('invoice_details.organization_id', $organization->id)
+                  ->where('invoice_details.writer_id', $user->id)
+                  ->where('invoice_details.deleted_at', null)
+                  ->groupBy('invoice_details.item_id', 'items.name')
+                  ->get();
+        } else {
+          // code...
+          $items = DB::table('invoice_details')
+          ->join('items', 'items.id','=','invoice_details.item_id')
+          ->select('items.name', DB::raw("SUM(invoice_details.total) as total"), DB::raw("SUM(invoice_details.item_quantity) as count"))
+          ->where('invoice_details.organization_id', $organization->id)
+          ->where('invoice_details.deleted_at', null)
+          ->groupBy('invoice_details.item_id', 'items.name')
+          ->get();
+        }
+
       } else {
         $mulai = date('d-m-Y', strtotime($request->start_date));
         $sampai = date('d-m-Y', strtotime($request->end_date));
         $by = 'From '.$mulai.' To '.$sampai;
 
-        $items = DB::table('invoice_details')
-                ->join('items', 'items.id','=','invoice_details.item_id')
-                ->select('items.name', DB::raw("SUM(invoice_details.total) as total"), DB::raw("SUM(invoice_details.item_quantity) as count"))
-                ->where('invoice_details.organization_id', $organization->id)
-                ->where('invoice_details.deleted_at', null)
-                ->whereBetween('invoice_details.created_at', [$request->start_date, $request->end_date])
-                ->groupBy('invoice_details.item_id', 'items.name')
-                ->get();
+        if ($user->role == 0) {
+          // code...
+          $items = DB::table('invoice_details')
+                  ->join('items', 'items.id','=','invoice_details.item_id')
+                  ->select('items.name', DB::raw("SUM(invoice_details.total) as total"), DB::raw("SUM(invoice_details.item_quantity) as count"))
+                  ->where('invoice_details.organization_id', $organization->id)
+                  ->where('invoice_details.writer_id', $user->id)
+                  ->where('invoice_details.deleted_at', null)
+                  ->whereBetween('invoice_details.created_at', [$request->start_date, $request->end_date])
+                  ->groupBy('invoice_details.item_id', 'items.name')
+                  ->get();
+        } else {
+          // code...
+          $items = DB::table('invoice_details')
+          ->join('items', 'items.id','=','invoice_details.item_id')
+          ->select('items.name', DB::raw("SUM(invoice_details.total) as total"), DB::raw("SUM(invoice_details.item_quantity) as count"))
+          ->where('invoice_details.organization_id', $organization->id)
+          ->where('invoice_details.deleted_at', null)
+          ->whereBetween('invoice_details.created_at', [$request->start_date, $request->end_date])
+          ->groupBy('invoice_details.item_id', 'items.name')
+          ->get();
+        }
+
       }
 
         return view('user/report/item',
         [
           'items' => $items,
+          'extend' => $extend,
           'by' => $by,
           'now' => $sekarang
         ]);
@@ -198,14 +302,22 @@ class ReportController extends Controller
 
     public function Customer(Request $request)
     {
-      $user_id = Auth::id();
-      $organization = organization::where('user_id', $user_id)->first();
       $now = Carbon::now();
       $startDate = Carbon::now();
       $endDate = Carbon::now();
       $year = $now->year;
       $month = $now->month;
       $sekarang = $now->format('m/d/Y');
+
+      $user = Auth::user();
+      if ($user->role == 0) {
+        $organization = organization::findOrFail($user->organization_id);
+        $extend = 'employeMaster';
+      } else {
+        // code...
+        $organization = organization::where('user_id', $user->id)->first();
+        $extend = 'userMaster';
+      }
 
       if ($now->dayOfWeekIso < 7) {
         if ($now->dayOfWeekIso < 6) {
@@ -244,56 +356,116 @@ class ReportController extends Controller
       if ($request->by == 'year') {
         $by = 'In '.$year;
 
-        $customers = DB::table('sales_orders')
-                ->join('contacts', 'contacts.id','=','sales_orders.contact_id')
-                ->select('contacts.name', DB::raw("SUM(sales_orders.total) as total"))
-                ->where('sales_orders.organization_id', $organization->id)
-                ->where('sales_orders.deleted_at', null)
-                ->whereYear('sales_orders.created_at', '=', $year)
-                ->groupBy('sales_orders.contact_id', 'contacts.name')
-                ->get();
+        if ($user->role == 0) {
+          // code...
+          $customers = DB::table('sales_orders')
+                  ->join('contacts', 'contacts.id','=','sales_orders.contact_id')
+                  ->select('contacts.name', DB::raw("SUM(sales_orders.total) as total"))
+                  ->where('sales_orders.organization_id', $organization->id)
+                  ->where('sales_orders.writer_id', $user->id)
+                  ->where('sales_orders.deleted_at', null)
+                  ->whereYear('sales_orders.created_at', '=', $year)
+                  ->groupBy('sales_orders.contact_id', 'contacts.name')
+                  ->get();
+        } else {
+          // code...
+          $customers = DB::table('sales_orders')
+          ->join('contacts', 'contacts.id','=','sales_orders.contact_id')
+          ->select('contacts.name', DB::raw("SUM(sales_orders.total) as total"))
+          ->where('sales_orders.organization_id', $organization->id)
+          ->where('sales_orders.deleted_at', null)
+          ->whereYear('sales_orders.created_at', '=', $year)
+          ->groupBy('sales_orders.contact_id', 'contacts.name')
+          ->get();
+        }
+
       } elseif ($request->by == 'month') {
         return redirect()->route('report.customer');
 
       } elseif ($request->by == 'week') {
         $by = 'This Week';
 
-        $customers = DB::table('sales_orders')
-                ->join('contacts', 'contacts.id','=','sales_orders.contact_id')
-                ->select('contacts.name', DB::raw("SUM(sales_orders.total) as total"))
-                ->where('sales_orders.organization_id', $organization->id)
-                ->where('sales_orders.deleted_at', null)
-                ->whereBetween('sales_orders.created_at', [$startDate, $endDate])
-                ->groupBy('sales_orders.contact_id', 'contacts.name')
-                ->get();
+        if ($user->role == 0) {
+          // code...
+          $customers = DB::table('sales_orders')
+                  ->join('contacts', 'contacts.id','=','sales_orders.contact_id')
+                  ->select('contacts.name', DB::raw("SUM(sales_orders.total) as total"))
+                  ->where('sales_orders.organization_id', $organization->id)
+                  ->where('sales_orders.writer_id', $user->id)
+                  ->where('sales_orders.deleted_at', null)
+                  ->whereBetween('sales_orders.created_at', [$startDate, $endDate])
+                  ->groupBy('sales_orders.contact_id', 'contacts.name')
+                  ->get();
+        } else {
+          // code...
+          $customers = DB::table('sales_orders')
+          ->join('contacts', 'contacts.id','=','sales_orders.contact_id')
+          ->select('contacts.name', DB::raw("SUM(sales_orders.total) as total"))
+          ->where('sales_orders.organization_id', $organization->id)
+          ->where('sales_orders.deleted_at', null)
+          ->whereBetween('sales_orders.created_at', [$startDate, $endDate])
+          ->groupBy('sales_orders.contact_id', 'contacts.name')
+          ->get();
+        }
+
       } elseif ($request->by == 'all') {
         $by = 'All Periode';
 
-        $customers = DB::table('sales_orders')
-                ->join('contacts', 'contacts.id','=','sales_orders.contact_id')
-                ->select('contacts.name', DB::raw("SUM(sales_orders.total) as total"), DB::raw("count(sales_orders.total) as count"))
-                ->where('sales_orders.organization_id', $organization->id)
-                ->where('sales_orders.deleted_at', null)
-                ->groupBy('sales_orders.contact_id', 'contacts.name')
-                ->get();
+        if ($user->role == 0) {
+          // code...
+          $customers = DB::table('sales_orders')
+                  ->join('contacts', 'contacts.id','=','sales_orders.contact_id')
+                  ->select('contacts.name', DB::raw("SUM(sales_orders.total) as total"), DB::raw("count(sales_orders.total) as count"))
+                  ->where('sales_orders.organization_id', $organization->id)
+                  ->where('sales_orders.writer_id', $user->id)
+                  ->where('sales_orders.deleted_at', null)
+                  ->groupBy('sales_orders.contact_id', 'contacts.name')
+                  ->get();
+        } else {
+          // code...
+          $customers = DB::table('sales_orders')
+          ->join('contacts', 'contacts.id','=','sales_orders.contact_id')
+          ->select('contacts.name', DB::raw("SUM(sales_orders.total) as total"), DB::raw("count(sales_orders.total) as count"))
+          ->where('sales_orders.organization_id', $organization->id)
+          ->where('sales_orders.deleted_at', null)
+          ->groupBy('sales_orders.contact_id', 'contacts.name')
+          ->get();
+        }
+
       } else {
         $mulai = date('d-m-Y', strtotime($request->start_date));
         $sampai = date('d-m-Y', strtotime($request->end_date));
         $by = 'From '.$mulai.' To '.$sampai;
 
-        $customers = DB::table('sales_orders')
-                ->join('contacts', 'contacts.id','=','sales_orders.contact_id')
-                ->select('contacts.name', DB::raw("SUM(sales_orders.total) as total"))
-                ->where('sales_orders.organization_id', $organization->id)
-                ->where('sales_orders.deleted_at', null)
-                ->whereBetween('sales_orders.created_at', [$request->start_date, $request->end_date])
-                ->groupBy('sales_orders.contact_id', 'contacts.name')
-                ->get();
+        if ($user->role == 0) {
+          // code...
+          $customers = DB::table('sales_orders')
+                  ->join('contacts', 'contacts.id','=','sales_orders.contact_id')
+                  ->select('contacts.name', DB::raw("SUM(sales_orders.total) as total"))
+                  ->where('sales_orders.organization_id', $organization->id)
+                  ->where('sales_orders.writer_id', $user->id)
+                  ->where('sales_orders.deleted_at', null)
+                  ->whereBetween('sales_orders.created_at', [$request->start_date, $request->end_date])
+                  ->groupBy('sales_orders.contact_id', 'contacts.name')
+                  ->get();
+        } else {
+          // code...
+          $customers = DB::table('sales_orders')
+          ->join('contacts', 'contacts.id','=','sales_orders.contact_id')
+          ->select('contacts.name', DB::raw("SUM(sales_orders.total) as total"))
+          ->where('sales_orders.organization_id', $organization->id)
+          ->where('sales_orders.deleted_at', null)
+          ->whereBetween('sales_orders.created_at', [$request->start_date, $request->end_date])
+          ->groupBy('sales_orders.contact_id', 'contacts.name')
+          ->get();
+        }
+
       }
 
         return view('user/report/customer',
         [
           'customers' => $customers,
+          'extend' => $extend,
           'by' => $by,
           'now' => $sekarang
         ]);

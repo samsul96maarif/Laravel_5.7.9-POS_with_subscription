@@ -1,4 +1,4 @@
-@extends('layouts/userMaster')
+@extends('layouts/'.$extend)
 
 @section('title', 'Report')
 

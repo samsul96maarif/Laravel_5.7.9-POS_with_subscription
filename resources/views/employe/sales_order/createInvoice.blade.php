@@ -1,4 +1,4 @@
-@extends('layouts/'.$extend)
+@extends('layouts/userMaster')
 
 @section('title', 'Create Invoice')
 

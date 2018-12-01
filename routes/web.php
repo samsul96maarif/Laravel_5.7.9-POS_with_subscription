@@ -176,6 +176,8 @@ Route::get('/sales_order/{id}', 'User\SalesOrderController@bill')->name('sales.o
 Route::put('/sales_order/{id}', 'User\SalesOrderController@update')->name('sales.order.update');
 //delete
 Route::delete('sales_order/{id}/delete', 'User\SalesOrderController@delete')->name('sales.order.delete');
+// cancel force delete
+Route::delete('sales_order/{id}/cancel', 'User\SalesOrderController@cancel')->name('sales.order.cancel');
 
 //tambah detail invoice
 // Route::get('/sales_order/{salesOrder_id}/invoice/{invoice_id}/create', 'InvoiceController@create')->name('invoice.create');
@@ -207,6 +209,11 @@ Route::get('/employe/create', 'User\EmployeController@create')->name('employe.cr
 Route::post('/employe', 'User\EmployeController@store')->name('employe.store');
 // end user page
 
+// page employee
+// salesOrder
+// Route::get('/organization/{id}/sales_orders', 'Employe\EmployeSalesOrderController@index')->name('employe.sales.orders');
+Route::get('/organization/{id}/sales_orders', 'User\SalesOrderController@index')->name('employe.sales.orders');
+// end page employee
 
 // profile
 Route::get('profile', 'UserController@index')->name('profile');

@@ -27,8 +27,16 @@ class InvoiceController extends Controller
 
     public function store(Request $request, $salesOrder_id, $invoice_id)
     {
-      $user_id = Auth::id();
-      $organization = organization::where('user_id', $user_id)->first();
+      $user = Auth::user();
+      if ($user->role == 0) {
+        $organization = organization::findOrFail($user->organization_id);
+        $extend = 'employeMaster';
+      } else {
+        // code...
+        $organization = organization::where('user_id', $user->id)->first();
+        $extend = 'userMaster';
+      }
+
       $salesOrder = salesOrder::findOrFail($salesOrder_id);
       $invoice = invoice::findOrFail($invoice_id);
 
@@ -73,6 +81,7 @@ class InvoiceController extends Controller
           $invoiceDetail->item_price = $item->price;
           $invoiceDetail->item_quantity = $request->quantity[$i];
           $invoiceDetail->total = $item->price*$request->quantity[$i];
+          $invoiceDetail->writer_id = $user->id;
           $invoiceDetail->save();
           $message = 'Succeed Updated Invoice';
         }

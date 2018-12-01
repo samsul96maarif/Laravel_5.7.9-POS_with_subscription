@@ -1,4 +1,4 @@
-@extends('layouts/'.$extend)
+@extends('layouts/employeMaster')
 
 @section('title', 'Sales Order')
 

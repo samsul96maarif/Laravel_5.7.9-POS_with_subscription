@@ -20,6 +20,9 @@ class CreateSubscriptionsTable extends Migration
             $table->integer('num_invoices')->nullable();
             $table->integer('num_users')->nullable();
             $table->integer('num_items')->nullable();
+            $table->integer('writer_id')->unsigned();
+            $table->foreign('writer_id')->references('id')->on('users')->onDelete('cascade');
+            $table->string('action');
             $table->timestamps();
             $table->softDeletes();
         });

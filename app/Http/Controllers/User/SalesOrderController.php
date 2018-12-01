@@ -30,9 +30,18 @@ class SalesOrderController extends Controller
     }
     public function index()
     {
-      $user_id = Auth::id();
-      $organization = organization::where('user_id', $user_id)->first();
-      $salesOrders = SalesOrder::all()->where('organization_id', $organization->id);
+      $user = Auth::user();
+      if ($user->role == 0) {
+        $organization = organization::findOrFail($user->organization_id);
+        $extend = 'employeMaster';
+        $salesOrders = SalesOrder::all()->where('organization_id', $organization->id)
+        ->where('writer_id', $user->id);
+      } else {
+        // code...
+        $organization = organization::where('user_id', $user->id)->first();
+        $extend = 'userMaster';
+        $salesOrders = SalesOrder::all()->where('organization_id', $organization->id);
+      }
       $contacts = contact::all()->where('organization_id', $organization->id)->where('deleted_at', null);
       $invoices = invoice::all();
       $invoiceDetails = invoiceDetail::all();
@@ -40,6 +49,8 @@ class SalesOrderController extends Controller
       return view('user/sales_order/index',
       [
         'salesOrders' => $salesOrders,
+        'extend' => $extend,
+        'organization' => $organization,
         'contacts' => $contacts,
         'invoiceDetails' => $invoiceDetails,
         'invoices' => $invoices
@@ -48,8 +59,16 @@ class SalesOrderController extends Controller
 
     public function create()
     {
-      $user_id = Auth::id();
-      $organization = organization::where('user_id', $user_id)->first();
+      $user = Auth::user();
+      if ($user->role == 0) {
+        $organization = organization::findOrFail($user->organization_id);
+        $extend = 'employeMaster';
+      } else {
+        // code...
+        $organization = organization::where('user_id', $user->id)->first();
+        $extend = 'userMaster';
+      }
+
       $items = item::all()->where('organization_id', $organization->id);
       $contacts = contact::all()->where('organization_id', $organization->id)->where('deleted_at', null);
       $subscription = subscription::findOrFail($organization->subscription_id);
@@ -62,7 +81,7 @@ class SalesOrderController extends Controller
       }
 
       // klo bukan unlimeted
-      if ($subscription->num_users != 0) {
+      if ($subscription->num_users != null) {
         if ($i >= $subscription->num_invoices) {
           return redirect()->route('subscription')
           ->with('alert', 'Quota Sales Order Has Exceeded Capacity, Please Upgrade Your Package');
@@ -74,6 +93,8 @@ class SalesOrderController extends Controller
       return view('user/sales_order/createInvoice',
       [
         'items' => $items,
+        'extend' => $extend,
+        'organization' => $organization,
         'contacts' => $contacts
       ]);
     }
@@ -81,8 +102,16 @@ class SalesOrderController extends Controller
     public function store(Request $request)
     {
 
-      $user_id = Auth::id();
-      $organization = organization::where('user_id', $user_id)->first();
+      $user = Auth::user();
+      if ($user->role == 0) {
+        $organization = organization::findOrFail($user->organization_id);
+        $extend = 'employeMaster';
+      } else {
+        // code...
+        $organization = organization::where('user_id', $user->id)->first();
+        $extend = 'userMaster';
+      }
+
       $subscription = subscription::findOrFail($organization->subscription_id);
       // memanggil semua sales order unutk dihitung
       // sudah berapa sales order yang dimiliki organization
@@ -131,7 +160,7 @@ class SalesOrderController extends Controller
         }
 
         // klo bukan unlimeted
-        if ($subscription->num_users != 0) {
+        if ($subscription->num_users != null) {
           if ($i >= $subscription->num_users) {
             return redirect()
             ->route('sales.order.create')
@@ -150,6 +179,22 @@ class SalesOrderController extends Controller
         }
 
         if ($found == 0) {
+          // mengcek apakah contact ovelrload dari package
+          $i = 0;
+          foreach ($contacts as $key) {
+            $i++;
+          }
+
+          // klo bukan unlimeted
+          if ($subscription->num_users != null) {
+            if ($i >= $subscription->num_users) {
+              return redirect()
+              ->route('sales.order.create')
+              ->with('alert', 'Quota Contact Has Exceeded Capacity, Cannot Add Contact or Please Upgrade Your Packag');
+              // throw new \Exception("kuota sales order telah melebihi kapasitas, silahkan upgrade paket");
+            }
+          }
+
           $contact = new contact;
           $contact->organization_id = $organization->id;
           $contact->name = $request->name;
@@ -184,6 +229,7 @@ class SalesOrderController extends Controller
 
       // sales order
       $salesOrder = new salesOrder;
+      $salesOrder->writer_id = $user->id;
       $salesOrder->organization_id = $organization->id;
       $salesOrder->contact_id = $contact->id;
       $salesOrder->contact_name = $contact->name;
@@ -195,6 +241,7 @@ class SalesOrderController extends Controller
 
       // invoice
       $invoice = new invoice;
+      $invoice->writer_id = $user->id;
       $invoice->organization_id = $organization->id;
       $invoice->sales_order_id = $salesOrder->id;
       $invoice->contact_id = $contact->id;
@@ -220,6 +267,7 @@ class SalesOrderController extends Controller
 
           $invoiceDetail->item_quantity = $invoiceDetail->item_quantity + $request->quantity[$i];
           $invoiceDetail->total = $invoiceDetail->total + $total;
+          $invoiceDetail->writer_id = $user->id;
           $invoiceDetail->save();
           $message = $item->name.' already exist In sales order '.$salesOrder->order_number.' qty Has been Added';
           // $message = $item->name.' telah ada dalam sales order '.$salesOrder->order_number.' qty  telah ditambahkan';
@@ -227,6 +275,7 @@ class SalesOrderController extends Controller
           // invoice detail
           $invoiceDetail = new invoiceDetail;
           $invoiceDetail->organization_id = $organization->id;
+          $invoiceDetail->writer_id = $user->id;
           $invoiceDetail->invoice_id = $invoice->id;
           $invoiceDetail->item_id = $item->id;
           $invoiceDetail->item_price = $item->price;
@@ -244,8 +293,16 @@ class SalesOrderController extends Controller
 
     public function show($id)
     {
-      $user_id = Auth::id();
-      $organization = organization::where('user_id', $user_id)->first();
+      $user = Auth::user();
+      if ($user->role == 0) {
+        $organization = organization::findOrFail($user->organization_id);
+        $extend = 'employeMaster';
+      } else {
+        // code...
+        $organization = organization::where('user_id', $user->id)->first();
+        $extend = 'userMaster';
+      }
+
       $salesOrder = salesOrder::findOrFail($id);
       $items = item::all()->where('organization_id', $organization->id);
       $contacts = contact::all()->where('organization_id', $organization->id)->where('deleted_at', null);
@@ -256,6 +313,8 @@ class SalesOrderController extends Controller
       [
         'items' => $items,
         'contacts' =>$contacts,
+        'extend' => $extend,
+        'organization' => $organization,
         'salesOrder' => $salesOrder,
         'invoice' => $invoice,
         'invoiceDetails' => $invoiceDetails
@@ -264,8 +323,16 @@ class SalesOrderController extends Controller
 
     public function bill($id)
     {
-      $user_id = Auth::id();
-      $organization = organization::where('user_id', $user_id)->first();
+      $user = Auth::user();
+      if ($user->role == 0) {
+        $organization = organization::findOrFail($user->organization_id);
+        $extend = 'employeMaster';
+      } else {
+        // code...
+        $organization = organization::where('user_id', $user->id)->first();
+        $extend = 'userMaster';
+      }
+
       $salesOrder = salesOrder::findOrFail($id);
       $items = item::all()->where('organization_id', $organization->id);
       $contacts = contact::all()->where('organization_id', $organization->id)->where('deleted_at', null);
@@ -276,6 +343,8 @@ class SalesOrderController extends Controller
       [
         'items' => $items,
         'contacts' =>$contacts,
+        'extend' => $extend,
+        'organization' => $organization,
         'salesOrder' => $salesOrder,
         'invoice' => $invoice,
         'invoiceDetails' => $invoiceDetails
@@ -284,8 +353,16 @@ class SalesOrderController extends Controller
 // untuk update contact/customer
     public function update(Request $request, $id)
     {
-      $user_id = Auth::id();
-      $organization = organization::where('user_id', $user_id)->first();
+      $user = Auth::user();
+      if ($user->role == 0) {
+        $organization = organization::findOrFail($user->organization_id);
+        $extend = 'employeMaster';
+      } else {
+        // code...
+        $organization = organization::where('user_id', $user->id)->first();
+        $extend = 'userMaster';
+      }
+
       // mencari contact yang sesuai request
       $contact = contact::where('name', $request->contact)
       ->where('organization_id', $organization->id)
@@ -328,27 +405,58 @@ class SalesOrderController extends Controller
       return redirect('/sales_orders')->withSuccess($salesOrder->order_number.' Deleted!');
     }
 
+    public function cancel($id)
+    {
+      $salesOrder = salesOrder::findOrFail($id);
+      $invoice = invoice::where('sales_order_id', $id)->first();
+      $invoiceDetails = invoiceDetail::all()->where('invoice_id', $invoice->id);
+
+      foreach ($invoiceDetails as $invoiceDetail) {
+        $invoiceDetail->forcedelete();
+      }
+
+      $invoice->forcedelete();
+      $salesOrder->forcedelete();
+
+      return redirect('/sales_orders')->withSuccess($salesOrder->order_number.' Deleted!');
+    }
+
     public function search(Request $request)
     {
+      $user = Auth::user();
+      if ($user->role == 0) {
+        $organization = organization::findOrFail($user->organization_id);
+        $extend = 'employeMaster';
+        $salesOrders = DB::table('sales_orders')
+        ->where('order_number', 'like', '%'.$request->q.'%')
+        ->where('organization_id', $organization->id)
+        ->where('writer_id', $user->id)
+        ->where('deleted_at', null)
+        ->get();
 
-      $id = Auth::id();
-      $organization = organization::where('user_id', $id)->first();
+      } else {
+        // code...
+        $organization = organization::where('user_id', $user->id)->first();
+        $extend = 'userMaster';
+        $salesOrders = DB::table('sales_orders')
+        ->where('order_number', 'like', '%'.$request->q.'%')
+        ->where('organization_id', $organization->id)
+        ->where('deleted_at', null)
+        ->get();
+      }
+
       $contacts = contact::all()
       ->where('organization_id', $organization->id);
 
       $invoices = invoice::all();
       $invoiceDetails = invoiceDetail::all();
 
-      $salesOrders = DB::table('sales_orders')
-                      ->where('order_number', 'like', '%'.$request->q.'%')
-                      ->where('organization_id', $organization->id)
-                      ->where('deleted_at', null)
-                      ->get();
-
       return view('user/sales_order/index',
       [
         'salesOrders' => $salesOrders,
         'contacts' => $contacts,
+        'extend' => $extend,
+        'organization' => $organization,
         'invoiceDetails' => $invoiceDetails,
         'invoices' => $invoices
       ]);

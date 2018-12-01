@@ -23,13 +23,22 @@ class ContactController extends Controller
     // gate : unutk mengecek apakah sudah membuat Organization
     // getSubscription : unutk mengecek subscription Organization
     // maxContact : unutk mengecek quota user subscription
-      $this->middleware(['auth', 'gate', 'get.subscription', 'max.contact']);
+      // $this->middleware(['auth', 'gate', 'get.subscription', 'max.contact']);
+      $this->middleware(['auth', 'gate', 'get.subscription']);
   }
 
     public function index()
     {
-      $user_id = Auth::id();
-      $organization = organization::where('user_id', $user_id)->first();
+      $user = Auth::user();
+      if ($user->role == 0) {
+        $organization = organization::findOrFail($user->organization_id);
+        $extend = 'employeMaster';
+      } else {
+        // code...
+        $organization = organization::where('user_id', $user->id)->first();
+        $extend = 'userMaster';
+      }
+
       $data = contact::all()
       ->where('organization_id', $organization->id)
       ->where('deleted_at', null);
@@ -46,18 +55,42 @@ class ContactController extends Controller
       }
       $contacts = json_decode($res['values']);
 
-      return view('user/contact/index', ['contacts' => $contacts]);
+      return view('user/contact/index',
+      [
+        'contacts' => $contacts,
+        'organization' => $organization,
+        'extend' => $extend
+      ]);
     }
 
     public function create()
     {
-      return view('user/contact/create');
+      $user = Auth::user();
+      if ($user->role == 0) {
+        $extend = 'employeMaster';
+      } else {
+        $extend = 'userMaster';
+      }
+
+      return view('user/contact/create',
+      [
+        'extend' => $extend,
+        'organization' => $organization,
+      ]);
     }
 
     public function store(Request $request)
     {
-      $user_id = Auth::id();
-      $organization = organization::where('user_id', $user_id)->first();
+      $user = Auth::user();
+      if ($user->role == 0) {
+        $organization = organization::findOrFail($user->organization_id);
+        $extend = 'employeMaster';
+      } else {
+        // code...
+        $organization = organization::where('user_id', $user->id)->first();
+        $extend = 'userMaster';
+      }
+
       $subscription = subscription::findOrFail($organization->subscription_id);
 
       $this->validate($request, [
@@ -96,7 +129,7 @@ class ContactController extends Controller
       if ($subscription->num_users != 0) {
         if ($i >= $subscription->num_users) {
           return redirect()
-          ->route('contact')
+          ->route('contacts')
           ->with('alert', 'Quota Contact Has Exceeded Capacity, Please Upgrade Your Package');
           // throw new \Exception("kuota sales order telah melebihi kapasitas, silahkan upgrade paket");
         }
@@ -104,6 +137,8 @@ class ContactController extends Controller
 
 
       $contact = new contact;
+      // $contact->writer = $user->id;
+      // $contact->action = "create";
       $contact->organization_id = $organization->id;
       $contact->name = $request->name;
       $contact->phone = $request->phone;
@@ -111,15 +146,29 @@ class ContactController extends Controller
       $contact->email = $request->email;
       $contact->save();
 
-      return redirect('/contact')->withSuccess('Succeed Add Contact');
+      return redirect()
+      ->route('contacts')
+      ->withSuccess('Succeed Add Contact');
     }
 
     // update
     // 1. get data melalui id-nya
     public function edit($id){
       $contact = contact::find($id);
+      $user = Auth::user();
 
-      return view('user/contact/edit', ['contact' => $contact]);
+      if ($user->role == 0) {
+        $extend = 'employeMaster';
+      } else {
+        $extend = 'userMaster';
+      }
+
+      return view('user/contact/edit',
+      [
+        'contact' => $contact,
+        'organization' => $organization,
+        'extend' => $extend
+      ]);
     }
     // 2. store data update
     public function update(Request $request, $id){
@@ -142,9 +191,16 @@ class ContactController extends Controller
 
       $contact = contact::find($id);
 
-    // mengecek apakan contact dengan nama yang dimasukkan sudah ada
       $user = Auth::user();
-      $organization = organization::where('user_id', $user->id)->first();
+      if ($user->role == 0) {
+        $organization = organization::findOrFail($user->organization_id);
+        $extend = 'employeMaster';
+      } else {
+        // code...
+        $organization = organization::where('user_id', $user->id)->first();
+        $extend = 'userMaster';
+      }
+    // mengecek apakan contact dengan nama yang dimasukkan sudah ada
       $contacts = contact::all()->where('organization_id', $organization->id);
       foreach ($contacts as $value) {
         if ($request->name === $value->name && $request->name != $contact->name) {
@@ -158,6 +214,8 @@ class ContactController extends Controller
       $nameBefore = $contact->name;
 
       $contact->name = $request->name;
+      // $contact->writer = $user->id;
+      // $contact->action = "update";
       $contact->phone = $request->phone;
       $contact->company_name = $request->company_name;
       $contact->email = $request->email;
@@ -186,8 +244,15 @@ class ContactController extends Controller
 
       public function search(Request $request)
       {
-        $id = Auth::id();
-        $organization = organization::where('user_id', $id)->first();
+        $user = Auth::user();
+        if ($user->role == 0) {
+          $organization = organization::findOrFail($user->organization_id);
+          $extend = 'employeMaster';
+        } else {
+          // code...
+          $organization = organization::where('user_id', $user->id)->first();
+          $extend = 'userMaster';
+        }
 
         $contacts = DB::table('contacts')
                         ->where('name', 'like', '%'.$request->q.'%')
@@ -195,6 +260,11 @@ class ContactController extends Controller
                         ->where('deleted_at', null)
                         ->get();
 
-        return view('user/contact/index', ['contacts' => $contacts]);
+        return view('user/contact/index',
+        [
+          'contacts' => $contacts,
+          'extend' => $extend,
+          'organization' => $organization,
+        ]);
       }
 }

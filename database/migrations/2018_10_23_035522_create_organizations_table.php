@@ -26,6 +26,9 @@ class CreateOrganizationsTable extends Migration
           $table->integer('zipcode');
           $table->boolean('status')->default('0');
           $table->timestamp('expire_date')->nullable();
+          $table->integer('writer_id')->unsigned();
+          $table->foreign('writer_id')->references('id')->on('users')->onDelete('cascade');
+          $table->string('action');
           $table->timestamps();
           $table->softDeletes();
         });

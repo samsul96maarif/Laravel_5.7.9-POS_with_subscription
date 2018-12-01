@@ -21,6 +21,9 @@ class CreateItemsTable extends Migration
             $table->string('description');
             $table->integer('price');
             $table->integer('stock');
+            $table->integer('writer_id')->unsigned();
+            $table->foreign('writer_id')->references('id')->on('users')->onDelete('cascade');
+            $table->string('action');
             $table->timestamps();
             $table->softDeletes();
         });

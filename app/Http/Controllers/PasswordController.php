@@ -16,7 +16,7 @@ class PasswordController extends Controller
       $id = Auth::id();
       $user = user::findOrFail($id);
 
-      if ($user->role == 1) {
+      if ($user->admin == 1) {
         $extend = 'adminMaster';
       }else {
         $extend = 'userMaster';

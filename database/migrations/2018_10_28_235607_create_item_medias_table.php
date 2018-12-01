@@ -19,6 +19,9 @@ class CreateItemMediasTable extends Migration
           $table->foreign('item_id')->references('id')->on('items')->onDelete('cascade');
           $table->string('image');
           $table->boolean('is_main')->default('1');
+          $table->integer('writer_id')->unsigned();
+          $table->foreign('writer_id')->references('id')->on('users')->onDelete('cascade');
+          $table->string('action');
           $table->timestamps();
           $table->softDeletes();
         });

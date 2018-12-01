@@ -21,8 +21,16 @@ class CheckItem
      */
     public function handle($request, Closure $next)
     {
-        $user_id = Auth::id();
-        $organization = organization::where('user_id', $user_id)->first();
+        $user = Auth::user();
+        if ($user->role == 0) {
+          $organization = organization::findOrFail($user->organization_id);
+          $extend = 'employeMaster';
+        } else {
+          // code...
+          $organization = organization::where('user_id', $user->id)->first();
+          $extend = 'userMaster';
+        }
+
         $i = 0;
         $items = item::all()->where('organization_id', $organization->id);
         foreach ($items as $item) {

@@ -40,7 +40,14 @@ class BaseController extends Controller
     function fetch(Request $request)
     {
       $user = Auth::user();
-      $organization = organization::where('user_id', $user->id)->first();
+      if ($user->role == 0) {
+        $organization = organization::findOrFail($user->organization_id);
+        $extend = 'employeMaster';
+      } else {
+        // code...
+        $organization = organization::where('user_id', $user->id)->first();
+        $extend = 'userMaster';
+      }
 
       if($request->get('query'))
       {
@@ -67,7 +74,14 @@ class BaseController extends Controller
     function fetchItem(Request $request)
     {
       $user = Auth::user();
-      $organization = organization::where('user_id', $user->id)->first();
+      if ($user->role == 0) {
+        $organization = organization::findOrFail($user->organization_id);
+        $extend = 'employeMaster';
+      } else {
+        // code...
+        $organization = organization::where('user_id', $user->id)->first();
+        $extend = 'userMaster';
+      }
 
       if($request->get('query'))
       {
@@ -127,9 +141,11 @@ class BaseController extends Controller
         $query = $request->get('query');
         $data = DB::table('users')
         ->where('name', 'LIKE', "%{$query}%")
-        ->where('role', 0)
+        ->where('admin', 0)
+        ->where('role', 1)
         ->orWhere('username', 'LIKE', "%{$query}%")
-        ->where('role', 0)
+        ->where('admin', 0)
+        ->where('role', 1)
         ->get();
 
         $output = '<div class="dropdown-menu" style="display:block; position:relative">';

@@ -21,6 +21,9 @@ class CreateContactsTable extends Migration
             $table->string('phone', 12)->nullable();
             $table->string('company_name')->nullable();
             $table->string('email')->nullable();
+            $table->integer('writer_id')->unsigned();
+            $table->foreign('writer_id')->references('id')->on('users')->onDelete('cascade');
+            $table->string('action');
             $table->timestamps();
             $table->softDeletes();
         });
