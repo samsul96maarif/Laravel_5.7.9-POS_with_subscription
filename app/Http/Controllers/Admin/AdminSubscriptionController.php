@@ -203,8 +203,9 @@ class AdminSubscriptionController extends Controller
 
           } else {
             $strNumItems = str_replace(".", "", $request->num_items);
-            $intNumitems = (int)$strNumitems;
-            $request->num_items = $intNumitems;
+            $intNumItems = (int)$strNumItems;
+            $request->num_items = $intNumItems;
+            // dd($request->num_items);
           }
 
           if ($request->num_invoices == null) {
@@ -235,11 +236,11 @@ class AdminSubscriptionController extends Controller
 
           if ($request->price > 1) {
 
-            if ($request->num_items > 1 || $request->num_items == null) {
+            if ($request->num_items >= 1 || $request->num_items == null) {
 
-              if ($request->num_invoices > 1 || $request->num_invoices == null) {
+              if ($request->num_invoices >= 1 || $request->num_invoices == null) {
 
-                if ($request->num_users > 1 || $request->num_users == null) {
+                if ($request->num_users >= 1 || $request->num_users == null) {
 
                 } else {
                   $this->validate($request, [
@@ -283,6 +284,7 @@ class AdminSubscriptionController extends Controller
 
           $subscription->name = $request->name;
           $subscription->price = $request->price;
+          $subscription->num_items = $request->num_items;
           $subscription->num_invoices = $request->num_invoices;
           $subscription->num_users = $request->num_users;
           $subscription->save();

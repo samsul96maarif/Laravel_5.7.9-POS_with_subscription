@@ -6,6 +6,7 @@ use Closure;
 
 use App\Models\Subscription;
 use App\Models\Organization;
+use App\Models\User;
 
 use Auth;
 use Carbon\Carbon;
@@ -54,14 +55,16 @@ class GetSubscription
           // memeriksa apakah sudah memiliki subsription Package
           if ($organization->subscription_id == null) {
 
-            return redirect()->route('employe.sales.orders', ['id' => $user->id])
+            return redirect('/')
+            // ->route('employe.sales.orders', ['id' => $user->id])
             ->with('alert', 'Your Organization Does Not Have Subscription Package');
 
           } else {
             // memeriksa apakah statusnya 'true'
             // bila false maka akan diarahkan ke compleate a payment
             if ($organization->status == false) {
-              return redirect()->route('employe.sales.orders', ['id' => $user->id])
+              return redirect('/')
+              // ->route('employe.sales.orders', ['id' => $user->id])
               ->with('alert', 'Your Organization Not Yet Compleate a Payment');
 
               throw new \Exception("masih menunggu konfirmasi pembayaran");
@@ -69,9 +72,25 @@ class GetSubscription
               // memeriksa apakah package belum expied
               $now = carbon::now();
               if ($organization->expire_date > $now) {
-                return $next($request);
+
+                $users = user::all()->where('organization_id', $organization->id);
+                $i = 0;
+                foreach ($users as $value) {
+                  $i++;
+                }
+
+                $subscription = subscription::findOrFail($organization->subscription_id);
+
+                if ($i <= $subscription->num_users || $subscription->num_users === null) {
+                  return $next($request);
+                }
+                return redirect('/')
+                // ->route('employe.sales.orders', ['id' => $user->id])
+                ->with('alert', 'Quota Users Has Exceeded Capacity, Please Upgrade Your Package');
+
               }
-              return redirect()->route('employe.sales.orders', ['id' => $user->id])
+              return redirect('/')
+              // ->route('employe.sales.orders', ['id' => $user->id])
               ->with('alert', 'Package Subscription Your Organozation Was Expired');
 
               throw new \Exception("subscription expired");

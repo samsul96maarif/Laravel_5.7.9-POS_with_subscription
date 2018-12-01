@@ -18,6 +18,7 @@ class EmployeController extends Controller
     // gate : unutk mengecek apakah sudah membuat Organization
     // getSubscription : unutk mengecek subscription Organization
     // maxContact : unutk mengecek quota user subscription
+      $this->middleware('max.user', ['only' => ['create']]);
       $this->middleware(['auth', 'gate', 'get.subscription']);
   }
 
@@ -61,5 +62,47 @@ class EmployeController extends Controller
         $employe->save();
 
         return redirect()->route('employes')->withSuccess('Succeed Add Employe');
+    }
+
+    public function edit($id)
+    {
+      $employe = user::findOrFail($id);
+
+      return view('user/employe/edit', ['employe' => $employe]);
+    }
+
+    public function update(Request $request, $id)
+    {
+      $user = user::findOrFail($id);
+
+      if ($request->password != "") {
+        $request->validate([
+            'password' => 'required|string|confirmed|min:6'
+        ]);
+        $employe->password = bcrypt($request->password);
+      }
+
+      if ($request->username != $employe->username) {
+        $request->validate([
+            'username' => 'required|unique:users'
+        ]);
+      }
+
+      if ($request->email != $employe->email) {
+        $request->validate([
+            'email' => 'required|string|email|unique:users'
+        ]);
+      }
+
+      $request->validate([
+        'name' => 'required|string|max:20',
+        'username' => 'required',
+        'email' => 'required|string|email'
+      ]);
+
+      $employe->name = $request->name;
+      $employe->username = $request->username;
+      $employe->email = $request->email;
+      $employe->save();
     }
 }

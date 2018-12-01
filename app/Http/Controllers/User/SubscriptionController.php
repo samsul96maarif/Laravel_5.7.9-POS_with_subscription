@@ -65,6 +65,9 @@ class SubscriptionController extends Controller
   public function show($id)
   {
     $user = Auth::user();
+    if ($user->role == 0) {
+      return redirect('/')->with('alert', 'access denied');
+    }
     $organization = organization::where('user_id', $user->id)->first();
     $subscription = subscription::findOrFail($id);
 

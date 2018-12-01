@@ -12,6 +12,7 @@ use App\Models\Organization;
 use App\Models\Invoice;
 use App\Models\InvoiceDetail;
 use App\Models\Subscription;
+use App\Models\User;
 // menggunakan db builder
 use Illuminate\Support\Facades\DB;
 
@@ -26,8 +27,10 @@ class SalesOrderController extends Controller
       // checkitem : mengecek apakah ada item
       // checkContact : mengecek apakah ada contact
         // $this->middleware(['auth', 'gate', 'get.subscription', 'max.order', 'check.item', 'check.contact']);
-        $this->middleware(['auth', 'gate', 'get.subscription', 'max.order', 'check.item']);
+        $this->middleware('max.order', ['only' => ['create']]);
+        $this->middleware(['auth', 'gate', 'get.subscription', 'check.item']);
     }
+    
     public function index()
     {
       $user = Auth::user();
@@ -45,10 +48,13 @@ class SalesOrderController extends Controller
       $contacts = contact::all()->where('organization_id', $organization->id)->where('deleted_at', null);
       $invoices = invoice::all();
       $invoiceDetails = invoiceDetail::all();
+      $employes = user::all()->where('organization_id', $organization->id);
 
       return view('user/sales_order/index',
       [
         'salesOrders' => $salesOrders,
+        'user' => $user,
+        'employes' => $employes,
         'extend' => $extend,
         'organization' => $organization,
         'contacts' => $contacts,

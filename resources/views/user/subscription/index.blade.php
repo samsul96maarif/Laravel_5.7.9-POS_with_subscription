@@ -54,18 +54,22 @@
           <div class="card-body">
             <h3 class="card-title pricing-card-title">Rp.{{ number_format($subscription->price,2,",",".") }} <small class="text-muted">/ month</small></h3>
             <ul class="list-unstyled mt-3 mb-4">
-              <li>Free Space For Items</li>
+              @if ($subscription->num_items === null)
+                <li>Unlimited Space For Items</li>
+              @else
+                <li>Store Up to {{ number_format($subscription->num_items, 0, ",", ".") }} Items</li>
+              @endif
               {{-- num invoice --}}
-              @if ($subscription->num_invoices == 0)
-                <li>Free Space For Invoices</li>
+              @if ($subscription->num_invoices === null)
+                <li>Unlimited Space For Invoices</li>
               @else
                 <li>Store Up to {{ number_format($subscription->num_invoices, 0, ",", ".") }} Invoices</li>
               @endif
               {{-- num contact --}}
-              @if ($subscription->num_users == 0)
-                <li>Free Space For Contacts</li>
+              @if ($subscription->num_users === null)
+                <li>Unlimited Users</li>
               @else
-                <li>Store Up to {{ number_format($subscription->num_users, 0, ",", ".") }} Contacts</li>
+                <li>{{ number_format($subscription->num_users, 0, ",", ".") }} Users</li>
               @endif
 
               @if ($organization->subscription_id == $subscription->id)

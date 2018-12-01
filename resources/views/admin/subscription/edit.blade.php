@@ -99,11 +99,14 @@
             </div>
             <br>
             <div class="row">
-              <div class="col-md-10">
+              <div class="col-md-4">
+                <label for="" class="col-form-label">Items Quota</label>
+              </div>
+              <div class="col-md-3">
                 {{-- kolom untuk isi tabel "num_users" --}}
                 {{-- old('nama variable') = untuk menyimpan nilai lama, jadi bila tidak valid hanya tabel yang tidak valid
                 yang nilainya akan terhapus --}}
-                <input class="form-control" type="text" name="num_items" onkeyup="splitInDots(this)" value="{{ old('num_items') }}" placeholder="Items Quota">
+                <input class="form-control" type="text" name="num_items" onkeyup="splitInDots(this)" value="{{ number_format($subscription->num_items, 0, ",", ".") }}" placeholder="Items Quota">
                 {{-- untuk mengeluarkan error pada value "name" --}}
                 @if($errors->has('num_items'))
                   <p>{{ $errors->first('num_items') }}</p>

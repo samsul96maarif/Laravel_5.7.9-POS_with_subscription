@@ -41,6 +41,9 @@
       <th>Order#</th>
       <th>Customer</th>
       <th>Total</th>
+      @if ($user->role == 1)
+        <th>Writer</th>
+      @endif
       <th>Action</th>
     </tr>
   </thead>
@@ -63,6 +66,15 @@
           @endif
         @endforeach
         <td>Rp.{{ number_format($salesOrder->total,2,",",".") }}</td>
+        @if ($user->role == 1)
+          <td>
+            @foreach ($employes as $employe)
+              @if ($employe->id == $salesOrder->writer_id)
+                {{ $employe->name }}
+              @endif
+            @endforeach
+          </td>
+        @endif
         <td>
           <form class="" action="/sales_order/{{ $salesOrder->id }}/delete" method="post">
             {{ method_field('DELETE') }}

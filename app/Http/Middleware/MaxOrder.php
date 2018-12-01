@@ -5,6 +5,7 @@ namespace App\Http\Middleware;
 use App\Models\Subscription;
 use App\Models\SalesOrder;
 use App\Models\Organization;
+use App\Models\Item;
 
 use Auth;
 
@@ -38,15 +39,26 @@ class MaxOrder
         $i++;
       }
 
-      $subscription_num_invoices = subscription::find($organization->subscription_id)->num_invoices;
+      $subscription = subscription::find($organization->subscription_id);
 
-      if ($i <= $subscription_num_invoices || $subscription_num_invoices === null) {
+      if ($i < $subscription->num_invoices || $subscription->num_invoices === null) {
+        $items = item::all()->where('organization_id', $organization->id);
+        $i = 0;
+        foreach ($items as $value) {
+          $i++;
+        }
+        if ($i > $subscription->num_items) {
+          return redirect()
+          ->route('subscriptions')
+          ->with('alert', 'Quota Items Has Exceeded Capacity, Please Upgrade Your Package');
+          throw new \Exception("kuota sales order telah melebihi kapasitas, silahkan upgrade paket");
+        }
         return $next($request);
       }
       // bila mau ditampilkan pesan error
       if ($user->role == 0) {
         return redirect()
-        ->route('employe.sales.orders')
+        ->route('sales.orders')
         ->with('alert', 'Quota Sales Order Has Exceeded Capacity, Please Upgrade Your Package');
       }
       return redirect()

@@ -24,6 +24,7 @@ class ItemController extends Controller
     // auth : unutk mengecek auth
     // gate : unutk mengecek apakah sudah membuat Organization
     // getSubscription : unutk mengecek subscription Organization
+      $this->middleware('max.item', ['only' => ['create']]);
       $this->middleware(['auth', 'gate', 'get.subscription']);
   }
 

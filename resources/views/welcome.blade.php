@@ -147,6 +147,16 @@
         </nav>
       </div>
 
+      @if (session('alert'))
+        <div class="alert alert-danger">
+            {{ session('alert') }}
+        </div>
+      @endif
+      {{-- alert bila sukses mengirim payment proof --}}
+      @if (session()->has('success'))
+        <div class="alert alert-success">{{ session('success') }}</div>
+      @endif
+
       <div class="pricing-header px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
         <h1 class="display-4">Start Your Busniess From Here</h1>
       </div>
@@ -162,19 +172,19 @@
                 {{-- https://www.w3schools.com/php/func_string_number_format.asp --}}
                 <h3 class="card-title pricing-card-title">Rp.{{ number_format($subscription->price, 2, ",", ".") }} <small class="text-muted">/ month</small></h3>
                 <ul class="list-unstyled mt-3 mb-4">
-                  @if ($subscription->num_items == 0)
+                  @if ($subscription->num_items === null)
                     <li>Unlimited Space For Items</li>
                   @else
                     <li>Store Up to {{ number_format($subscription->num_items, 0, ",", ".") }} Items</li>
                   @endif
 
-                  @if ($subscription->num_invoices == 0)
+                  @if ($subscription->num_invoices === null)
                     <li>Unlimited Space For Invoice</li>
                   @else
                     <li>Store Up to {{ number_format($subscription->num_invoices, 0, ",", ".") }} Invoice</li>
                   @endif
 
-                  @if ($subscription->num_users == 0)
+                  @if ($subscription->num_users === null)
                     <li>Unlimited Users</li>
                   @else
                     <li>{{ number_format($subscription->num_users, 0, ",", ".") }} Users</li>

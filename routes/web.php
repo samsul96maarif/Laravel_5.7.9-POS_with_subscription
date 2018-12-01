@@ -207,6 +207,9 @@ Route::get('/employes', 'User\EmployeController@index')->name('employes');
 // tambah employe
 Route::get('/employe/create', 'User\EmployeController@create')->name('employe.create');
 Route::post('/employe', 'User\EmployeController@store')->name('employe.store');
+// edit emloye
+Route::get('/employe/{id}/edit', 'User\EmployeController@edit')->name('employe.edit');
+Route::put('/employe/{id}', 'User\EmployeController@update')->name('employe.update');
 // end user page
 
 // page employee
