@@ -127,8 +127,8 @@
                   <li class="nav-item nav-pills nav-kiri">
                     <a class="nav-link" href="/employes">
                       <span data-feather="home"></span>
-                      <i class="fas fa-user-alt"></i>
-                      Employes <span class="sr-only">(current)</span>
+                      <i class="fas fa-users"></i>
+                      Employe <span class="sr-only">(current)</span>
                     </a>
                   </li>
                   <li class="nav-item nav-pills nav-kiri">

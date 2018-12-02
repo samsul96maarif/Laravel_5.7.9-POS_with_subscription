@@ -74,8 +74,7 @@ class ContactController extends Controller
 
       return view('user/contact/create',
       [
-        'extend' => $extend,
-        'organization' => $organization,
+        'extend' => $extend
       ]);
     }
 

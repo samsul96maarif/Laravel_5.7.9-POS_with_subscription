@@ -69,7 +69,9 @@ Route::prefix('admin')->group(function () {
     // paymet
     Route::get('/payments', 'Admin\AdminPaymentController@index')->name('admin.payments');
     // filter yang sudah bayar
-    Route::get('payment/paid', 'Admin\AdminPaymentController@paid')->name('admin.payment.paid');
+    Route::get('/payment/paid', 'Admin\AdminPaymentController@paid')->name('admin.payment.paid');
+    // mengkonfirmasi dari hal index payment
+    Route::put('/payment/confirm', 'Admin\AdminPaymentController@confirm')->name('admin.payment.confirm');
     // search
     Route::get('/payment/search', 'Admin\AdminPaymentController@search')->name('admin.payment.search');
     //detail unutk memeriksa proof
@@ -176,6 +178,8 @@ Route::get('/sales_order/{id}', 'User\SalesOrderController@bill')->name('sales.o
 Route::put('/sales_order/{id}', 'User\SalesOrderController@update')->name('sales.order.update');
 //delete
 Route::delete('sales_order/{id}/delete', 'User\SalesOrderController@delete')->name('sales.order.delete');
+// delete selected
+Route::delete('sales_order/delete/selected', 'User\SalesOrderController@deleteSelected')->name('sales.order.delete.selected');
 // cancel force delete
 Route::delete('sales_order/{id}/cancel', 'User\SalesOrderController@cancel')->name('sales.order.cancel');
 
@@ -210,6 +214,8 @@ Route::post('/employe', 'User\EmployeController@store')->name('employe.store');
 // edit emloye
 Route::get('/employe/{id}/edit', 'User\EmployeController@edit')->name('employe.edit');
 Route::put('/employe/{id}', 'User\EmployeController@update')->name('employe.update');
+//delete
+Route::delete('/employe/{id}/delete', 'User\EmployeController@delete')->name('employe.delete');
 // end user page
 
 // page employee

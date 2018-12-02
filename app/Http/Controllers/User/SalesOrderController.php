@@ -30,7 +30,7 @@ class SalesOrderController extends Controller
         $this->middleware('max.order', ['only' => ['create']]);
         $this->middleware(['auth', 'gate', 'get.subscription', 'check.item']);
     }
-    
+
     public function index()
     {
       $user = Auth::user();
@@ -409,6 +409,21 @@ class SalesOrderController extends Controller
       $salesOrder->delete();
 
       return redirect('/sales_orders')->withSuccess($salesOrder->order_number.' Deleted!');
+    }
+
+    public function deleteSelected(Request $request)
+    {
+      if ($request->pilih === null) {
+        return redirect()->back()
+        ->with('alert', 'Please Selecet Row');
+      }
+      $count = count($request->pilih);
+      for ($i=0; $i < $count; $i++) {
+        $salesOrder = salesOrder::findOrFail($request->pilih[$i]);
+        $salesOrder->delete();
+      }
+
+      return redirect('/sales_orders')->withSuccess('Succeed Deleted Sales Order');
     }
 
     public function cancel($id)

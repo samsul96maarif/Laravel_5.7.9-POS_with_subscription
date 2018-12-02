@@ -73,7 +73,7 @@ class EmployeController extends Controller
 
     public function update(Request $request, $id)
     {
-      $user = user::findOrFail($id);
+      $employe = user::findOrFail($id);
 
       if ($request->password != "") {
         $request->validate([
@@ -100,9 +100,21 @@ class EmployeController extends Controller
         'email' => 'required|string|email'
       ]);
 
+      $nameBefore = $employe->name;
       $employe->name = $request->name;
       $employe->username = $request->username;
       $employe->email = $request->email;
       $employe->save();
+
+      return redirect('/employes')->withSuccess('Succeed Updated '.$nameBefore);
+    }
+
+    public function delete($id)
+    {
+      $employe = user::findOrFail($id);
+      $name = $employe->name;
+      $employe->delete();
+
+      return redirect('/employes')->withSuccess('Succeed Deleted '.$name);
     }
 }
