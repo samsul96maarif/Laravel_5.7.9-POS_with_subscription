@@ -50,13 +50,15 @@ class AdminOrganizationController extends Controller
       $organization = organization::findOrFail($id);
       $subscription = subscription::where('id', $organization->subscription_id)->first();
       $user = user::where('id', $organization->user_id)->first();
-      $contacts = contact::all()->where('organization_id', $id);
+      $users = user::all()->where('organization_id', $organization->id);
+      // $contacts = contact::all()->where('organization_id', $id);
       $salesOrders = salesOrder::all()->where('organization_id', $id);
       $items = item::all()->where('organization_id', $id);
       // mengetahui jumlah sales order dari organization
       $numSalesOrders = count($salesOrders);
       // mengetahui jumlah contact dari organization
-      $numContacts = count($contacts);
+      // $numContacts = count($contacts);
+      $numUsers = count($users);
       // unutk mengetahui item dari organization
       $numItems = count($items);
 
@@ -66,7 +68,7 @@ class AdminOrganizationController extends Controller
         'subscription' => $subscription,
         'user' => $user,
         'numSalesOrders' => $numSalesOrders,
-        'numContacts' => $numContacts,
+        'numUsers' => $numUsers,
         'numItems' => $numItems
       ]);
     }

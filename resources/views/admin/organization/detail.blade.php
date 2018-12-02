@@ -89,7 +89,7 @@
                 <label for="" class="col-form-label">Users Quota / Users</label>
               </div>
               <div class="col">
-                <span class="form-control text-center">{{ $numContacts }}</span>
+                <span class="form-control text-center">{{ $numUsers }}</span>
               </div>
             </div>
             <div class="row">
@@ -121,10 +121,10 @@
               </div>
               <div class="col">
                 @if ($subscription->num_users === null)
-                  <span class="form-control text-center">{{ $numContacts}}</span>
+                  <span class="form-control text-center">{{ $numUsers}}</span>
                   {{-- <span class="form-control text-center"><i class="fas fa-infinity"></i></span> --}}
                 @else
-                  <span class="form-control text-center">{{ $subscription->num_users}} / {{ $numContacts }}</span>
+                  <span class="form-control text-center">{{ $subscription->num_users}} / {{ $numUsers }}</span>
                 @endif
               </div>
             </div>

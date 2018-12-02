@@ -23,7 +23,9 @@ class AdminUserController extends Controller
   public function index()
   {
     // memanggil user biasa(role = false)
-    $users = user::all()->where('admin', false);
+    $users = user::all()
+    ->where('admin', false)
+    ->where('role', 1);
 
     $organizations = organization::all();
 

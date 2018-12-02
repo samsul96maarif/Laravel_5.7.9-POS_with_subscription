@@ -11,6 +11,8 @@ use App\Models\Subscription;
 use App\Models\User;
 // unutk menggunakan db builder
 use Illuminate\Support\Facades\DB;
+// untuk menggunakan date
+use Carbon\Carbon;
 
 class AdminPaymentController extends Controller
 {
@@ -91,4 +93,42 @@ class AdminPaymentController extends Controller
         'users' => $users
       ]);
     }
+
+    // fungsi untuk mengaktifkan package subscription pada organization
+    public function confirm(Request $request)
+    {
+      $now = carbon::now();
+
+      if ($request->pilih === null) {
+        return redirect()->back()
+        ->with('alert', 'Please Selecet Row');
+      }
+
+      $count = count($request->pilih);
+      for ($i=0; $i < $count; $i++) {
+        $payment = payment::findOrFail($request->pilih[$i]);
+        $addDays = $payment->period * 30;
+        $organization = organization::findOrFail($payment->organization_id);
+
+        // mengetahui apakah extend
+        if ($organization->status == 1) {
+          // mengambil expire date sebelumnya
+          $expire_date = $organization->expire_date;
+
+          $organization->expire_date = $expire_date->addDays($addDays);
+        } else {
+          $organization->status = 1;
+          $organization->expire_date = $now->addDays($addDays);
+        }
+        $payment->paid = 1;
+        $payment->save();
+        
+        $organization->save();
+      }
+
+      return redirect()
+      ->route('admin.payments')
+      ->withSuccess('Succeed Confirm Payments');
+    }
+
 }
