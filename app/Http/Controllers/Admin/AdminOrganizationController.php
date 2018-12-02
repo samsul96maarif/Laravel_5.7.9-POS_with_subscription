@@ -108,17 +108,17 @@ class AdminOrganizationController extends Controller
     public function extend(Request $request, $id)
     {
       $organization = organization::find($id);
-      $now = $organization->expire_date;
-
-      if ($organization->status == 1) {
-        $addDays = $request->period * 30;
-        $organization->expire_date = $now->addDays($addDays);
-      }
-
       $payment = payment::where('organization_id', $organization->id)
       ->where('paid', 0)->first();
-      $payment->paid = 1;
-      $payment->save();
+
+      $expire_date = $organization->expire_date;
+
+      if ($organization->status == 1) {
+        $payment->paid = 1;
+        $payment->save();
+        $addDays = $payment->period * 30;
+        $organization->expire_date = $expire_date->addDays($addDays);
+      }
 
       $organization->save();
 
