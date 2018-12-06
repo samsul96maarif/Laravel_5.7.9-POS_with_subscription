@@ -2,6 +2,8 @@
 
 @section('title', $user->name)
 
+@section('headline', $user->name.' Detail')
+
 @section('content')
 
   <div class="row justify-content-center">

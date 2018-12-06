@@ -1,18 +1,18 @@
 @extends('layouts.userMaster')
 
-@section('title', 'Create Employe')
+@section('title', 'Create Employee')
 
-@section('headline', 'Create Employe')
+@section('headline', 'Create Employee')
 
 @section('content')
 <div class="container"  style="margin-top:100px;">
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card">
-                <div class="card-header">Register Employe</div>
+                <div class="card-header">Register Employee</div>
 
                 <div class="card-body">
-                    <form method="POST" action="/employe">
+                    <form method="POST" action="/employee">
                         @csrf
 
                         <div class="form-group row">

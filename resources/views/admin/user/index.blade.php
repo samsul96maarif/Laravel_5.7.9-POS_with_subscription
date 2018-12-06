@@ -89,4 +89,7 @@
     </tbody>
   </table>
 
+{{-- klo mau pake pagination --}}
+  {{-- {{ $users->links() }} --}}
+
 @endsection

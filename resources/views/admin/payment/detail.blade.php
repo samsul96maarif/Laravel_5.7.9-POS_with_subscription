@@ -1,8 +1,8 @@
 @extends('layouts/adminMaster')
 
-@section('title', 'Company '.$organization->name)
+@section('title', 'Payment Detail Company '.$organization->name)
 
-@section('headline', $organization->name.' Detail')
+@section('headline', 'Payment Detail Company '.$organization->name)
 
 @section('content')
 

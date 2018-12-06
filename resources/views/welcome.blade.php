@@ -166,31 +166,31 @@
           @foreach ($subscriptions as $subscription)
             <div class="card mb-4 shadow-sm rounded">
               <div class="card-header">
-                <h4 class="my-0 font-weight-normal">{{ $subscription->name }}</h4>
+                <h4 class="my-0 font-weight-normal">{{ $subscription['name'] }}</h4>
               </div>
               <div class="card-body">
                 {{-- https://www.w3schools.com/php/func_string_number_format.asp --}}
-                <h3 class="card-title pricing-card-title">Rp.{{ number_format($subscription->price, 2, ",", ".") }} <small class="text-muted">/ month</small></h3>
+                <h3 class="card-title pricing-card-title">Rp.{{ number_format($subscription['price'], 2, ",", ".") }} <small class="text-muted">/ month</small></h3>
                 <ul class="list-unstyled mt-3 mb-4">
-                  @if ($subscription->num_items === null)
+                  @if ($subscription['num_items'] === null)
                     <li>Unlimited Space For Items</li>
                   @else
-                    <li>Store Up to {{ number_format($subscription->num_items, 0, ",", ".") }} Items</li>
+                    <li>Store Up to {{ number_format($subscription['num_items'], 0, ",", ".") }} Items</li>
                   @endif
 
-                  @if ($subscription->num_invoices === null)
+                  @if ($subscription['num_invoices'] === null)
                     <li>Unlimited Space For Invoice</li>
                   @else
-                    <li>Store Up to {{ number_format($subscription->num_invoices, 0, ",", ".") }} Invoice</li>
+                    <li>Store Up to {{ number_format($subscription['num_invoices'], 0, ",", ".") }} Invoice</li>
                   @endif
 
-                  @if ($subscription->num_users === null)
-                    <li>Unlimited Users</li>
+                  @if ($subscription['num_users'] === null)
+                    <li>Unlimited Employees</li>
                   @else
-                    <li>{{ number_format($subscription->num_users, 0, ",", ".") }} Users</li>
+                    <li>{{ number_format($subscription['num_users'], 0, ",", ".") }} Employees</li>
                   @endif
                 </ul>
-                <a class="btn btn-lg btn-block btn-primary" href="/subscription/{{ $subscription->id }}/detail">Buy</a>
+                <a class="btn btn-lg btn-block btn-primary" href="/subscription/{{ $subscription['id'] }}/detail">Buy</a>
               </div>
             </div>
           @endforeach

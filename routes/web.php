@@ -207,21 +207,23 @@ Route::post('/report/customer', 'User\ReportController@Customer')->name('report.
 // end report
 
 // employe
-Route::get('/employes', 'User\EmployeController@index')->name('employes');
+Route::get('/employees', 'User\EmployeeController@index')->name('employees');
 // tambah employe
-Route::get('/employe/create', 'User\EmployeController@create')->name('employe.create');
-Route::post('/employe', 'User\EmployeController@store')->name('employe.store');
+Route::get('/employee/create', 'User\EmployeeController@create')->name('employee.create');
+Route::post('/employee', 'User\EmployeeController@store')->name('employee.store');
 // edit emloye
-Route::get('/employe/{id}/edit', 'User\EmployeController@edit')->name('employe.edit');
-Route::put('/employe/{id}', 'User\EmployeController@update')->name('employe.update');
+Route::get('/employee/{id}/edit', 'User\EmployeeController@edit')->name('employee.edit');
+Route::put('/employee/{id}', 'User\EmployeeController@update')->name('employee.update');
 //delete
-Route::delete('/employe/{id}/delete', 'User\EmployeController@delete')->name('employe.delete');
+Route::delete('/employee/{id}/delete', 'User\EmployeeController@delete')->name('employee.delete');
+//mencari employee
+Route::get('/employee/search', 'User\EmployeeController@search')->name('employee.search');
 // end user page
 
 // page employee
 // salesOrder
 // Route::get('/organization/{id}/sales_orders', 'Employe\EmployeSalesOrderController@index')->name('employe.sales.orders');
-Route::get('/organization/{id}/sales_orders', 'User\SalesOrderController@index')->name('employe.sales.orders');
+Route::get('/organization/{id}/sales_orders', 'User\SalesOrderController@index')->name('employee.sales.orders');
 // end page employee
 
 // profile
@@ -242,6 +244,7 @@ Route::get('/autocomplete/fetch', 'BaseController@fetch')->name('autocomplete.fe
 Route::get('/autocomplete/fetch/item', 'BaseController@fetchItem')->name('autocomplete.fetch.item');
 Route::get('/autocomplete/fetch/organization', 'BaseController@fetchOrganization')->name('autocomplete.fetch.organization');
 Route::get('/autocomplete/fetch/user', 'BaseController@fetchUser')->name('autocomplete.fetch.user');
+Route::get('/autocomplete/fetch/employee', 'BaseController@fetchEmployee')->name('autocomplete.fetch.employee');
 
 Route::get('tes', function () {
     return view('tes/number');

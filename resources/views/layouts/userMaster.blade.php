@@ -125,10 +125,10 @@
                     </a>
                   </li>
                   <li class="nav-item nav-pills nav-kiri">
-                    <a class="nav-link" href="/employes">
+                    <a class="nav-link" href="/employees">
                       <span data-feather="home"></span>
                       <i class="fas fa-users"></i>
-                      Employe <span class="sr-only">(current)</span>
+                      Employees <span class="sr-only">(current)</span>
                     </a>
                   </li>
                   <li class="nav-item nav-pills nav-kiri">
@@ -137,28 +137,28 @@
                       {{-- <i src='icon/subscription.png' class="glyphicon"></i> --}}
                       {{-- <img src="{{ asset('icon/subscription.png') }}" alt="Logo"> --}}
                       <i class="fas fa-receipt"></i>
-                      Subscription <span class="sr-only">(current)</span>
+                      Subscriptions <span class="sr-only">(current)</span>
                     </a>
                   </li>
                   <li class="nav-item nav-kiri">
                     <a class="nav-link" href="/sales_orders">
                       <span data-feather="home"></span>
                       <i class="fas fa-shopping-cart"></i>
-                      Sales Order <span class="sr-only">(current)</span>
+                      Sales Orders <span class="sr-only">(current)</span>
                     </a>
                   </li>
                   <li class="nav-item nav-kiri">
                     <a class="nav-link" href="/contacts">
                       <span data-feather="home"></span>
                       <i class="fas fa-address-book"></i>
-                      Contact <span class="sr-only">(current)</span>
+                      Contacts <span class="sr-only">(current)</span>
                     </a>
                   </li>
                   <li class="nav-item nav-kiri">
                     <a class="nav-link" href="/items">
                       <span data-feather="home"></span>
                       <i class="fas fa-cubes"></i>
-                      Item <span class="sr-only">(current)</span>
+                      Items <span class="sr-only">(current)</span>
                     </a>
                   </li>
                   <li class="nav-item nav-kiri">

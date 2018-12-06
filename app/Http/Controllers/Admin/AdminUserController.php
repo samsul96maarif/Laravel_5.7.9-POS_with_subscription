@@ -23,9 +23,15 @@ class AdminUserController extends Controller
   public function index()
   {
     // memanggil user biasa(role = false)
-    $users = user::all()
+    // $users = user::all()
+    // ->where('admin', false)
+    // ->where('role', 1);
+
+    $users = DB::table('users')
     ->where('admin', false)
-    ->where('role', 1);
+    ->where('role', 1)
+    ->get();
+    // ->paginate();
 
     $organizations = organization::all();
 
@@ -57,6 +63,7 @@ class AdminUserController extends Controller
                     ->orWhere('username', 'like', '%'.$request->q.'%')
                     ->where('role', true)
                     ->get();
+                    // ->paginate();
 
     $organizations = organization::all();
 

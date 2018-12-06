@@ -52,7 +52,7 @@
         @if ($subscription->num_users == 0)
           <li>- Free Space For Contacts</li>
         @else
-          <li>- Store Up to {{ number_format($subscription->num_users, 0, ",", ".") }} Contacts</li>
+          <li>- {{ number_format($subscription->num_users, 0, ",", ".") }} Employees</li>
         @endif
         <hr>
         <h4 class="my-0 font-weight-normal">Please Transfer to :</h4>

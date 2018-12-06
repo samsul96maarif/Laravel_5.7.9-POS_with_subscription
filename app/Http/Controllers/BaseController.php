@@ -160,4 +160,44 @@ class BaseController extends Controller
       }
 
     }
+
+    function fetchEmployee(Request $request)
+    {
+
+      $user = Auth::user();
+      if ($user->role == 0) {
+        $organization = organization::findOrFail($user->organization_id);
+        $extend = 'employeMaster';
+      } else {
+        // code...
+        $organization = organization::where('user_id', $user->id)->first();
+        $extend = 'userMaster';
+      }
+
+      if($request->get('query'))
+      {
+        $query = $request->get('query');
+        $data = DB::table('users')
+        ->where('name', 'LIKE', "%{$query}%")
+        ->where('admin', 0)
+        ->where('role', 0)
+        ->where('organization_id', $organization->id)
+        ->orWhere('username', 'LIKE', "%{$query}%")
+        ->where('admin', 0)
+        ->where('role', 0)
+        ->where('organization_id', $organization->id)
+        ->get();
+
+        $output = '<div class="dropdown-menu" style="display:block; position:relative">';
+        foreach($data as $row)
+        {
+          $output .= '
+          <span class="btn contact-list dropdown-item">'.$row->name.'</span>
+          ';
+        }
+        $output .= '</div>';
+        echo $output;
+      }
+
+    }
 }

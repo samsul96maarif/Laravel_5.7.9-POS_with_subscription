@@ -48,13 +48,13 @@ class SalesOrderController extends Controller
       $contacts = contact::all()->where('organization_id', $organization->id)->where('deleted_at', null);
       $invoices = invoice::all();
       $invoiceDetails = invoiceDetail::all();
-      $employes = user::all()->where('organization_id', $organization->id);
+      $employees = user::all()->where('organization_id', $organization->id);
 
       return view('user/sales_order/index',
       [
         'salesOrders' => $salesOrders,
         'user' => $user,
-        'employes' => $employes,
+        'employees' => $employees,
         'extend' => $extend,
         'organization' => $organization,
         'contacts' => $contacts,

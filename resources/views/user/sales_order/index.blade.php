@@ -87,9 +87,9 @@
             <td>Rp.{{ number_format($salesOrder->total,2,",",".") }}</td>
             @if ($user->role == 1)
               <td>
-                @foreach ($employes as $employe)
-                  @if ($employe->id == $salesOrder->writer_id)
-                    {{ $employe->username }}
+                @foreach ($employees as $employee)
+                  @if ($employee->id == $salesOrder->writer_id)
+                    {{ $employee->username }}
                   @endif
                 @endforeach
               </td>

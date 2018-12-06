@@ -7,10 +7,12 @@ use App\Http\Controllers\Controller;
 
 use App\Models\User;
 use App\Models\Organization;
+// menggunakan db builder
+use Illuminate\Support\Facades\DB;
 
 use Auth;
 
-class EmployeController extends Controller
+class EmployeeController extends Controller
 {
   public function __construct()
   {
@@ -36,7 +38,7 @@ class EmployeController extends Controller
 // 1. arahakan ke form
     public function create()
     {
-      return view('user/employe/create');
+      return view('user/employee/create');
     }
 
     // 2. simpan hasil
@@ -68,7 +70,7 @@ class EmployeController extends Controller
     {
       $employee = user::findOrFail($id);
 
-      return view('user/employe/edit', ['employe' => $employee]);
+      return view('user/employee/edit', ['employee' => $employee]);
     }
 
     public function update(Request $request, $id)
@@ -106,7 +108,7 @@ class EmployeController extends Controller
       $employee->email = $request->email;
       $employee->save();
 
-      return redirect('/employes')->withSuccess('Succeed Updated '.$nameBefore);
+      return redirect('/employees')->withSuccess('Succeed Updated '.$nameBefore);
     }
 
     public function delete($id)
@@ -115,6 +117,22 @@ class EmployeController extends Controller
       $name = $employee->name;
       $employee->delete();
 
-      return redirect('/employes')->withSuccess('Succeed Deleted '.$name);
+      return redirect('/employees')->withSuccess('Succeed Deleted '.$name);
+    }
+
+    public function search(Request $request)
+    {
+      $user = Auth::user();
+      $organization = organization::where('user_id', $user->id)->first();
+
+      $employees = DB::table('users')
+      ->where('name', 'like', '%'.$request->q.'%')
+      ->where('organization_id', $organization->id)
+      ->get();
+
+      return view('user/employee/index',
+      [
+        'employees' => $employees
+      ]);
     }
 }

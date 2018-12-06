@@ -1,8 +1,8 @@
 @extends('layouts/adminMaster')
 
-@section('title', 'Edit Subscription')
+@section('title', 'Edit Package '.$subscription->name)
 
-@section('headline', 'Edit Subscription')
+@section('headline', 'Edit Package '.$subscription->name)
 
 @section('content')
 
@@ -132,7 +132,7 @@
             <br>
             <div class="row">
               <div class="col-md-4">
-                <label for="" class="col-form-label">Contacts Quota</label>
+                <label for="" class="col-form-label">Employees Quota</label>
               </div>
               <div class="col-md-3">
                 {{-- kolom untuk isi tabel "num_users" --}}

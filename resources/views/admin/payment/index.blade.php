@@ -2,7 +2,7 @@
 
 @section('title', 'Payments')
 
-@section('headline', 'payment')
+@section('headline', 'payments')
 
 @section('content')
 

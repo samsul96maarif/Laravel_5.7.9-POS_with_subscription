@@ -20,7 +20,7 @@
       <th>Price</th>
       <th>Items Quota</th>
       <th>Invoices Quota</th>
-      <th>Contacts Quota</th>
+      <th>Employees Quota</th>
       {{-- action dialih fungsikan dari index --}}
       {{-- <th>Action</th> --}}
     </thead>

@@ -122,7 +122,7 @@
                     <a class="nav-link" href="/admin/payments">
                       <span data-feather="home"></span>
                       <i class="fas fa-shopping-cart"></i>
-                      Payment <span class="sr-only">(current)</span>
+                      Payments <span class="sr-only">(current)</span>
                     </a>
                   </li>
                   <li class="nav-item nav-kiri">
@@ -141,7 +141,7 @@
                     <a class="nav-link" href="/admin/subscriptions">
                       <span data-feather="home"></span>
                       <i class="fas fa-receipt"></i>
-                      Subscription <span class="sr-only">(current)</span>
+                      Subscriptions <span class="sr-only">(current)</span>
                     </a>
                   </li>
                   <li class="nav-item nav-kiri">

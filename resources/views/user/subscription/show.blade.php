@@ -27,9 +27,9 @@
             @if ($subscription->num_users == 0)
               <li>Free Space For Contacts</li>
             @else
-              <li>Store Up to {{ number_format($subscription->num_users, 0, ",", ".") }} Contacts</li>
+              <li>{{ number_format($subscription->num_users, 0, ",", ".") }} Employees</li>
             @endif
-            
+
             <hr>
             @php
             $message = 'How Many Months Do You Want to Subscribe';

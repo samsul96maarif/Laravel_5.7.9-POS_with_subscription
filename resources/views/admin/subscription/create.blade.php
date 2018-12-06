@@ -105,7 +105,7 @@
                 {{-- kolom untuk isi tabel "num_users" --}}
                 {{-- old('nama variable') = untuk menyimpan nilai lama, jadi bila tidak valid hanya tabel yang tidak valid
                 yang nilainya akan terhapus --}}
-                <input class="form-control" type="text" name="num_users" onkeyup="splitInDots(this)" value="{{ old('num_users') }}" placeholder="Users Quota">
+                <input class="form-control" type="text" name="num_users" onkeyup="splitInDots(this)" value="{{ old('num_users') }}" placeholder="Employees Quota">
                 {{-- untuk mengeluarkan error pada value "name" --}}
                 @if($errors->has('num_users'))
                   <p>{{ $errors->first('num_users') }}</p>

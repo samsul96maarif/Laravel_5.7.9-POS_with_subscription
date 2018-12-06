@@ -78,7 +78,7 @@
           @if ($organization->subscription_id == null)
             <div class="row">
               <div class="col-md-4">
-                <label for="" class="col-form-label">Invoices Quota / Invoices</label>
+                <label for="" class="col-form-label">Invoices / Invoices Quota</label>
               </div>
               <div class="col">
                 <span class="form-control text-center">{{ $numSalesOrders }}</span>
@@ -86,7 +86,7 @@
             </div>
             <div class="row">
               <div class="col-md-4">
-                <label for="" class="col-form-label">Users Quota / Users</label>
+                <label for="" class="col-form-label">Employees / Employees Quota</label>
               </div>
               <div class="col">
                 <span class="form-control text-center">{{ $numUsers }}</span>
@@ -94,7 +94,7 @@
             </div>
             <div class="row">
               <div class="col-md-4">
-                <label for="" class="col-form-label">Items Quota / Items</label>
+                <label for="" class="col-form-label">Items / Items Quota</label>
               </div>
               <div class="col">
                 <span class="form-control text-center">{{ $numItems }}</span>
@@ -104,40 +104,40 @@
           @else
             <div class="row">
               <div class="col-md-4">
-                <label for="" class="col-form-label">Invoices Quota / Invoices</label>
+                <label for="" class="col-form-label">Invoices / Invoices Quota</label>
               </div>
               <div class="col">
                 @if ($subscription->num_invoices === null)
                   <span class="form-control text-center">{{ $numSalesOrders }}</span>
                   {{-- <span class="form-control text-center"><i class="fas fa-infinity"></i></span> --}}
                 @else
-                  <span class="form-control text-center">{{ $subscription->num_invoices }} / {{ $numSalesOrders }}</span>
+                  <span class="form-control text-center">{{ $numSalesOrders }} / {{ $subscription->num_invoices }}</span>
                 @endif
               </div>
             </div>
             <div class="row">
               <div class="col-md-4">
-                <label for="" class="col-form-label">Users Quota / Users</label>
+                <label for="" class="col-form-label">Employees / Employees Quota</label>
               </div>
               <div class="col">
                 @if ($subscription->num_users === null)
                   <span class="form-control text-center">{{ $numUsers}}</span>
                   {{-- <span class="form-control text-center"><i class="fas fa-infinity"></i></span> --}}
                 @else
-                  <span class="form-control text-center">{{ $subscription->num_users}} / {{ $numUsers }}</span>
+                  <span class="form-control text-center">{{ $numUsers }} / {{ $subscription->num_users}}</span>
                 @endif
               </div>
             </div>
             <div class="row">
               <div class="col-md-4">
-                <label for="" class="col-form-label">Quota Items / Items</label>
+                <label for="" class="col-form-label">Items / Items Quota</label>
               </div>
               <div class="col">
                 @if ($subscription->num_items == null)
                   <span class="form-control text-center">{{ $numItems }}</span>
                   {{-- <span class="form-control text-center"><i class="fas fa-infinity"></i></span> --}}
                 @else
-                  <span class="form-control text-center">{{ $subscription->num_items }} / {{ $numItems}}</span>
+                  <span class="form-control text-center">{{ $numItems }} / {{ $subscription->num_items }}</span>
                 @endif
               </div>
             </div>
