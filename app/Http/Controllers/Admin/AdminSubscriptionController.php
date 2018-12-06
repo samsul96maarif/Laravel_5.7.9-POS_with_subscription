@@ -24,6 +24,7 @@ class AdminSubscriptionController extends Controller
     public function index()
     {
       $subscriptions = subscription::all();
+      $subscriptions = collect($subscriptions)->sortByDesc('price')->reverse()->toArray();
 
       return view('admin/subscription/index', [
         'subscriptions' => $subscriptions
@@ -165,7 +166,7 @@ class AdminSubscriptionController extends Controller
           'num_users' => 'required',
         ]);
       }
-
+// mengecek apakah nama subscription sudah terpakai
       $subscriptions = subscription::all();
       foreach ($subscriptions as $value) {
         if ($value->name == $request->name) {
@@ -334,7 +335,7 @@ class AdminSubscriptionController extends Controller
         $subscription->delete();
 
         return redirect()
-        ->route('admin.subscription')
+        ->route('admin.subscriptions')
         ->withSuccess('Succeed Deleted Package '.$subscription->name);
       }
 }
