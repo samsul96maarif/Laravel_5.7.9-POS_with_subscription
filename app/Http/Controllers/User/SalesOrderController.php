@@ -175,31 +175,32 @@ class SalesOrderController extends Controller
           }
         }
 
+        // mengecek apakah ada nama contact yang sama
         $found = 0;
-        $contacts = contact::all();
+        $contacts = contact::all()->where('organization_id', $organization->id);
         foreach ($contacts as $value) {
           if ($value->name === $request->name) {
-            $contact = contact::where('name', $value->name)->first();
             $found = 1;
           }
         }
 
         if ($found == 0) {
-          // mengcek apakah contact ovelrload dari package
-          $i = 0;
-          foreach ($contacts as $key) {
-            $i++;
-          }
-
-          // klo bukan unlimeted
-          if ($subscription->num_users != null) {
-            if ($i >= $subscription->num_users) {
-              return redirect()
-              ->route('sales.order.create')
-              ->with('alert', 'Quota Contact Has Exceeded Capacity, Cannot Add Contact or Please Upgrade Your Packag');
-              // throw new \Exception("kuota sales order telah melebihi kapasitas, silahkan upgrade paket");
-            }
-          }
+//
+// dulu dipakai soalnya contact dibatasi
+// mengcek apakah contact ovelrload dari package
+          // $i = 0;
+          // foreach ($contacts as $key) {
+          //   $i++;
+          // }
+//           klo bukan unlimeted
+//           if ($subscription->num_users != null) {
+//             if ($i >= $subscription->num_users) {
+//               return redirect()
+//               ->route('sales.order.create')
+//               ->with('alert', 'Quota Contact Has Exceeded Capacity, Cannot Add Contact or Please Upgrade Your Packag');
+//               throw new \Exception("kuota sales order telah melebihi kapasitas, silahkan upgrade paket");
+//             }
+//           }
 
           $contact = new contact;
           $contact->organization_id = $organization->id;
@@ -208,7 +209,15 @@ class SalesOrderController extends Controller
           $contact->company_name = $request->company_name;
           $contact->email = $request->email;
           $contact->save();
+        } else {
+          // bila found = 1
+          // berarti contact dengan nama yang ada telah ada
+          // maka akan dicari contact tersebut dan menjadi customer SO
+          $contact = contact::where('name', $request->name)
+          ->where('organization_id', $organization->id)
+          ->first();
         }
+
       }
 
       $this->validate($request, [

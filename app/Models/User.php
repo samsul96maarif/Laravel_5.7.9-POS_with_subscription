@@ -34,4 +34,13 @@ class User extends Authenticatable
       // mengecek bila kondisi role "1" berarti true berarti dia admin
       return $this->admin;
     }
+
+    public function users()
+    {
+      $users = user::all()
+      ->where('admin', false)
+      ->where('role', 1);
+
+      return $this->$users;
+    }
 }

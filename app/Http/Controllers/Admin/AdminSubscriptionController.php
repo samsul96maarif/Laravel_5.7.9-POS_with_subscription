@@ -98,8 +98,8 @@ class AdminSubscriptionController extends Controller
 
       } else {
         $strNumItems = str_replace(".", "", $request->num_items);
-        $intNumitems = (int)$strNumitems;
-        $request->num_items = $intNumitems;
+        $intNumItems = (int)$strNumItems;
+        $request->num_items = $intNumItems;
       }
 
       if ($request->num_invoices == null) {

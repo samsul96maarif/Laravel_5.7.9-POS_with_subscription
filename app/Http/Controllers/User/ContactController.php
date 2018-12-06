@@ -165,7 +165,6 @@ class ContactController extends Controller
       return view('user/contact/edit',
       [
         'contact' => $contact,
-        'organization' => $organization,
         'extend' => $extend
       ]);
     }
