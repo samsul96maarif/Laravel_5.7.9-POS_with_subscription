@@ -71,9 +71,9 @@
           <td><input type="checkbox" class="sub_chk" name="pilih[]" value="{{ $payment->id }}" ></td>
           {{-- mengecek bila bukti transfer sudah ada atau belum --}}
           @if ($payment->proof != null)
-            <td><b>True</b></td>
+            <td><a class="btn btn-outline-primary" href="/admin/payment/{{ $payment->id }}"><i class="far fa-check-circle"></i> <b>True</b></a></td>
             {{-- uniq code adalah 3 digit terakhir dari transfer --}}
-            <td><a class="btn btn-outline-primary" href="/admin/payment/{{ $payment->id }}"><i class="far fa-check-circle"></i> {{ $payment->uniq_code }}</a></td>
+            <td>{{ $payment->uniq_code }}</td>
           @else
             <td>False</td>
             {{-- uniq code adalah 3 digit terakhir dari transfer --}}

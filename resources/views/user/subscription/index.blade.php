@@ -104,7 +104,16 @@
                 </div>
                 {{-- $organization->status == 1 --}}
               @else
-                <button type="button" name="" class="btn btn-lg btn-block btn-secondary">Awaiting Payment</button>
+                {{-- mengetahui sudah kirim proof atw belum --}}
+                @if ($payment != null)
+                  @if ($payment->proof == null)
+                    <button type="button" name="" class="btn btn-lg btn-block btn-secondary">Awaiting Payment</button>
+                  @else
+                    <button type="button" name="" class="btn btn-lg btn-block btn-secondary">Waiting Validation</button>
+                  @endif
+                  {{-- payment != null --}}
+                @endif
+                {{-- <button type="button" name="" class="btn btn-lg btn-block btn-secondary">Awaiting Payment</button> --}}
               @endif
 
               {{-- $organization->subscription_id == $subscription->id --}}
