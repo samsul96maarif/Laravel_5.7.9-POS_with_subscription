@@ -1,6 +1,6 @@
 @extends('layouts/userMaster')
 
-@section('title', 'Create Item')
+@section('title', 'Payment Proof')
 
 @section('headline', 'Upload a Payment Proof')
 

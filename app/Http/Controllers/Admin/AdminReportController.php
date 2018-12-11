@@ -27,7 +27,7 @@ class AdminReportController extends Controller
 
     public function index()
     {
-      $packages = subscription::all();
+      $packages = subscription::withTrashed()->get();
       $now = Carbon::now();
       $startDate = Carbon::now();
       $endDate = Carbon::now();

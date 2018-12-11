@@ -121,7 +121,11 @@
                 <button type="button" class="btn btn-outline-primary" name="button">Activated</button>
               </td>
             @endif
-            <td>{{ date('d-m-Y', strtotime($organization->expire_date)) }}</td>
+            @if ($organization->expire_date != null)
+              <td>{{ date('d-m-Y', strtotime($organization->expire_date)) }}</td>
+            @else
+              <td></td>
+            @endif
 
             {{-- <td>
               @if ($organization->status == 0)

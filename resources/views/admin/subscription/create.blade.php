@@ -1,8 +1,8 @@
 @extends('layouts/adminMaster')
 
-@section('title', 'Create Subscription')
+@section('title', 'Create Package Subscription')
 
-@section('headline', 'Create Subscription')
+@section('headline', 'Create Package Subscription')
 
 @section('content')
 

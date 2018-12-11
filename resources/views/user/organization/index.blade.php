@@ -63,7 +63,7 @@
             </div>
           </div>
           <br>
-          @if ($organization->subscription_id != null)
+          @if ($organization->subscription_id != null && $organization->expire_date != null)
             <div class="row">
               <div class="col-md-2">
                 <p>Expire Date</p>

@@ -1,6 +1,6 @@
 @extends('layouts/userMaster')
 
-@section('title', 'Subscription')
+@section('title', 'Subscriptions')
 
 @section('headline', 'Subscriptions')
 

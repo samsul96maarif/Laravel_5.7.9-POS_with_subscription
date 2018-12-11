@@ -160,7 +160,12 @@
                 <a href="#" class="btn btn-outline-primary">Active</a>
               </td>
             @endif
-            <td>{{ date('d-m-Y', strtotime($organization->expire_date)) }}</td>
+            {{-- filter agar yang keluar hanya yng ada expire date nya --}}
+            @if ($organization->expire_date != null)
+              <td>{{ date('d-m-Y', strtotime($organization->expire_date)) }}</td>
+            @else
+              <td></td>
+            @endif
             {{-- fungsi ini dialihkan ke payment --}}
             {{-- <td>
               @if ($organization->status == 0)

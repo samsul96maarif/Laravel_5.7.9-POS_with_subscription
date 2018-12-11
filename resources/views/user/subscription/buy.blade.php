@@ -43,8 +43,12 @@
           <h4 class="my-0 font-weight-normal">Package Subscription : </h4>
         @endif
         <h5 class="my-0 font-weight-normal">{{ $subscription->name }}</h5>
-        <li>- Free Space For Items</li>
-        @if ($subscription->num_invoices == 0)
+        @if ($subscription->num_items === null)
+          <li>- Free Space For Items</li>
+        @else
+          <li>- Store Up to {{ number_format($subscription->num_items, 0, ",", ".") }} Items</li>
+        @endif
+        @if ($subscription->num_invoices === null)
           <li>- Free Space For Invoices</li>
         @else
           <li>- Store Up to {{ number_format($subscription->num_invoices, 0, ",", ".") }} Invoices</li>
