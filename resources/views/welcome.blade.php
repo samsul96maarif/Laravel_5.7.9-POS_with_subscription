@@ -132,7 +132,10 @@
     </head>
     <body>
       <div class="d-flex flex-column flex-md-row align-items-center p-3 px-md-4 mb-3 bg-white border-bottom shadow-sm" style="background-color: #A2C523!important; box-shadow: 0 .5rem 1rem rgba(0,0,0,.15)!important; border-bottom: 0!important;">
-        <h5 class="my-0 mr-md-auto font-weight-normal">Zuragan</h5>
+        <h5 class="my-0 mr-md-auto font-weight-normal">
+          <img style="height:30px;" src="{{ asset('logo/logo_1.png') }}" alt="">
+          {{-- Zuragan --}}
+        </h5>
         <nav class="my-2 my-md-0 mr-md-3">
           @if (Route::has('login'))
               <div class="top-right links">

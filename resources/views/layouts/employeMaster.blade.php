@@ -56,9 +56,19 @@
           {{-- hijau --}}
         <div class="container-fluid" style="background-color: #A2C523!important">
 
-          <a class="navbar-brand" href="{{ url('/') }}">
-            Zuragan
-          </a>
+          {{-- link ke zuragan --}}
+          {{-- <a class="navbar-brand" href="https://app.zuragan.com"> --}}
+            {{-- <img style="height:30px;" src="{{ asset('logo/logo_1.png') }}" alt=""> --}}
+            {{-- <img style="height:30px;" src="{{ asset('logo/zuragan_logo_login.png') }}" alt=""> --}}
+            {{-- Zuragan --}}
+          {{-- </a> --}}
+
+          {{-- no link --}}
+          <div class="navbar-brand">
+            <img style="height:30px;" src="{{ asset('logo/logo_1.png') }}" alt="">
+            {{-- Zuragan --}}
+          </div>
+          
           <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
             <span class="navbar-toggler-icon"></span>
           </button>

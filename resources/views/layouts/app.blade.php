@@ -127,7 +127,8 @@
         <nav class="navbar navbar-dark fixed-top bg-dark flex-md-nowrap p-0 shadow navbar-expand-md" style="padding:10px;">
             <div class="container-fluid" style="background-color: #A2C523!important">
                 <a class="navbar-brand" href="{{ url('/') }}">
-                    Zuragan
+                  <img style="height:30px;" src="{{ asset('logo/logo_1.png') }}" alt="">
+                    {{-- Zuragan --}}
                 </a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
                     <span class="navbar-toggler-icon"></span>
