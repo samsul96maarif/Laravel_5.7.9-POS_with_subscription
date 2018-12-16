@@ -10,6 +10,8 @@ use App\Models\User;
 use App\Models\Organization;
 use App\Models\Payment;
 
+use Auth;
+
 class AdminSubscriptionController extends Controller
 {
 
@@ -91,6 +93,8 @@ class AdminSubscriptionController extends Controller
     }
 // 2. store data create
     public function store(Request $request){
+
+      $writer = Auth::user();
 
       // https://stackoverflow.com/questions/14558343/how-to-remove-dots-from-numbers
       $strPrice = str_replace(".", "", $request->price);
@@ -181,6 +185,8 @@ class AdminSubscriptionController extends Controller
       $subscription->num_items = $request->num_items;
       $subscription->num_invoices = $request->num_invoices;
       $subscription->num_users = $request->num_users;
+      $subscription->writer_id = $writer->id;
+      $subscription->action = 'create';
       $subscription->save();
 
       return redirect()
@@ -196,6 +202,8 @@ class AdminSubscriptionController extends Controller
         }
     // 2. store data update
         public function update(Request $request, $id){
+
+          $writer = Auth::user();
 
           // https://stackoverflow.com/questions/14558343/how-to-remove-dots-from-numbers
           $strPrice = str_replace(".", "", $request->price);
@@ -288,6 +296,8 @@ class AdminSubscriptionController extends Controller
           $subscription->num_items = $request->num_items;
           $subscription->num_invoices = $request->num_invoices;
           $subscription->num_users = $request->num_users;
+          $subscription->writer_id = $writer->id;
+          $subscription->action = 'update';
           $subscription->save();
 
           return redirect()
@@ -298,6 +308,9 @@ class AdminSubscriptionController extends Controller
         // delete
       public function delete($id)
       {
+
+        $writer = Auth::user();
+
         $subscription = subscription::find($id);
         $organization = organization::where('subscription_id', $subscription->id)
         ->where('status', 1)->first();
@@ -332,6 +345,8 @@ class AdminSubscriptionController extends Controller
           $organization->save();
         }
 
+        $subscription->writer_id = $writer->id;
+        $subscription->action = 'delete';
         $subscription->delete();
 
         return redirect()
