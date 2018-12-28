@@ -51,6 +51,7 @@ class SubscriptionController extends Controller
     $organization = organization::where('user_id', $user_id)->first();
     $subscriptions = subscription::all()->where('deleted_at', null);
     // unutk mengurutkan dari harga termurah
+    // https://stackoverflow.com/questions/38116513/how-to-sort-an-assocoative-array-in-php-laravel
     $subscriptions = collect($subscriptions)->sortByDesc('price')->reverse()->toArray();
     $payment = payment::where('organization_id', $organization->id)
     ->where('paid', 0)->first();
