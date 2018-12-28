@@ -429,6 +429,15 @@ class SalesOrderController extends Controller
       $count = count($request->pilih);
       for ($i=0; $i < $count; $i++) {
         $salesOrder = salesOrder::findOrFail($request->pilih[$i]);
+
+        $invoice = invoice::where('sales_order_id', $salesOrder->id)->first();
+        $invoiceDetails = invoiceDetail::all()->where('invoice_id', $invoice->id);
+
+        foreach ($invoiceDetails as $invoiceDetail) {
+          $invoiceDetail->delete();
+        }
+
+        $invoice->delete();
         $salesOrder->delete();
       }
 
