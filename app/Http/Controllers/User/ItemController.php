@@ -125,8 +125,8 @@ class ItemController extends Controller
     }
 
     $item = new item;
-    // $item->writer_id = $user->id;
-    // $item->action = 'create';
+    $item->writer_id = $user->id;
+    $item->action = 'create';
     $item->organization_id = $organization->id;
     $item->name = $request->name;
     $item->description = $request->description;
@@ -145,8 +145,8 @@ class ItemController extends Controller
       $request->file('image')->move("img/",$fileName);
       // menyimpan ke dalam database nama file dari image
       $itemMedia = new itemMedias;
-      // $itemMedia->writer_id = $user->id;
-      // $itemMedia->action = 'create';
+      $itemMedia->writer_id = $user->id;
+      $itemMedia->action = 'create';
       $itemMedia->item_id = $item->id;
       $itemMedia->image = $fileName;
       $itemMedia->save();
@@ -246,8 +246,8 @@ class ItemController extends Controller
         $nameBefore = $item->name;
 
         $item->name = $request->name;
-        // $item->writer_id = $user->id;
-        // $item->action = 'update';
+        $item->writer_id = $user->id;
+        $item->action = 'update';
         $item->description = $request->description;
         $item->price = $request->price;
         $item->stock = $request->stock;
@@ -274,8 +274,8 @@ class ItemController extends Controller
             $itemMedia->image = $fileName;
           }
 
-          // $itemMedia->writer_id = $user->id;
-          // $itemMedia->action = 'update';
+          $itemMedia->writer_id = $user->id;
+          $itemMedia->action = 'update';
           $itemMedia->save();
         }
 

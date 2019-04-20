@@ -208,6 +208,8 @@ class SalesOrderController extends Controller
           $contact->phone = $request->phone;
           $contact->company_name = $request->company_name;
           $contact->email = $request->email;
+          $contact->writer_id = $user->id;
+          $contact->action = 'create';
           $contact->save();
         } else {
           // bila found = 1
@@ -282,7 +284,7 @@ class SalesOrderController extends Controller
 
           $invoiceDetail->item_quantity = $invoiceDetail->item_quantity + $request->quantity[$i];
           $invoiceDetail->total = $invoiceDetail->total + $total;
-          $invoiceDetail->writer_id = $user->id;
+          // $invoiceDetail->writer_id = $user->id;
           $invoiceDetail->save();
           $message = $item->name.' already exist In sales order '.$salesOrder->order_number.' qty Has been Added';
           // $message = $item->name.' telah ada dalam sales order '.$salesOrder->order_number.' qty  telah ditambahkan';
@@ -290,7 +292,7 @@ class SalesOrderController extends Controller
           // invoice detail
           $invoiceDetail = new invoiceDetail;
           $invoiceDetail->organization_id = $organization->id;
-          $invoiceDetail->writer_id = $user->id;
+          // $invoiceDetail->writer_id = $user->id;
           $invoiceDetail->invoice_id = $invoice->id;
           $invoiceDetail->item_id = $item->id;
           $invoiceDetail->item_price = $item->price;

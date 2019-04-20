@@ -82,6 +82,8 @@ class OrganizationController extends Controller
     $organization->phone = $request->phone;
     $organization->company_address = $request->company_address;
     $organization->zipcode = $request->zipcode;
+    $organization->writer_id = $user_id;
+    $organization->action = 'store';
     $organization->save();
 
     return redirect('/home')->withSuccess('Company Profile Has been Created.');
@@ -118,6 +120,8 @@ class OrganizationController extends Controller
           $organization->phone = $request->phone;
           $organization->company_address = $request->company_address;
           $organization->zipcode = $request->zipcode;
+          $organization->writer_id = $user_id;
+          $organization->action = 'update';
           $organization->save();
 
           return redirect('/home')->withSuccess('Company Profile Has been Updated.');
